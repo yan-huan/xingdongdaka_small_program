@@ -1,6 +1,6 @@
 <template>
 	<view class="feedback">
- <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+ <picker @on-change="bindPickerChange" value="{{index}}" range="{{array}}">
     <view class="picker">
       <view class="fb-type">
         <view class="type-label">{{array[index]}}</view>
@@ -8,7 +8,7 @@
     </view>
   </picker>
 		<view class="fb-body">
-			<textarea class="content" placeholder="对我们网站、服务，你还有什么建议吗？请告诉我们..." bindinput="contentInput"
+			<textarea class="content" placeholder="对我们网站、服务，你还有什么建议吗？请告诉我们..." @input="contentInput"
 			 maxlength="500" auto-focus="true" value="{{content}}" />
 			<view class="weui-uploader__files" id="uploaderFiles">
       <block wx:for="{{files}}" wx:key="*this">
@@ -92,8 +92,8 @@
 			},
 			contentInput: function(e) {
 			  this.setData({
-			    contentLength: e.detail.cursor,
-			    content: e.detail.value,
+			    contentLength: e.target.value.length,
+			    content: e.target.value,
 			  });
 			},
 			bindPickerChange: function(e) {
@@ -110,29 +110,29 @@
 			  	return false;
 			  }
 			  that.userId = uni.getStorageSync('id');
-			   if (that.data.index == 0) {
+			   if (that.index == 0) {
 			    util.showErrorToast('请选择反馈类型');
 			    return false;
 			  } 
 			
-			  if (that.data.content == '') {
+			  if (that.content == '') {
 			    util.showErrorToast('请输入反馈内容');
 			    return false;
 			  }
 			
-			  if (that.data.mobile == '') {
+			  if (that.mobile == '') {
 			    util.showErrorToast('请输入手机号码');
 			    return false;
 			  }
 			
-			  if (!check.isValidPhone(this.data.mobile)) {
+			  if (!check.isValidPhone(this.mobile)) {
 			    this.setData({
 			      mobile: ''
 			    });
 			    util.showErrorToast('请输入手机号码');
 			    return false;
 			  }
-			
+				console.log(that.content)
 			},
 		},
 		// components:{
