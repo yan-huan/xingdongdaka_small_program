@@ -90,6 +90,12 @@
 			}
 		},
 		{
+			"path": "pages/selfCenter/feedback",
+			"style": {
+				"navigationBarTitleText": "意见反馈"
+			}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "微信授权登录"

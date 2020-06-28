@@ -35,6 +35,7 @@ const serverUrls = { //根据接口具体配置
 	xd_getLookerByPushId: serverBaseUrl + '/looker/getLookerByPushId' ,//根据行动项id查看围观人
 	xd_saveLooker: serverBaseUrl + '/looker/saveLooker' ,//保存围观信息
 	xd_getLookerByUserId: serverBaseUrl + '/looker/getLookerByUserId' ,//根据用户id获取围观数据
+	xd_getLookerCountByUserId: serverBaseUrl + '/looker/getLookerCountByUserId' ,//根据用户id获取围观数量
 	
 	xd_wechatCommercialTenant: serverBaseUrl + '/wechatCommercialTenant/pay' ,//微信商户给用户付款pay
 	xd_decodeUserInfo: serverBaseUrl + '/wechat/decodeUserInfo' ,//获取微信的openid和unionid
