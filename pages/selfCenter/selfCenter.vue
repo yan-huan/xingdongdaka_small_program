@@ -6,8 +6,15 @@
 				<img :src="userInfo.avatarUrl" alt="" class="imgHead">
 			</view>
 			<view class="personInfo"  @click="goPage('/pages/selfCenter/editUserInfo')">
-				<view class="xd-list-title-text name ">
+				<view class="xd-list-title-text name moreInfo">
 					<text>{{userInfo.nickName}}</text>
+					<text v-if="userInfo.gender==1" class="boy">♂</text>
+					<text v-else-if="userInfo.gender==2" class="boy">♀</text>
+					<text v-else class="boy">密</text>
+					<text>{{userInfo.schoolName == null ? '': userInfo.schoolName}}</text>
+				</view>
+				<view class="moreInfoIn">
+					<text>{{userInfo.province}}.{{userInfo.city}}</text>
 				</view>
 				<view class="subInfo">
 					<text></text>
@@ -20,88 +27,27 @@
 		</view>
 		<view class="moreInfo">
 			<view class="moreInfoRow">
-				<view class="moreInfoIn">
-					<text>{{userInfo.province}}.{{userInfo.city}}</text>
-				</view>
+				
 				<view class="moreInfoIn" >
-					<text v-if="userInfo.gender==1" class="boy">♂</text>
-					<text v-else-if="userInfo.gender==0" class="gender">♀</text>
-					<text v-else class="boy">密</text>
-					<!-- <text>20</text> -->
+					<text>关注  1</text>
+					<text class="moreInfoIn_text">粉丝  0</text>
 				</view>
-				<view class="moreInfoIn flex1" v-if="userInfo.schoolName">
-					<text>{{userInfo.schoolName}}</text>
-				</view>
+				
 				<!-- <view class="moreInfoIn">
 					<text>  &nbsp;</text>
 				</view> -->
 			</view>
-			<!-- <view class="moreInfoRow">
-				<view class="moreInfoIn">
-					<text>行业</text>
-				</view>
-				<view class="moreInfoIn">
-					<text>公司</text>
-				</view>
-				<view class="moreInfoIn">
-					<text>职业</text>
-				</view>
-				<view class="moreInfoIn link">
-					<text>产品服务</text>
-				</view>
+			
+			<view class="moreInfoRow2">
+				<view class='user_column_item' bindtap='goFeedback'>
+				      <view class='user_column_item_text'><image class='user_column_item_image' src='/static/images/icon/feedback.png'></image><text class="thin">意见反馈</text></view>
+				    </view>
+				    <view class='user_column_item'>
+				      <button class="cu-btn bg-white" open-type="contact" ><image class='user_column_item_image' src='/static/images/icon/customer.png'></image><text class="thin">联系客服</text></button>
+				    </view>
 			</view>
-			<view class="moreInfoRow">
-				<view class="moreInfoIn personAction">
-					<text>关注：1</text>
-				</view>
-				<view class="moreInfoIn personAction">
-					<text>粉丝：0</text>
-				</view>
-				<view class="moreInfoIn personAction">
-					<text>获赞：12</text>
-				</view>
-				<view class="moreInfoIn personAction">
-					<text>获分享：14</text>
-				</view>
-			</view>
-			<view class="moreInfoRow rowaction">
-				<view class="moreInfoIn link">
-					<text>订单详情</text>
-				</view>
-				<view class="moreInfoIn">
-					<text>积分：1</text>
-				</view>
-				<view class="moreInfoIn link" @click="goPage('/pages/selfCenter/income')">
-					<text>收益：1999</text>
-				</view>
-			</view>
-			 -->
 		</view>
 		
-		<!-- <view class="actionInfo">
-			<view class="tabbar">
-				<view class="tab " :class="tab===0?'active':''" @click="tab=0">
-					<text>行动 (1)</text>
-				</view>
-				<view class="tab" :class="tab===1?'active':''" @click="tab=1">
-					<text>围观 (125)</text>
-				</view>
-				<view class="tab" :class="tab===2?'active':''" @click="tab=2">
-					<text>收藏 (128)</text>
-				</view>
-			</view>
-			<view class="actionTabList">
-				<view class="actionMy" v-show="tab===0">
-					<actionlist v-for="(item,index) in [1,2,3,4]" :key="index" :tab="tab"></actionlist>
-				</view>
-				<view class="actionLook" v-show="tab===1">
-					<actionlist  :tab="tab"></actionlist>
-				</view>
-				<view class="actionFavorite" v-show="tab===2">
-					<actionlist v-for="(item,index) in [1,2]" :key="index" :tab="tab"></actionlist>
-				</view>
-			</view>
-		</view> -->
 	</view>
 </template>
 
@@ -249,7 +195,7 @@
 
 <style  lang="scss">
 	.selfCenter{
-		padding:30rpx;
+		/* padding:10rpx 30rpx 30rpx; */
 	}
 	.viewself{
 		font-size: 26rpx;
@@ -259,7 +205,9 @@
 		color:$xd-color-base;
 	}
 .personContent{
-	padding:12rpx 0;
+	/* padding:12rpx 0; */
+	padding: 10rpx 30rpx 30rpx;
+	background-color: rgb(235, 244, 255);
 	display: flex;
 	justify-content: flex-start;
 	.personHead{
@@ -297,10 +245,15 @@
 	}
 }
 .moreInfo{
-	padding:20rpx 0;
-	border-bottom: 1px solid #d9d9d9;
-	border-top: 1px solid #d9d9d9;
+	padding:6rpx 0;
+	/* border-bottom: 1px solid #d9d9d9;
+	border-top: 1px solid #d9d9d9; */
 	font-size: 26rpx;
+	.user_column_item_image{
+		width: 30rpx;
+		height: 30rpx;
+	}
+    
 
 	.gender{
 		background:#fd5107;
@@ -320,7 +273,26 @@
 		padding:0 6rpx;
 		border-radius: 100%;
 		font-size: 22rpx;
-		margin-right: 2rpx;
+		margin: 0 14rpx;
+	}
+	.user_column_item{
+		background-color: #d7d7d7;
+		height: 80rpx;
+		line-height: 80rpx;
+		padding-left: 20px;
+		margin: 10rpx 0;
+
+	}
+	.user_column_item .cu-btn{
+		background-color: #d7d7d7;
+		padding: 0;
+	}
+	.user_column_item .thin{
+		padding: 0 16rpx;
+	}
+	.user_column_item .user_column_item_image{
+		background-color: rgb(255, 98, 0);
+		vertical-align: middle;
 	}
 	.moreInfoRow{
 		display: flex;
@@ -331,15 +303,26 @@
 			margin-top:18rpx;
 		}
 		.moreInfoIn{
-			width: 170rpx;
+			width: 100%;
 			overflow: hidden;
 			
 			margin:0;
-			padding:0;
 			&.flex1{
 				flex: 1;
 			}
-			text-align: left;
+			padding: 0;
+			text-align: center;
+			height: 70rpx;
+			line-height: 70rpx;
+			background-color: rgb(235, 244, 255);
+			border-bottom: 1px solid #d9d9d9;
+			border-top: 1px solid #d9d9d9;
+		}
+		.moreInfoIn_text{
+			margin-left: 300rpx;
+		}
+		.moreInfoIn .thin{
+		padding: 0 16rpx;
 		}
 	}
 }
