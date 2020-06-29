@@ -231,8 +231,17 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
 
             _this.logIn(_this.userInfo);
           });
-          uni.navigateBack({
-            delta: 1 });
+          var pages = getCurrentPages();
+
+          if (pages.length == 1) {
+            uni.switchTab({
+              url: '../index/index' });
+
+          } else {
+            uni.navigateBack({
+              delta: 1 });
+
+          }
 
         }
 

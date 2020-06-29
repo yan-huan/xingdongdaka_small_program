@@ -99,9 +99,18 @@ export default {
 									
 									 _this.logIn(_this.userInfo);
 								   })
-								   uni.navigateBack({
-								   	delta:1
-								   })
+								   let pages = getCurrentPages()
+								  
+								  if(pages.length==1){
+									  uni.switchTab({
+									  	url:'../index/index'
+									  })
+								   }else{
+									   uni.navigateBack({
+									   	delta:1
+									   })
+								   }
+								  
 						   }
 					 
 				   	}).catch(Error=>{
