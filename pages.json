@@ -96,6 +96,18 @@
 			}
 		},
 		{
+			"path": "pages/selfCenter/myattention",
+			"style": {
+				"navigationBarTitleText": "我的关注"
+			}
+		},
+		{
+			"path": "pages/selfCenter/myfans",
+			"style": {
+				"navigationBarTitleText": "我的粉丝"
+			}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "微信授权登录"
@@ -113,8 +125,7 @@
 				"navigationBarTitleText": "图片"
 			}
 		}
-
-	],
+    ],
 
 	"tabBar": {
 		"color": "#b8b9bb",

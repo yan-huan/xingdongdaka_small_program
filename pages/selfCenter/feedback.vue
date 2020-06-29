@@ -1,15 +1,15 @@
 <template>
 	<view class="feedback">
- <picker @on-change="bindPickerChange" value="{{index}}" range="{{array}}">
-    <view class="picker">
-      <view class="fb-type">
-        <view class="type-label">{{array[index]}}</view>
-      </view>
-    </view>
-  </picker>
+		<picker @change="bindPickerChange" value="{{index}}" range="{{array}}">
+			<view class="picker">
+				<view class="fb-type">
+					<view class="type-label">{{array[index]}}</view>
+				</view>
+			</view>
+		</picker>
 		<view class="fb-body">
-			<textarea class="content" placeholder="对我们网站、服务，你还有什么建议吗？请告诉我们..." @input="contentInput"
-			 maxlength="500" auto-focus="true" value="{{content}}" />
+			<textarea class="content" placeholder="对我们网站、服务，你还有什么建议吗？请告诉我们..." @input="contentInput" maxlength="500" auto-focus="true"
+			 value="{{content}}" />
 			<view class="weui-uploader__files" id="uploaderFiles">
       <block wx:for="{{files}}" wx:key="*this">
         <view class="weui-uploader__file" @tap="previewImage" id="{{item}}">
@@ -23,9 +23,9 @@
     <view class="text-count">{{contentLength}}/500</view>
   </view>
   <view class="fb-mobile">
-    <view class="label">手机号码</view>
+    <view class="label">手机号码(选填)</view>
     <view class="mobile-box">
-      <input class="mobile" maxlength="11" type="number" placeholder="方便我们与你联系" bindinput="mobileInput" value="{{mobile}}" />
+      <input class="mobile" maxlength="11" type="number" placeholder="方便我们与你联系" @input="mobileInput" value="{{mobile}}" />
       <image class="clear-icon" src="/static/images/icon/clear_input.png" wx:if="{{ mobile.length > 0 }}" catchtap="clearMobile"></image>
     </view>
   </view>
@@ -48,6 +48,7 @@
 				index: 0,
 				contentLength: 0,
 				content: '',
+				mobile:'',
 				userInfo: '',
 				onOff: true,
 			}
@@ -91,15 +92,18 @@
 				});
 			},
 			contentInput: function(e) {
-			  this.setData({
-			    contentLength: e.target.value.length,
-			    content: e.target.value,
-			  });
+				this.contentLength = e.target.value.length,
+				this.content = e.target.value
+			},
+			mobileInput: function(e) {
+				this.mobile = e.target.value
 			},
 			bindPickerChange: function(e) {
-			  this.setData({
-			    index: e.detail.value
-			  });
+			    this.index = e.detail.value
+			},
+			isValidPhone(str) {
+			  var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+			  return myreg.test(str)
 			},
 			submitFeedback: function(e) {
 			  var that = this;
@@ -111,28 +115,45 @@
 			  }
 			  that.userId = uni.getStorageSync('id');
 			   if (that.index == 0) {
-			    util.showErrorToast('请选择反馈类型');
-			    return false;
+					uni.showToast({
+					    title: '请选择反馈类型',
+						mask:true,
+					    duration: 2000,
+						image:'/static/images/icon/clock.png'
+					});
+					return false
 			  } 
 			
 			  if (that.content == '') {
-			    util.showErrorToast('请输入反馈内容');
-			    return false;
+				  uni.showToast({
+				      title: '请输入反馈内容',
+					  mask:true,
+				      duration: 2000,
+				  	  image:'/static/images/icon/clock.png'
+				  });
+			    return false
 			  }
 			
 			  if (that.mobile == '') {
-			    util.showErrorToast('请输入手机号码');
-			    return false;
+			   // util.showErrorToast('请输入手机号码');
+			    //return false;
 			  }
-			
-			  if (!check.isValidPhone(this.mobile)) {
-			    this.setData({
-			      mobile: ''
-			    });
-			    util.showErrorToast('请输入手机号码');
-			    return false;
+				
+			  if (that.mobile != '' && !that.isValidPhone(that.mobile)) {
+				 uni.showToast({
+				     title: '手机号码不正确',
+				 	 mask:true,
+				     duration: 2000,
+				 	 image:'/static/images/icon/clock.png'
+				 });
+			    return false
 			  }
-				console.log(that.content)
+				uni.showToast({
+			      title: '提交成功',
+			  	  mask:true,
+			      duration: 2000,
+			  	  icon: 'success'
+			  });
 			},
 		},
 		// components:{
@@ -185,6 +206,7 @@
 	}
 	
 	.fb-body .content {
+	  padding-left:5rpx;
 	  width: 100%;
 	  height: 400rpx;
 	  color: #333;
@@ -201,6 +223,7 @@
 	}
 	
 	.fb-mobile {
+	  padding-left:5rpx;
 	  height: 162rpx;
 	  width: 100%;
 	}
@@ -257,7 +280,7 @@
 	  height: 90rpx;
 	  line-height: 98rpx;
 	  position: absolute;
-	  bottom: 0;
+	  bottom: 24rpx;
 	  left: 0;
 	  border-radius: 0;
 	  padding: 0;
@@ -272,6 +295,7 @@
 	  border-top-right-radius: 50rpx;
 	  border-bottom-right-radius: 50rpx;
 	  letter-spacing: 3rpx;
-	  background-image: linear-gradient(to right, #9a9ba1 0%, #9a9ba1 100%);
+	  background-color: #ffbf2a;
+	  /* background-image: linear-gradient(to right, #9a9ba1 0%, #9a9ba1 100%); */
 	}
 	</style>

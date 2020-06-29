@@ -14,7 +14,8 @@
 					<text>{{userInfo.schoolName == null ? '': userInfo.schoolName}}</text>
 				</view>
 				<view class="moreInfoIn">
-					<text>{{userInfo.province}}.{{userInfo.city}}</text>
+					<image class='address' src="/static/images/icon/address.png"></image>
+					<text class="province">{{userInfo.province}}.{{userInfo.city}}</text>
 				</view>
 				<view class="subInfo">
 					<text></text>
@@ -29,8 +30,8 @@
 			<view class="moreInfoRow">
 
 				<view class="moreInfoIn">
-					<text>关注 {{lookerCount}}</text>
-					<text class="moreInfoIn_text">粉丝 {{likeCount}}</text>
+					<text @click="goPage('/pages/selfCenter/myattention')">关注 {{lookerCount}}</text>
+					<text class="moreInfoIn_text" @click="goPage('/pages/selfCenter/myfans')">粉丝 {{likeCount}}</text>
 				</view>
 
 				<!-- <view class="moreInfoIn">
@@ -282,6 +283,18 @@
 		}
 	}
 
+	.moreInfoIn {
+		.address {
+			width: 30rpx;
+			height: 30rpx;
+		}
+
+		.province {
+			font-size: 28rpx;
+			margin-left: 6rpx;
+		}
+	}
+
 	.moreInfo {
 		padding: 6rpx 0;
 		/* border-bottom: 1px solid #d9d9d9;
@@ -292,7 +305,6 @@
 			width: 30rpx;
 			height: 30rpx;
 		}
-
 
 		.gender {
 			background: #fd5107;
@@ -317,7 +329,7 @@
 		}
 
 		.user_column_item {
-			background-color: #d7d7d7;
+			background-color: #e2e2e2;
 			height: 80rpx;
 			line-height: 80rpx;
 			padding-left: 20px;
@@ -326,7 +338,7 @@
 		}
 
 		.user_column_item .cu-btn {
-			background-color: #d7d7d7;
+			background-color: #e2e2e2;
 			padding: 0;
 		}
 
@@ -350,6 +362,7 @@
 			}
 
 			.moreInfoIn {
+
 				width: 100%;
 				overflow: hidden;
 
@@ -364,8 +377,8 @@
 				height: 70rpx;
 				line-height: 70rpx;
 				background-color: rgb(235, 244, 255);
-				border-bottom: 1px solid #d9d9d9;
-				border-top: 1px solid #d9d9d9;
+				border-bottom: 1px solid #e7e7e7;
+				border-top: 1px solid #e7e7e7;
 			}
 
 			.moreInfoIn_text {

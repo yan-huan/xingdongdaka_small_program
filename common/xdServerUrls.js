@@ -21,7 +21,9 @@ const serverUrls = { //根据接口具体配置
 	
 	xd_saveGiveLikeByPush: serverBaseUrl + '/giveLike/saveGiveLikeByPush' ,//给行动项或打卡记录点赞
 	xd_getAttentionList: serverBaseUrl + '/attention/getAttentionList' ,//获取关注列表
+	xd_getFansList: serverBaseUrl + '/attention/getFansList' ,//获取粉丝列表
 	xd_saveAttention: serverBaseUrl + '/attention/saveAttention' ,//保存关注
+	xd_getLookerCountByUserId: serverBaseUrl + '/attention/getLookerCountByUserId' ,//根据用户id获取关注数量和粉丝数量
 	
 	xd_lookerPushListByUserId: serverBaseUrl + '/publishTarget/lookerPushListByUserId' ,//当前用户围观的行动项计划
 	xd_pushByCreateTimeList: serverBaseUrl + '/publishTarget/pushByCreateTimeList' ,//根据创建时间获取目标列表
@@ -35,7 +37,6 @@ const serverUrls = { //根据接口具体配置
 	xd_getLookerByPushId: serverBaseUrl + '/looker/getLookerByPushId' ,//根据行动项id查看围观人
 	xd_saveLooker: serverBaseUrl + '/looker/saveLooker' ,//保存围观信息
 	xd_getLookerByUserId: serverBaseUrl + '/looker/getLookerByUserId' ,//根据用户id获取围观数据
-	xd_getLookerCountByUserId: serverBaseUrl + '/looker/getLookerCountByUserId' ,//根据用户id获取围观数量
 	
 	xd_wechatCommercialTenant: serverBaseUrl + '/wechatCommercialTenant/pay' ,//微信商户给用户付款pay
 	xd_decodeUserInfo: serverBaseUrl + '/wechat/decodeUserInfo' ,//获取微信的openid和unionid
