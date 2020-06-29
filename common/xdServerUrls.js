@@ -21,7 +21,9 @@ const serverUrls = { //根据接口具体配置
 	
 	xd_saveGiveLikeByPush: serverBaseUrl + '/giveLike/saveGiveLikeByPush' ,//给行动项或打卡记录点赞
 	xd_getAttentionList: serverBaseUrl + '/attention/getAttentionList' ,//获取关注列表
+	xd_getFansList: serverBaseUrl + '/attention/getFansList' ,//获取粉丝列表
 	xd_saveAttention: serverBaseUrl + '/attention/saveAttention' ,//保存关注
+	xd_getLookerCountByUserId: serverBaseUrl + '/attention/getLookerCountByUserId' ,//根据用户id获取关注数量和粉丝数量
 	
 	xd_lookerPushListByUserId: serverBaseUrl + '/publishTarget/lookerPushListByUserId' ,//当前用户围观的行动项计划
 	xd_pushByCreateTimeList: serverBaseUrl + '/publishTarget/pushByCreateTimeList' ,//根据创建时间获取目标列表
