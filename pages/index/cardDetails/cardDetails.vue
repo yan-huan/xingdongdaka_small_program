@@ -30,7 +30,7 @@
 					 @tap="goPageImg(showCardCommentlist.pushCard.pictures)"  >
 					</image>
 				</view>
-				<view class="cu-list menu-avatar">
+				<view class="cu-list bg-blue menu-avatar">
 					<view class="flex flex-wrap padding justify-between align-center">
 						<view class="flex  flex-wrap " >
 							<view class="">所属行动</view>
@@ -51,7 +51,7 @@
 						<image class="bg-img imgheit"  :src="audioPlaySrc" mode="aspectFill"
 						 @tap="goPageImg(audioPlaySrc)" v-else @error="error">
 						</image>
-						<view class="text-content textheit">
+						<view class="text-content textheit" @tap="goAction(pusCardLists.id)">
 							<text class="contentext" >{{pusCardLists.content}}</text>		
 						</view>	
 					</view>		
@@ -60,12 +60,12 @@
 				<view class="flex padding justify-between">
 					<view class="text-xxl" @tap="showInputComent()">
 						<text class="text-gray cuIcon-comment "></text>
-						<text class="text-gray text-df">评论:({{showCardCommentlist.pushCommentList.length}})</text>
+						<text class="text-gray text-df">评论:({{showCardCommentlist.pushCommentList.length?showCardCommentlist.pushCommentList.length:0}})</text>
 					</view>
 					<view>
 						<button class="cu-btn bg-pink sm round" v-if="pusCardLists.userId==userId || pusCardLists.onlooker "  :id="index" open-type="share">邀请围观</button>
 						<button class="cu-btn bg-pink sm round  " v-else-if="pusCardLists.userId!=userId && !pusCardLists.onlooker&&pusCardLists.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
-						<button class="cu-btn bg-pink sm round  " v-else  @tap="lookerClick(pusCardLists,index)">围观分钱</button>
+						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(pusCardLists,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{pusCardLists.onlookerCount}}</text>
 					</view>
 				</view>
@@ -82,13 +82,13 @@
 									</view>
 									<view class="text-grey" @tap="userRepaly(item,index)">回复</view>
 								</view>
-								<view class="text-gray text-content text-df">
+								<view class="text-gray text-content text-df commenttext">
 									评论：{{item.content}}
 								</view>
-								<view class="bg-gray padding-sm radius margin-top-sm  text-sm" v-for="(items,index) in showCardCommentlist.pushCommentList.cardReplayCommentList" :key='index' v-if="showCardCommentlist.pushCommentList.cardReplayCommentList">
-									<view class="flex">
+								<view class="bg-gray padding-sm radius margin-top-sm  text-sm" v-if="showCardCommentlist.pushCommentList[index].cardReplayCommentList.length>0">
+									<view class="flex"  v-for="(items,index) in showCardCommentlist.pushCommentList[index].cardReplayCommentList" :key='index'>
 										{{items.userName}} 回复
-										<view @tap="goUser(items.replayUserId)"> {{ items.userName}}：</view>
+										<view @tap="goUser(items.replayUserId)"> {{ item.userName}}：</view>
 										<view class="flex-sub">{{items.content}}</view>
 									</view>
 								</view>
@@ -103,8 +103,7 @@
 						<text >评论</text>
 					</view>
 					<input  @input="InputBlur" :adjust-position="true" class="solid-bottom" :focus="showInput" :placeholder='conmmmenttext' maxlength="30" cursor-spacing="10"></input>
-					<view class="action">
-					</view>
+
 					<button class="cu-btn bg-green shadow-blur" @tap="inputComent">发送</button>
 				</view>
 			</view>
@@ -142,27 +141,7 @@
 		computed: {
 		           ...mapState(['hasLogin'])  
 		       },  
-		onReady(e) {		
-			// var that=this;
-			// let int = setInterval(function() {
-			// if (that.cardList&&that.tolist) {
-			// 	uni.createSelectorQuery().in(that).select('#index'+that.cardId).boundingClientRect(data=>{//目标节点
-			// 	　　uni.createSelectorQuery().select(".card-list").boundingClientRect((res)=>{//最外层盒子节点
-			// 	　　　　uni.pageScrollTo({
-			// 	　　　　　　duration:0,//过渡时间必须为0，uniapp bug，否则运行到手机会报错
-			// 	　　　　　　scrollTop:data.top-res.top ,//滚动到实际距离是元素距离顶部的距离减去最外层盒子的滚动距离
-			// 	　　　　})
-			// 	　　}).exec()
-			// 	}).exec(); 
-			// 	clearInterval(int);
-			// 	}else if(!that.tolist){
-			// 		clearInterval(int);
-			// 	}
-			// }, 100); 
-			
-			
-		},
-		onShareAppMessage(res) {
+		onShareAppMessage() {
 			
 			let that = this;
 			if(!that.hasLogin){
@@ -172,21 +151,12 @@
 				return false;
 			}
 			
-			that.setSaveShareInfo(res);
-			if(res.target.id<0){
+			that.setSaveShareInfo();
 				return {
-					title: that.pusCardLists.content,
+					title: that.showCardCommentlist.pushCard.content,
 					path: '/pages/index/action/action?pushId='+ that.pusCardLists.id+'&share='+that.id+'&isopen='+that.pusCardLists.isopen,
-					imageUrl:that.pusCardLists.pictures?that.pusCardLists.pictures:'../../../static/images/icon/img/title1.png',
-				}
-			}else {
-				return {
-					title: that.cardList[res.target.id].pushCard.content,
-					path: '/pages/index/action/action?pushId='+ that.pusCardLists.id+'&share='+that.id+'&isopen='+that.pusCardLists.isopen,
-					imageUrl:that.cardList[res.target.id].pushCard.pictures[0]?that.cardList[res.target.id].pushCard.pictures[0]:'../../../static/images/icon/img/title1.png',
-				}
-			}	
-					
+					imageUrl:that.showCardCommentlist.pushCard.pictures[0]?that.showCardCommentlist.pushCard.pictures[0]:'../../../static/images/icon/img/title1.png',
+				}			
 		},
 		onLoad(option) {
 			
@@ -241,7 +211,7 @@
 					url:'/pages/index/action/action?pushId='+e
 				})
 			},
-			setSaveShareInfo(res){
+			setSaveShareInfo(){
 				this.xd_request_post(this.xdServerUrls.xd_saveShareInfo,{
 					pushId:this.pusCardLists.id,
 					shareUserId:uni.getStorageSync('id'),
@@ -269,18 +239,8 @@
 				});
 			},
 			 goPageImg(e){
-				var imgs='';
-				for(let i=0;i<this.cardList.length;i++){
-					if(this.cardList[i].pushCard.pictures!=''){
-						if(i==this.cardList.length-1){
-							imgs=imgs.concat(this.cardList[i].pushCard.pictures)	
-						}else{
-							imgs=imgs.concat(this.cardList[i].pushCard.pictures+',')	
-						}
-					}
-				}
 				uni.navigateTo({
-					url:'../../img/img?url='+encodeURIComponent(JSON.stringify(imgs))+'&indexs='+e
+					url:'../../img/img?url='+encodeURIComponent(JSON.stringify(e))
 				})
 			},
 			error: function() {
@@ -338,7 +298,7 @@
 							this.showInput=false;
 							this.value='';
 							uni.redirectTo({
-								url:'../cardDetails/cardDetails?pushList='+encodeURIComponent(JSON.stringify(this.pusCardLists))
+								url:'../cardDetails/cardDetails?pushId='+this.pushId+'&cardId='+this.cardId+'&show=0'
 							})
 						})
 				}else if(this.inputType==2){	
@@ -351,7 +311,7 @@
 							this.showInput=false;
 							this.value='',
 							uni.redirectTo({
-								url:'../cardDetails/cardDetails?pushList='+encodeURIComponent(JSON.stringify(this.pusCardLists))
+								url:'../cardDetails/cardDetails?pushId='+this.pushId+'&cardId='+this.cardId+'&show=0'
 							})
 						})
 					
@@ -437,9 +397,13 @@
 		bottom: 0;
 		background-color: #FFFFFF;
 		width: 100%;
+		padding: 0 20upx 0 20upx;
 
 	}
 	.margincardlist{
 		margin-top: 10upx;
+	}
+	.commenttext{
+		margin-left: 30upx;
 	}
 </style>

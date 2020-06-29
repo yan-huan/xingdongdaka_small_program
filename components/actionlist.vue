@@ -4,7 +4,6 @@
 			<view class="ali-top-in">
 				<text>进度:{{item.pushCardCount}}/{{item.targetDay}}</text>
 			</view>
-			
 			<view class="ali-top-in">
 				<text>休假天数:{{item.holidayDay}}</text>
 			</view>

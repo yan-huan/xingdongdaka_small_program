@@ -83,7 +83,7 @@
 					</picker>
 					<text class="lg text-gray cuIcon-triangledownfill"></text>
 				</view>
-				<view class="" v-if="indexholiday==2">
+				<view class="" v-if="indexholiday==8">
 					<input class="timeinput"  placeholder="输入天数" :value="holidayDay" :focus="holidayf" @input="holidayDayinput" maxlength="50" step="1" min="0"></input>
 				</view>
 			</view>
@@ -133,7 +133,13 @@ export default {
 			],
 			pickerdate:[
 				"一天",
+				"两天",
+				"三天",
+				"四天",
+				"五天",
+				"六天",
 				"一周",
+				"一月",
 				"自定义"
 			],
 			targetDay:7,
@@ -168,10 +174,34 @@ export default {
 				break;
 				case '1':
 				this.indexholiday=1;
-				this.holidayDay=7;
+				this.holidayDay=2;
 				break;
 				case '2':
 				this.indexholiday=2;
+				this.holidayDay=3;
+				break;
+				case '3':
+				this.indexholiday=3;
+				this.holidayDay=4;
+				break;
+				case '4':
+				this.indexholiday=4;
+				this.holidayDay=5;
+				break;
+				case '5':
+				this.indexholiday=5;
+				this.holidayDay=6;
+				break;
+				case '6':
+				this.indexholiday=6;
+				this.holidayDay=7;
+				break;
+				case '7':
+				this.indexholiday=7;
+				this.holidayDay=30;
+				break;
+				case '8':
+				this.indexholiday=8;
 				this.holidayDay='';
 				this.holidayf=true;
 				break;
@@ -248,7 +278,7 @@ export default {
 				
 				e.detail.value.label=1;
 			};
-			if(e.detail.value.subscribeType==1){
+			if(this.switchB==1){
 				e.detail.value.openId=this.xdUniUtils.xd_getStorageSync('userInfo').openId;
 				e.detail.value.templateId='xAoOfTDxRoot-lhO1dx5JfHQeCKiHFjuYqRHWRcnecw';
 			}

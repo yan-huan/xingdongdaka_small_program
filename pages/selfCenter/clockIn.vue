@@ -152,17 +152,14 @@ export default {
 						startTime:start,
 						endTime:end,
 					},true).then(res=>{
-						var data ={
-							pushId:this.pushId,
-							cardId:res.obj
-						}
+						var that=this;
 						uni.showToast({
 							title: '保存成功',
 							icon: 'success',
 							duration: 1500,
 							success() {
 								uni.reLaunch({
-									url: '../index/cardDetails/cardDetails?pushList='+encodeURIComponent(JSON.stringify(data))
+									url: '../index/cardDetails/cardDetails?pushId='+that.pushId+'&cardId='+res.obj+'&show=0'
 								})
 							}
 						});

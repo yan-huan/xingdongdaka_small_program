@@ -94,7 +94,7 @@ export default {
 									_this.userInfo.avatarUrl=res.obj.userHead;
 									_this.userInfo.province=res.obj.province;
 									_this.userInfo.city=res.obj.city;
-									_this.userInfo.gender=res.obj.sex?res.obj.sex:'0';
+									_this.userInfo.gender=res.obj.sex?res.obj.sex:'2';
 									_this.userInfo.schoolName=res.obj.schoolName?res.obj.schoolName:'无';
 									
 									 _this.logIn(_this.userInfo);

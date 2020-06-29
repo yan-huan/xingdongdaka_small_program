@@ -23,11 +23,18 @@
 				<view class="swiper-banner">
 				  <swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-color="#aeaeae" indicator-active-color="#ffffff">
 					<swiper-item v-for="(item , index) in bannerList" :key="index">
-						<image :src="item.bannerImage" @tap="tonewurl(item.bannerUrl)" ></image>
+						<image v-if="index<bannerList.length-1" :src="item.bannerImage" @tap="tonewurl(item.bannerUrl)" ></image>
+						<ad
+						   unit-id="adunit-333032749ac71266"
+						   bindload="adLoad"
+						   ad-intervals='30'
+						   binderror="adError"
+						   bindclose="adClose"
+						   v-else
+						 ></ad>
 					</swiper-item>
 				  </swiper>
 				</view>
-				
 				<!-- 推荐内容 -->
 				<view class="xd-info-main">
 					<!-- 推荐项 -->
@@ -126,6 +133,8 @@
 				imageUrl:that.listsTab[res.target.id].pushCardList[0].pictures[0]?that.listsTab[res.target.id].pushCardList[0].pictures[0]:'../../static/images/icon/img/title1.png',
 			}
 					
+		},
+		onReady() {
 		},
 		onLoad() {
 		    this.indexData();

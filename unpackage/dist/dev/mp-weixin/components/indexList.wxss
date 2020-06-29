@@ -27,6 +27,7 @@
 /*公共样式*/
 .imgheit {
   height: 320rpx;
+  width: 100%;
 }
 .contentext {
   margin-left: 50rpx;

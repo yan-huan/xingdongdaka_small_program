@@ -8,7 +8,6 @@
     "pages/selfCenter/income",
     "pages/action/action",
     "pages/action/step1",
-    "pages/action/step2",
     "pages/action/finish",
     "pages/index/cardDetails/cardDetails",
     "pages/index/action/action",
@@ -55,5 +54,5 @@
   ],
   "permission": {},
   "usingComponents": {},
-  "sitemapLocation": "sitemap64.json"
+  "sitemapLocation": "sitemap82.json"
 }

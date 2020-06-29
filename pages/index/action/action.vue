@@ -29,14 +29,14 @@
 					 @tap="goPageImg(audioPlaySrc)" v-else @error="error">
 					</image>
 				</view>
-				<view class="flex padding justify-between">
-					<view class="text-xxl" @click="goSteps" v-if="pushList.pushCardCount<pushList.targetDay">
-						<button class="cu-btn bg-pink sm round  " @click="goSteps" >立即打卡</button>
+				<view class="flex padding justify-between" >
+					<view class="text-xxl" @click="goSteps"  v-if="userId==pushList.userId&&pushList.pushCardCount<pushList.targetDay">
+						<button class="cu-btn line-green sm round  " @click="goSteps" >立即打卡</button>
 					</view>
 					<view>
 						<button class="cu-btn bg-pink sm round" v-if="pushList.userId==userId || pushList.onlooker "  :id="index" open-type="share">邀请围观</button>
 						<button class="cu-btn bg-pink sm round  " v-else-if="pushList.userId!=userId && !pushList.onlooker&&pushList.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
-						<button class="cu-btn bg-pink sm round  " v-else  @tap="lookerClick(pushList,index)">围观分钱</button>
+						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(pushList,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{pushList.onlookerCount}}</text>
 					</view>
 				
@@ -54,17 +54,17 @@
 					<view class="cu-time">{{index+1}}</view>
 					<view class="cu-item">
 						<view class="content">
-							<view class="cu-capsule radius">
-								<view class="cu-tag line-cyan">第{{index+1}}次打卡</view>
+							<view class="">
+								<view class="cu-tag line-green">第{{index+1}}次打卡</view>
 							</view>
-							<view class="margin-top">{{item.content}}</view>
+							<view class="margin-top margin-left-lg" @tap="gocardComentList(item,0)">{{item.content}}</view>
 							<view class="grid flex-sub padding-lr"  >
-								<image class="bg-img imgheit"  :src="item.pictures" mode="aspectFill"
-								 @tap="goPageImg(item.pictures)" v-if="item.pictures!=''">
+								<image class="bg-img imgheit"  :src="item.pictures[0]" mode="aspectFill"
+								 @tap="goPageImg(item.pictures)" v-if="item.pictures.length!=''">
 								</image>
 							</view>
-							<view class="text-xxl" @tap="goComent(list)">
-								<text class="text-gray cuIcon-comment "></text>
+							<view class="text-xxl flex flex-wrap justify-end " @tap="gocardComentList(item,1)">
+								<text class="text-gray cuIcon-comment  "></text>
 								<text class="text-gray text-df">{{item.commentCount}}</text>
 							</view>
 						</view>
@@ -230,17 +230,9 @@
 				
 			            }  ,
 						
-			gocardComentList(e){
-				if(this.pushList.pushCardList.length<=0){
-					var da={
-						id:e.id,
-						userId:e.userId
-					};
-					this.pushList.pushCardList.push(da);
-				}
-				
+			gocardComentList(e,index){
 				uni.navigateTo({
-					url: '../cardDetails/cardDetails?pushList='+encodeURIComponent(JSON.stringify(this.pushList))
+					url: '../cardDetails/cardDetails?pushId='+e.pushId+'&cardId='+e.id+'&show='+index
 				});
 			},
 			cardComentList(e){			
@@ -327,7 +319,6 @@
 						data.createTime=this.xdUniUtils.xd_timestampToTime(res.obj.createTime,false,false,true)
 						data.endTime=this.xdUniUtils.xd_timestampToTime(res.obj.endTime,false,false,true)
 						data.challengeRmb=res.obj.challengeRmb/100;
-						// this.endTime(data);
 						this.pushList=data;
 						this.getPushCardList();
 						if(this.share!=''){
@@ -364,7 +355,9 @@
 				},true).then(res=>{
 					var data=res.obj.list;
 					for(let i=0;i<res.obj.list.length;i++){
-						data[i].pictures=res.obj.list[i].pictures.split(',')
+						if(res.obj.list[i].pictures!=""){
+							data[i].pictures=res.obj.list[i].pictures.split(',')
+						}
 					}
 					this.pusCardList=data;
 				})
@@ -402,7 +395,6 @@
 					pageSize:10,
 				},true)
 				.then(res=>{
-					
 					this.lookerList=res.obj.list;
 					this.lookTotal=res.obj.total
 				})
@@ -415,8 +407,12 @@
 	page{background: #fcfcfc;}
 	.imgheit{
 		height: 320upx;
+		width: 100%;
 	}
 	.contentext{
 		
+	}
+	.commentCount{
+		right: 0;
 	}
 </style>

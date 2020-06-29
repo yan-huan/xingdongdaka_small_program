@@ -48,8 +48,12 @@
   bottom: 0;
   background-color: #FFFFFF;
   width: 100%;
+  padding: 0 20rpx 0 20rpx;
 }
 .margincardlist.data-v-085dabaf {
   margin-top: 10rpx;
+}
+.commenttext.data-v-085dabaf {
+  margin-left: 30rpx;
 }
 

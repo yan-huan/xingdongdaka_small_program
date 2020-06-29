@@ -61,12 +61,7 @@
 				"navigationBarTitleText": "新建行动"
 			}
 		}, 
-		{
-			"path": "pages/action/step2",
-			"style": {
-				"navigationBarTitleText": "行动"
-			}
-		}, 
+		
 		{
 			"path": "pages/action/finish",
 			"style": {
@@ -90,24 +85,6 @@
 			}
 		},
 		{
-			"path": "pages/selfCenter/feedback",
-			"style": {
-				"navigationBarTitleText": "意见反馈"
-			}
-		},
-		{
-			"path": "pages/selfCenter/myattention",
-			"style": {
-				"navigationBarTitleText": "我的关注"
-			}
-		},
-		{
-			"path": "pages/selfCenter/myfans",
-			"style": {
-				"navigationBarTitleText": "我的粉丝"
-			}
-		},
-		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "微信授权登录"
@@ -125,7 +102,8 @@
 				"navigationBarTitleText": "图片"
 			}
 		}
-    ],
+
+	],
 
 	"tabBar": {
 		"color": "#b8b9bb",

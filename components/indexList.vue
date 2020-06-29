@@ -51,7 +51,7 @@
 					<view>
 						<button class="cu-btn bg-pink sm round" v-if="list.userId==userId || list.onlooker "  :id="index" open-type="share">邀请围观</button>
 						<button class="cu-btn bg-pink sm round  " v-else-if="list.userId!=userId && !list.onlooker&&list.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
-						<button class="cu-btn bg-pink sm round  " v-else  @tap="lookerClick(list,index)">围观分钱</button>
+						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(list,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{list.onlookerCount}}</text>
 					</view>
 				
@@ -85,7 +85,7 @@
 				this.$emit('loveclick',e,index);
 			},
 			goComent(e){
-				if(!e.pushCardList){
+				if(!e.pushCardList||e.pushCardList.length==0){
 					return false
 				}
 				uni.navigateTo({
@@ -127,6 +127,7 @@
 <style lang="scss">
 			.imgheit{
 				height: 320upx;
+				width: 100%;
 			}
 			.contentext{
 				margin-left: 50upx;
