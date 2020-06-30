@@ -10,28 +10,16 @@
 		<view class="fb-body">
 			<textarea class="content" placeholder="对我们网站、服务，你还有什么建议吗？请告诉我们..." @input="contentInput" maxlength="500" auto-focus="true"
 			 value="{{content}}" />
-			<view class="weui-uploader__files" id="uploaderFiles">
-      <block wx:for="{{files}}" wx:key="*this">
-        <view class="weui-uploader__file" @tap="previewImage" id="{{item}}">
-          <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
-        </view>
-      </block>
-      <view class="weui-uploader__input-box" wx:if="{{ files.length < 5 }}">
-        <view class="weui-uploader__input" @tap="chooseImage"></view>
-      </view>
-    </view>
-    <view class="text-count">{{contentLength}}/500</view>
-  </view>
-  <view class="fb-mobile">
-    <view class="label">手机号码(选填)</view>
-    <view class="mobile-box">
-      <input class="mobile" maxlength="11" type="number" placeholder="方便我们与你联系" @input="mobileInput" value="{{mobile}}" />
-      <image class="clear-icon" src="/static/images/icon/clear_input.png" wx:if="{{ mobile.length > 0 }}" catchtap="clearMobile"></image>
-    </view>
-  </view>
-
-  <view class="fb-btn" @tap="submitFeedback">提交</view>
-</view>
+			<view class="text-count">{{contentLength}}/500</view>
+		</view>
+		<view class="fb-mobile">
+		    <view class="label">手机号码(选填)</view>
+		    <view class="mobile-box">
+				<input class="mobile" maxlength="11" type="number" placeholder="方便我们与你联系" @input="mobileInput" value="{{mobile}}" />
+		    </view>
+		</view>
+		<view class="fb-btn" @tap="submitFeedback">提交</view>
+	</view>
 </template>
 
 <script>
