@@ -1,6 +1,6 @@
 <template>
 	<view class="feedback">
-		<picker @change="bindPickerChange" value="{{index}}" range="{{array}}">
+		<picker @change="bindPickerChange" :value="index" :range="array">
 			<view class="picker">
 				<view class="fb-type">
 					<view class="type-label">{{array[index]}}</view>
@@ -8,14 +8,14 @@
 			</view>
 		</picker>
 		<view class="fb-body">
-			<textarea class="content" placeholder="对我们网站、服务，你还有什么建议吗？请告诉我们..." @input="contentInput" maxlength="500" auto-focus="true"
-			 value="{{content}}" />
+			<textarea class="content" placeholder="对我们网站、服务，您还有什么建议吗？请告诉我们..." @input="contentInput" maxlength="500" auto-focus="true"
+			 :value="content" />
 			<view class="text-count">{{contentLength}}/500</view>
 		</view>
 		<view class="fb-mobile">
 		    <view class="label">手机号码(选填)</view>
 		    <view class="mobile-box">
-				<input class="mobile" maxlength="11" type="number" placeholder="方便我们与你联系" @input="mobileInput" value="{{mobile}}" />
+				<input class="mobile" maxlength="11" type="number" placeholder="方便我们与您联系" @input="mobileInput" :value="mobile" />
 		    </view>
 		</view>
 		<view class="fb-btn" @tap="submitFeedback">提交</view>
@@ -27,8 +27,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-	// import actionlist from "./selfCenterList.vue"
-	// import actionlist from "@/components/actionlist.vue"
+
 	export default {
 		data() {
 			return {
