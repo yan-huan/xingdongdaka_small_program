@@ -1,3 +1,16 @@
+// 获取当前小程序信息（要求小程序版本2.10.0）
+const accountInfo = wx.getAccountInfoSync();
+// env类型
+export const env = accountInfo.miniProgram.envVersion;
+
+const baseApi = {
+  // 开发版
+  develop: "testxingdongdaka.zhidashixun.com",
+  // 体验版
+  trial: "testxingdongdaka.zhidashixun.com",
+  // 正式版
+  release: "xingdongdaka.zhidashixun.com"
+};
 // 系统配置
 const appConfig = {
 	// 关于
@@ -13,10 +26,10 @@ const appConfig = {
 	serverName: 'xingdongdaka' ,// server项目名称
 	
 	serverProtocal: 'https', // server 协议
-	serverIp: 'xingdongdaka.zhidashixun.com', // server IP
+	serverIp: baseApi[env], // server IP
 	
-	serverProtocaltest: 'http', // server 协议
-	serverIptest:'testxingdongdaka.zhidashixun.com',
+	//serverProtocaltest: 'http', // server 协议
+	//serverIptest: baseApi[env],
 }
 export default {
 	appConfig
