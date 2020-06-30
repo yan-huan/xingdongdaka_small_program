@@ -108,13 +108,17 @@
 		methods: {
 			...mapMutations(['logOut']),
 			onToOff() {
+				const accountInfo = wx.getAccountInfoSync();
+				// env类型
+				const env = accountInfo.miniProgram.envVersion;		
 
-				this.xd_request_post(this.xdServerUrls.xd_onOff, {
+				this.onOff = (env != 'release' ? true : false)
+				/* this.xd_request_post(this.xdServerUrls.xd_onOff, {
 					versionCode: '2',
 
 				}, true).then(res => {
 					this.onOff = res.obj
-				})
+				}) */
 			},
 			goPage(url) {
 				uni.navigateTo({
