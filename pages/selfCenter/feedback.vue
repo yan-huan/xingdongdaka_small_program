@@ -31,7 +31,7 @@
 	export default {
 		data() {
 			return {
-				array: ['请选择反馈类型', '商品相关', '功能异常', '优化建议', '其他'],
+				array: ['请选择反馈类型', '产品相关', '功能异常', '优化建议', '其他'],
 				index: 0,
 				contentLength: 0,
 				content: '',
@@ -135,12 +135,31 @@
 				 });
 			    return false
 			  }
-				uni.showToast({
-			      title: '提交成功',
-			  	  mask:true,
-			      duration: 2000,
-			  	  icon: 'success'
-			  });
+			  
+			  that.xd_request_post(that.xdServerUrls.xd_savefeedbackInfo, {
+			  	userId: that.userId,
+				content: that.content,
+				mobile: that.mobile,
+				feedType: that.array[that.index]
+			  }, false).then(res => {
+			  
+			  	if (res.resultCode == 0) {
+			  		uni.showToast({
+			  		    title: '提交成功',
+			  			  mask:true,
+			  		    duration: 2000,
+			  			  icon: 'success'
+			  		});
+			  	} else {
+			  		uni.showToast({
+			  		    title: '提交失败',
+			  			 mask:true,
+			  		    duration: 2000,
+			  			 image:'/static/images/icon/clock.png'
+			  		});
+			  	}
+			  })
+				
 			},
 		},
 		// components:{

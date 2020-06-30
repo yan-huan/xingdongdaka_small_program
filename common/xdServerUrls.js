@@ -69,6 +69,8 @@ const serverUrls = { //根据接口具体配置
 	xd_saveShareInfo: serverBaseUrl + '/share/saveShareInfo' ,//保存分享记录信息
 	xd_getLookerByPushId: serverBaseUrl + '/looker/getLookerByPushId' ,//根据行动项id查看围观人
 	
+	xd_savefeedbackInfo: serverBaseUrl + '/feedback/savefeedbackInfo' ,//保存反馈信息
+	
 	// xd_getLookerByPushId: serverBaseUrl + '/cardComment/showCardCommentAndReplayCommtent' ,//通过打卡id查询打卡详情、评论及评论回复
 	
 	
