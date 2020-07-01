@@ -40,14 +40,21 @@
 			</view>
 
 			<view class="moreInfoRow2">
-				<view class='user_column_item' @click="goPage('/pages/selfCenter/feedback')">
+				<!-- <view class='user_column_item' @click="goPage('/pages/selfCenter/feedback')">
 					<view class='user_column_item_text'>
 						<image class='user_column_item_image' src='/static/images/icon/feedback.png'></image><text class="thin">意见反馈</text>
 					</view>
+				</view> -->
+				<view class="user_column_item">
+				    <button class='content cu-btn' open-type="feedback">
+				      <image class='user_column_item_image' src='/static/images/icon/feedback.png'></image>
+				      <text class='thin'>问题反馈</text>
+				    </button>
 				</view>
 				<view class='user_column_item'>
-					<button class="cu-btn bg-white" open-type="contact">
-						<image class='user_column_item_image' src='/static/images/icon/customer.png'></image><text class="thin">联系客服</text>
+					<button class="content cu-btn" open-type="contact">
+						<image class='user_column_item_image' src='/static/images/icon/customer.png'></image>
+						<text class="thin">联系客服</text>
 					</button>
 				</view>
 			</view>
