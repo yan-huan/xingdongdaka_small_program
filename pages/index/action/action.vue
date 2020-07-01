@@ -51,11 +51,11 @@
 			</scroll-view>
 			<block v-for="(item,index) in pusCardList" :key="index" v-if="TabCur==0">
 				<view class="cu-timeline">
-					<view class="cu-time">{{index+1}}</view>
+					<view class="cu-time" v-if="index == 0 || compareDate(pusCardList[index-1],item)">{{formatDate(item.createTime)}}</view>
 					<view class="cu-item">
 						<view class="content">
 							<view class="">
-								<view class="cu-tag line-green">第{{index+1}}次打卡</view>
+								<view class="cu-tag line-green">第{{pusCardList.length-index}}次打卡</view>
 							</view>
 							<view class="margin-top margin-left-lg" @tap="gocardComentList(item,0)">{{item.content}}</view>
 							<view class="grid flex-sub padding-lr"  >
@@ -141,6 +141,30 @@
 					
 		},
 		methods:{
+			formatDate: function (value) {
+			    let date = new Date(value);
+			    let y = date.getFullYear();
+			    let MM = date.getMonth() + 1;
+			    MM = MM < 10 ? ('0' + MM) : MM;
+			    let d = date.getDate();
+			    d = d < 10 ? ('0' + d) : d;
+			    let h = date.getHours();
+			    h = h < 10 ? ('0' + h) : h;
+			    let m = date.getMinutes();
+			    m = m < 10 ? ('0' + m) : m;
+			    let s = date.getSeconds();
+			    s = s < 10 ? ('0' + s) : s;
+			    return y + '-' + MM + '-' + d; 
+			},　　　　
+			compareDate (d1, d2) {
+				if(typeof d1 == 'undefined'){
+					return true
+				}
+				if(typeof d2 == 'undefined'){
+					return true
+				}
+				return this.formatDate(d1.createTime) > this.formatDate(d2.createTime)
+			},
 			tabSelect(e){
 				this.TabCur=e.target.id;
 			},
@@ -411,6 +435,9 @@
 	}
 	.contentext{
 		
+	}
+	.cu-timeline .cu-time{
+		width: 160rpx;
 	}
 	.commentCount{
 		right: 0;
