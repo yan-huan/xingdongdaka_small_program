@@ -174,5 +174,6 @@
 .adclass.data-v-57280228 {
   width: 90%;
   height: 208rpx;
+  margin: 0 5.5%;
 }
 

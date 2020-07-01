@@ -24,14 +24,15 @@
 				  <swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-color="#aeaeae" indicator-active-color="#ffffff">
 					<swiper-item v-for="(item , index) in bannerList" :key="index">
 						<image v-if="index<bannerList.length-1" :src="item.bannerImage" @tap="tonewurl(item.bannerUrl)" ></image>
-						<ad class="adclass"
-						   unit-id="adunit-333032749ac71266"
-						   bindload="adLoad"
-						   :ad-intervals="adtime"
-						   binderror="adError"
-						   bindclose="adClose"
-						   v-else
-						 ></ad>
+						<view class="adclass "  v-else>
+							<ad
+							   unit-id="adunit-333032749ac71266"
+							   bindload="adLoad"
+							   :ad-intervals="adtime"
+							   binderror="adError"
+							   bindclose="adClose"
+							 ></ad>
+						</view>
 					</swiper-item>
 				  </swiper>
 				</view>
@@ -724,6 +725,7 @@
 	.adclass{
 		width: 90%;
 		height: 208upx;
+		margin: 0 5.5%;
 	}
 		
 </style>
