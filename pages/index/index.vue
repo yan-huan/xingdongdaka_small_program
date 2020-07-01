@@ -24,10 +24,10 @@
 				  <swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-color="#aeaeae" indicator-active-color="#ffffff">
 					<swiper-item v-for="(item , index) in bannerList" :key="index">
 						<image v-if="index<bannerList.length-1" :src="item.bannerImage" @tap="tonewurl(item.bannerUrl)" ></image>
-						<ad
+						<ad class="adclass"
 						   unit-id="adunit-333032749ac71266"
 						   bindload="adLoad"
-						   ad-intervals='30'
+						   :ad-intervals="adtime"
 						   binderror="adError"
 						   bindclose="adClose"
 						   v-else
@@ -103,6 +103,7 @@
 			return {
 				// audioPlaySrc:'../static/images/icon/img/title1.png',
 				inimg:'',
+				adtime:30,
 				active:1,
 				currentIndex:-1,
 				labelId:1,
@@ -719,6 +720,10 @@
 		border-radius: 100%;
 		font-size: 22rpx;
 		margin-right: 2rpx;
+	}
+	.adclass{
+		width: 90%;
+		height: 208upx;
 	}
 		
 </style>

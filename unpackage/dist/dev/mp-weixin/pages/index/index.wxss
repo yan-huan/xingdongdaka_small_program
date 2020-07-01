@@ -171,4 +171,8 @@
   font-size: 22rpx;
   margin-right: 2rpx;
 }
+.adclass.data-v-57280228 {
+  width: 90%;
+  height: 208rpx;
+}
 

@@ -12,6 +12,9 @@
     "pages/index/cardDetails/cardDetails",
     "pages/index/action/action",
     "pages/selfCenter/editUserInfo",
+    "pages/selfCenter/feedback",
+    "pages/selfCenter/myattention",
+    "pages/selfCenter/myfans",
     "pages/login/login",
     "pages/web/webShow",
     "pages/img/img"
@@ -53,5 +56,6 @@
     "wxf9286c35b3f9d0d0"
   ],
   "permission": {},
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap12.json"
 }

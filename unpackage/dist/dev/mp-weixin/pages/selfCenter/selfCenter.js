@@ -196,49 +196,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+
+
+
 // import actionlist from "./selfCenterList.vue"
 // import actionlist from "@/components/actionlist.vue"
 var _default = {
@@ -247,6 +208,8 @@ var _default = {
       tab: 0, //行动，围观，收藏
       list: [1, 2, 3, 4, 5],
       userInfo: '',
+      lookerCount: 0,
+      likeCount: 0,
       onOff: true };
 
   },
@@ -279,34 +242,58 @@ var _default = {
       console.log(Error);
     };
     this.onToOff();
+    this.lookerCountData();
   },
   methods: _objectSpread({},
   (0, _vuex.mapMutations)(['logOut']), {
-    onToOff: function onToOff() {var _this = this;
+    onToOff: function onToOff() {
+      var accountInfo = wx.getAccountInfoSync();
+      // env类型
+      var env = accountInfo.miniProgram.envVersion;
 
-      this.xd_request_post(this.xdServerUrls.xd_onOff,
-      {
-        versionCode: '2' },
+      this.onOff = env != 'release' ? true : false;
+      /* this.xd_request_post(this.xdServerUrls.xd_onOff, {
+                                                    	versionCode: '2',
+                                                    	}, true).then(res => {
+                                                    	this.onOff = res.obj
+                                                    }) */
 
-      true).then(function (res) {
-        _this.onOff = res.obj;
-      });
     },
     goPage: function goPage(url) {
       uni.navigateTo({
         url: url });
 
     },
+    lookerCountData: function lookerCountData(list) {
+      var that = this;
+      if (!that.hasLogin) {
+        uni.navigateTo({
+          url: '../login/login' });
 
-    clickMe: function clickMe() {var _this2 = this;
+        return false;
+      }
+      that.userId = uni.getStorageSync('id');
+      that.xd_request_post(that.xdServerUrls.xd_getLookerCountByUserId, {
+        userId: that.userId },
+      false).then(function (res) {
+
+        if (res.resultCode == 0) {
+          console.log(res);
+          that.lookerCount = res.obj.lookerCount;
+          that.likeCount = res.obj.likeCount;
+        } else {
+          console.log(res);
+        }
+      });
+    },
+    clickMe: function clickMe() {var _this = this;
       var that = this;
 
       wx.getSetting({
         success: function success(res) {
 
           if (res.authSetting['scope.userInfo']) {
-            that.xd_request_post(that.xdServerUrls.xd_pay,
-            {
+            that.xd_request_post(that.xdServerUrls.xd_pay, {
               unionId: that.userInfo.unionId,
               openid: that.userInfo.openId,
               userName: that.userInfo.nickName,
@@ -328,8 +315,7 @@ var _default = {
                 'signType': 'MD5',
                 'paySign': res.obj.paySign,
                 success: function success(res) {
-                  that.xd_request_post(that.xdServerUrls.xd_resultCallBack, {}, false).then(function (res) {
-                  });
+                  that.xd_request_post(that.xdServerUrls.xd_resultCallBack, {}, false).then(function (res) {});
                   uni.showToast({
                     title: '微信支付成功',
                     icon: 'success',
@@ -362,7 +348,7 @@ var _default = {
             });
 
           } else {
-            _this2.logOut();
+            _this.logOut();
             uni.navigateTo({
               url: '../login/login' });
 

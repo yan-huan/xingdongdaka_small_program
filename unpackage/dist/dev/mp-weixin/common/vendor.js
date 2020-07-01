@@ -760,7 +760,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7096,7 +7096,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7117,14 +7117,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7200,7 +7200,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7645,7 +7645,20 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // 系统配置
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = exports.env = void 0; // 获取当前小程序信息（要求小程序版本2.10.0）
+var accountInfo = wx.getAccountInfoSync();
+// env类型
+var env = accountInfo.miniProgram.envVersion;exports.env = env;
+
+var baseApi = {
+  // 开发版
+  develop: "testxingdongdaka.zhidashixun.com",
+  // 体验版
+  trial: "testxingdongdaka.zhidashixun.com",
+  // 正式版
+  release: "xingdongdaka.zhidashixun.com" };
+
+// 系统配置
 var appConfig = {
   // 关于
   contractWebsite: "www.xxx.cn", // 联系网址
@@ -7660,11 +7673,11 @@ var appConfig = {
   serverName: 'xingdongdaka', // server项目名称
 
   serverProtocal: 'https', // server 协议
-  serverIp: 'xingdongdaka.zhidashixun.com', // server IP
+  serverIp: baseApi[env] // server IP
 
-  serverProtocaltest: 'http', // server 协议
-  serverIptest: 'testxingdongdaka.zhidashixun.com' };var _default =
-
+  //serverProtocaltest: 'http', // server 协议
+  //serverIptest: baseApi[env],
+};var _default =
 {
   appConfig: appConfig };exports.default = _default;
 
@@ -7681,8 +7694,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var _xdConfig = _interopRequireDefault(__webpack_require__(/*! ./xdConfig.js */ 8));var _serverUrls;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 var config = _xdConfig.default.appConfig; // 配置
 
-var serverBaseUrl = config.serverProtocaltest + '://' + config.serverIptest; //测试
-// const serverBaseUrl=config.serverProtocal+'://'+config.serverIp;
+var serverBaseUrl = config.serverProtocal + '://' + config.serverIp; //动态根据小程序类型自动获取接口地址
 var serverUrls = (_serverUrls = { //根据接口具体配置
   xd_register: serverBaseUrl + '/xxx', // 注册
   xd_login: serverBaseUrl + '/xxx', // 登录
@@ -7700,7 +7712,9 @@ var serverUrls = (_serverUrls = { //根据接口具体配置
 
   xd_saveGiveLikeByPush: serverBaseUrl + '/giveLike/saveGiveLikeByPush', //给行动项或打卡记录点赞
   xd_getAttentionList: serverBaseUrl + '/attention/getAttentionList', //获取关注列表
+  xd_getFansList: serverBaseUrl + '/attention/getFansList', //获取粉丝列表
   xd_saveAttention: serverBaseUrl + '/attention/saveAttention', //保存关注
+  xd_getLookerCountByUserId: serverBaseUrl + '/attention/getLookerCountByUserId', //根据用户id获取关注数量和粉丝数量
 
   xd_lookerPushListByUserId: serverBaseUrl + '/publishTarget/lookerPushListByUserId', //当前用户围观的行动项计划
   xd_pushByCreateTimeList: serverBaseUrl + '/publishTarget/pushByCreateTimeList', //根据创建时间获取目标列表
@@ -7745,7 +7759,9 @@ serverBaseUrl + '/publishTarget/searchPushData'), _defineProperty(_serverUrls, "
 serverBaseUrl + '/config/onOff'), _defineProperty(_serverUrls, "xd_delPushDataByPushId",
 serverBaseUrl + '/publishTarget/delPushDataByPushId'), _defineProperty(_serverUrls, "xd_saveShareInfo",
 serverBaseUrl + '/share/saveShareInfo'), _defineProperty(_serverUrls, "xd_getLookerByPushId",
-serverBaseUrl + '/looker/getLookerByPushId'), _serverUrls);var _default =
+serverBaseUrl + '/looker/getLookerByPushId'), _defineProperty(_serverUrls, "xd_savefeedbackInfo",
+
+serverBaseUrl + '/feedback/savefeedbackInfo'), _serverUrls);var _default =
 
 
 
