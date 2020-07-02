@@ -13,7 +13,7 @@
 						</view>
 						<view >
 							<view class="cu-tag line-orange radius"  @tap="tags">
-								关注
+								{{guanzhu}}
 							</view>
 						</view>
 					</view>
@@ -132,9 +132,8 @@
 				pushId:'',
 				tolist:false,
 				conmmmenttext:'请输入评论内容',
-				
 				showCardCommentlist:'',
-				
+				guanzhu:'关注'
 				
 			}
 		},
@@ -168,6 +167,7 @@
 			}
 			this.getshowCardComment();
 			this.getpushList();
+			this.getLookerList();
 		},
 		methods: {
 			//围观
@@ -355,7 +355,19 @@
 					
 				})
 			},
-			
+			getLookerList(){
+				this.xd_request_post(this.xdServerUrls.xd_getLookerByPushId,{
+					pushId:this.pushId,
+				},true)
+				.then(res=>{
+					res.obj.list.forEach(item =>{
+						if(item.userId == uni.getStorageSync('id')){
+							this.guanzhu ='已关注'
+						}
+					})
+					
+				})
+			},
 			strToArr(res){
 				var dataList=res;
 				for(var i=0;i <res.length;i++){
@@ -367,6 +379,9 @@
 				return dataList;
 			},
 			tags(){
+				if(this.guanzhu =='已关注'){
+					return
+				}
 				this.xd_request_post(this.xdServerUrls.xd_saveAttention,{
 					userId:uni.getStorageSync('id'),
 					attentionUserId:this.pusCardLists.userId,		

@@ -3,9 +3,20 @@
 		<view class="cu-card dynamic " :class="pushList.pictures!=''?'no-card':''">
 			<view class="cu-item shadow">
 				<view class="cu-list menu-avatar">
+					<view class="cu-item ">
+						<view @tap="goUser(pushList.userId)" class="cu-avatar round lg" :style="{backgroundImage: 'url(' +pushList.userHead + ')'}" ></view>
+						<view class="content flex-sub">
+							<view @tap="goUser(pushList.userId)">{{pushList.userName}}</view>
+						</view>
+						<view >
+							<view class="cu-tag line-orange radius"  @tap="tags">
+								{{guanzhu}}
+							</view>
+						</view>
+					</view>
 					<view class="flex flex-wrap padding justify-between">
 						<view class=" " >
-							<view class="cu-tag bg-grey radio">标签</view>
+							<view class="cu-tag bg-grey radio">{{labelName}}</view>
 							<view class="text-gray text-sm ">
 								{{pushList.createTime }}  ({{pushList.pushCardCount}}/{{pushList.targetDay}})
 							</view>
@@ -116,6 +127,8 @@
 				lookNextPageTwo:'',
 				pushId:'',
 				isShare:0,
+				labelName:'',
+				guanzhu:'关注'
 				
 			};
 		},
@@ -358,6 +371,23 @@
 						if(this.share!=''){
 							this.getShareInfo();
 						}
+						
+						if(typeof this.pushList.label != 'undefined'){
+							var labelId_=''
+							if(this.pushList.label.indexOf(',') > -1){
+								var labelId_ = this.pushList.label.split(',')[0]
+							}else{
+								labelId_ = this.pushList.label
+							}
+							this.xd_request_post(this.xdServerUrls.xd_getLabelsById,{
+								labelId:labelId_
+							},true).then(res=>{	
+								if(res.resultCode==0){
+									this.labelName=res.obj.labelName
+								}
+							})	
+						}
+						
 					}else{
 						uni.showToast({
 							title:res.msg,
@@ -410,6 +440,9 @@
 				this.getLookerList();
 			},
 			tags(){
+				if(this.guanzhu =='已关注'){
+					return
+				}
 				this.xd_request_post(this.xdServerUrls.xd_saveAttention,{
 					userId:uni.getStorageSync('id'),
 					attentionUserId:this.pushList.userId,		
@@ -432,8 +465,14 @@
 					this.lookerList=res.obj.list;
 					this.looktotal=res.obj.total;
 					this.lookNextPageTwo=res.obj.nextPage;
+					this.lookerList.forEach(item =>{
+						if(item.userId == uni.getStorageSync('id')){
+							this.guanzhu ='已关注'
+						}
+					})
+					
 				})
-			},
+			}
 		}
 	}
 	
