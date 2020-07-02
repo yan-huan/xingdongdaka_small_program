@@ -20,18 +20,17 @@
 					<block v-for="(attention, index) in lookerList" :key="index" >					
 							<view class="ali-main">
 								<view class="ali-main-img" >
-									<image class='userhead xd-box-shadow' :src="attention.userHead" @tap="toAction(attention.pushId)"></image>
+									<image class='userhead xd-box-shadow' :src="attention.pushPictures == null || attention.pushPictures == ''? '../../static/images/icon/img/title1.png' : attention.pushPictures" @tap="toAction(attention.pushId)"></image>
 								</view>
 								<view class="lli-main-content xd-list-body ">
 									<view class="xd-list-title-text" @tap="toAction(attention.pushId)">
-										<text>{{attention.userName}}</text>
+										<text>{{attention.pushContent}}</text>
 									</view>
-									<view  >
+									<!-- <view  >
 										<text v-if="attention.sex==1" class="boy">♂</text>
 										<text v-else-if="attention.sex==0" class="gender">♀</text>
 										<text v-else class="boy">密</text>
-										<!-- <text>20</text> -->
-									</view>
+									</view> -->
 								</view>
 								<view class="lli-main-content">
 									

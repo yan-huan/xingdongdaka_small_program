@@ -56,18 +56,21 @@
 						<view class="actionLi" >
 							<view class="ali-main" @tap="goPush(attention.pushId)">
 								<view class="ali-main-img">
-									<image class='xd-mag xd-box-shadow' :src="attention.userHead"></image>
+									<image class='xd-mag xd-box-shadow' :src="attention.pushPictures == null || attention.pushPictures == ''? '../../static/images/icon/img/title1.png' : attention.pushPictures"></image>
 								</view>
 								<view class="lli-main-content xd-list-body ">
 									<view class="xd-list-title-text">
-										<text>{{attention.userName}}</text>
+										<text>{{attention.pushContent}}</text>
 									</view>
-									<view  >
+									<!-- <view>
+										<text>{{attention.pushCreateTime}}</text>
+									</view> -->
+									<!-- <view  >
 										<text v-if="attention.sex==1" class="boy">♂</text>
 										<text v-else-if="attention.sex==0" class="gender">♀</text>
 										<text v-else class="boy">密</text>
-										<!-- <text>20</text> -->
-									</view>
+										
+									</view> -->
 								</view>
 							</view>
 						</view>
