@@ -107,7 +107,7 @@ function xd_request(url, method, params, headers) {
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url: url,
-			method: method || 'GET', // 默认get请求
+			method: method || 'POST', // 默认get请求
 			data: params || {},
 			header: headers || {},
 			dataType: "json",

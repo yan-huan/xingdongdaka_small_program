@@ -1,8 +1,8 @@
 // 获取当前小程序信息（要求小程序版本2.10.0）
-const accountInfo = wx.getAccountInfoSync();
+const accountInfo = uni.getAccountInfoSync();
 // env类型
 export const env = accountInfo.miniProgram.envVersion;
-
+console.log(env)
 const baseApi = {
   // 开发版
   develop: "testxingdongdaka.zhidashixun.com",

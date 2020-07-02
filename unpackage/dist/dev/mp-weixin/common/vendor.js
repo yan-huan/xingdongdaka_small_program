@@ -7645,11 +7645,11 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = exports.env = void 0; // 获取当前小程序信息（要求小程序版本2.10.0）
-var accountInfo = wx.getAccountInfoSync();
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = exports.env = void 0; // 获取当前小程序信息（要求小程序版本2.10.0）
+var accountInfo = uni.getAccountInfoSync();
 // env类型
 var env = accountInfo.miniProgram.envVersion;exports.env = env;
-
+console.log(env);
 var baseApi = {
   // 开发版
   develop: "testxingdongdaka.zhidashixun.com",
@@ -7680,6 +7680,7 @@ var appConfig = {
 };var _default =
 {
   appConfig: appConfig };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 9 */
@@ -7692,9 +7693,8 @@ var appConfig = {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 var _xdConfig = _interopRequireDefault(__webpack_require__(/*! ./xdConfig.js */ 8));var _serverUrls;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-var config = _xdConfig.default.appConfig; // 配置
 
-var serverBaseUrl = config.serverProtocal + '://' + config.serverIp; //动态根据小程序类型自动获取接口地址
+var serverBaseUrl = _xdConfig.default.appConfig.serverProtocal + '://' + _xdConfig.default.appConfig.serverIp; //动态根据小程序类型自动获取接口地址
 var serverUrls = (_serverUrls = { //根据接口具体配置
   xd_register: serverBaseUrl + '/xxx', // 注册
   xd_login: serverBaseUrl + '/xxx', // 登录
@@ -9070,7 +9070,7 @@ function xd_request(url, method, params, headers) {
   return new Promise(function (resolve, reject) {
     uni.request({
       url: url,
-      method: method || 'GET', // 默认get请求
+      method: method || 'POST', // 默认get请求
       data: params || {},
       header: headers || {},
       dataType: "json",
