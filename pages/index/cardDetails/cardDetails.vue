@@ -8,7 +8,7 @@
 						<view class="content flex-sub">
 							<view @tap="goUser(pusCardLists.userId)">{{pusCardLists.userName}}</view>
 							<view class="text-gray text-sm flex justify-between">
-								{{pusCardLists.createTime }} 
+								{{xdUniUtils.xd_timestampToTime(pusCardLists.pushCardList[0].createTime,false,true,false) }} 
 							</view>
 						</view>
 						<view >
