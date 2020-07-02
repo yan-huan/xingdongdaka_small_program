@@ -82,7 +82,7 @@
 									</view>
 									<view class="text-grey" @tap="userRepaly(item,index)">回复</view>
 								</view>
-								<view class="text-gray text-content text-df commenttext">
+								<view class="text-content text-df commenttext">
 									评论：{{item.content}}
 								</view>
 								<view class="bg-gray padding-sm radius margin-top-sm  text-sm" v-if="showCardCommentlist.pushCommentList[index].cardReplayCommentList.length>0">
