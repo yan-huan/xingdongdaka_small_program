@@ -46,7 +46,6 @@
 					<text v-if="userId==user">围观的行动({{lookTotal}})</text>
 					<text v-else>TA围观的行动({{lookTotal}})</text>
 				</view>
-				->
 			</view>
 			<view class="actionTabList">
 				<view class="actionMy" v-show="tab===0">
