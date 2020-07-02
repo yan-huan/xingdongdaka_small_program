@@ -51,7 +51,7 @@
 			</scroll-view>
 			<block v-for="(item,index) in pusCardList" :key="index" v-if="TabCur==0">
 				<view class="cu-timeline">
-					<view class="cu-time" v-if="index == 0 || compareDate(pusCardList[index-1],item)">{{formatDate(item.createTime)}}</view>
+					<view class="cu-time" v-if="index == 0 || compareDate(pusCardList[index-1],item)">{{xdUniUtils.xd_timestampToTime(item.createTime,false,false,false)}}</view>
 					<view class="cu-item">
 						<view class="content">
 							<view class="">
@@ -140,22 +140,7 @@
 			
 					
 		},
-		methods:{
-			formatDate: function (value) {
-			    let date = new Date(value);
-			    let y = date.getFullYear();
-			    let MM = date.getMonth() + 1;
-			    MM = MM < 10 ? ('0' + MM) : MM;
-			    let d = date.getDate();
-			    d = d < 10 ? ('0' + d) : d;
-			    let h = date.getHours();
-			    h = h < 10 ? ('0' + h) : h;
-			    let m = date.getMinutes();
-			    m = m < 10 ? ('0' + m) : m;
-			    let s = date.getSeconds();
-			    s = s < 10 ? ('0' + s) : s;
-			    return y + '-' + MM + '-' + d; 
-			},　　　　
+		methods:{　
 			compareDate (d1, d2) {
 				if(typeof d1 == 'undefined'){
 					return true
@@ -163,7 +148,7 @@
 				if(typeof d2 == 'undefined'){
 					return true
 				}
-				return this.formatDate(d1.createTime) > this.formatDate(d2.createTime)
+				return this.xdUniUtils.xd_timestampToTime(d1.createTime,false,false,false) > this.xdUniUtils.xd_timestampToTime(d2.createTime,false,false,false)
 			},
 			tabSelect(e){
 				this.TabCur=e.target.id;
