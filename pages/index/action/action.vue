@@ -71,6 +71,28 @@
 					</view>
 				</view>
 			</block>
+			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1">
+				<view class="actionLi" @tap="goUser(attention.userId)">
+					<view class="ali-main">
+						<view class="ali-main-img">
+							<image class='xd-mag xd-box-shadow' :src="attention.userHead"></image>
+						</view>
+						<view class="lli-main-content xd-list-body ">
+							<view class="xd-list-title-text">
+								<text>{{attention.userName}}</text>
+								<text v-if="attention.sex==1" class="boy">♂</text>
+								<text v-else-if="attention.sex==0" class="boy">♀</text>
+								<text v-else class="boy">密</text>
+							</view>
+							<view class="moreInfoIn">
+								<image class='address' src="/static/images/icon/address.png"></image>
+								<text class="province">{{attention.province}}.{{attention.city}}</text>
+							</view>
+						</view>
+						
+					</view>
+				</view>
+			</block>
 		</view>
 	</view>
 </template>
@@ -90,6 +112,8 @@
 				userId:uni.getStorageSync('id'),
 				share:'',
 				lookerList:[],
+				looktotal:'',
+				lookNextPageTwo:'',
 				pushId:'',
 				isShare:0,
 				
@@ -107,6 +131,7 @@
 					console.log(option.isopen)
 				}
 				this.getpushList();
+				this.getLookerList();
 			}
 		},
 		onShow() {	
@@ -400,12 +425,13 @@
 			getLookerList(){
 				this.xd_request_post(this.xdServerUrls.xd_getLookerByPushId,{
 					pushId:this.pushId,
-					pageNum:1,
+					pageNum: this.lookNextPageTwo,
 					pageSize:10,
 				},true)
 				.then(res=>{
 					this.lookerList=res.obj.list;
-					this.lookTotal=res.obj.total
+					this.looktotal=res.obj.total;
+					this.lookNextPageTwo=res.obj.nextPage;
 				})
 			},
 		}
@@ -427,4 +453,42 @@
 	.commentCount{
 		right: 0;
 	}
+	.ali-main{
+		display: flex;
+		padding: 20rpx;
+		border-bottom: 3px solid #fff;
+
+		.ali-main-img .xd-mag{
+			border-radius: 100%;
+			height: 125rpx;
+			width: 125rpx;
+		}
+		.lli-main-content {
+			.boy{
+				background:#66CCFF;
+				color:#fff;
+				display: inline-block;
+				padding:0 6rpx;
+				border-radius: 100%;
+				font-size: 22rpx;
+				margin-left: 14rpx;
+			}
+			.lli-main-content-text{
+				line-height: 90rpx;
+				margin-right: 20rpx;
+			}
+			.moreInfoIn {
+				.address {
+					width: 30rpx;
+					height: 30rpx;
+				}
+			
+				.province {
+					font-size: 28rpx;
+					margin-left: 6rpx;
+				}
+			}
+		}
+	}
+	
 </style>
