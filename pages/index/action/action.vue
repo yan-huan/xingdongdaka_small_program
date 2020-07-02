@@ -51,11 +51,11 @@
 			</scroll-view>
 			<block v-for="(item,index) in pusCardList" :key="index" v-if="TabCur==0">
 				<view class="cu-timeline">
-					<view class="cu-time">{{index+1}}</view>
+					<view class="cu-time" v-if="index == 0 || compareDate(pusCardList[index-1],item)">{{xdUniUtils.xd_timestampToTime(item.createTime,false,false,false)}}</view>
 					<view class="cu-item">
 						<view class="content">
 							<view class="">
-								<view class="cu-tag line-green">第{{index+1}}次打卡</view>
+								<view class="cu-tag line-green">第{{pusCardList.length-index}}次打卡</view>
 							</view>
 							<view class="margin-top margin-left-lg" @tap="gocardComentList(item,0)">{{item.content}}</view>
 							<view class="grid flex-sub padding-lr"  >
@@ -140,7 +140,16 @@
 			
 					
 		},
-		methods:{
+		methods:{　
+			compareDate (d1, d2) {
+				if(typeof d1 == 'undefined'){
+					return true
+				}
+				if(typeof d2 == 'undefined'){
+					return true
+				}
+				return this.xdUniUtils.xd_timestampToTime(d1.createTime,false,false,false) > this.xdUniUtils.xd_timestampToTime(d2.createTime,false,false,false)
+			},
 			tabSelect(e){
 				this.TabCur=e.target.id;
 			},
@@ -411,6 +420,9 @@
 	}
 	.contentext{
 		
+	}
+	.cu-timeline .cu-time{
+		width: 160rpx;
 	}
 	.commentCount{
 		right: 0;

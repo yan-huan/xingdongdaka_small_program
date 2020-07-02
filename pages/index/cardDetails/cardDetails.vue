@@ -297,9 +297,13 @@
 						
 							this.showInput=false;
 							this.value='';
-							uni.redirectTo({
+							/* uni.redirectTo({
 								url:'../cardDetails/cardDetails?pushId='+this.pushId+'&cardId='+this.cardId+'&show=0'
-							})
+							}) */
+							if (res.resultCode == 0) {
+								var data=res.obj;
+								this.showCardCommentlist=data
+							}
 						})
 				}else if(this.inputType==2){	
 						this.xd_request_post(this.xdServerUrls.xd_saveCardComment,{
@@ -309,10 +313,15 @@
 						},true).then(res=>{
 							
 							this.showInput=false;
-							this.value='',
-							uni.redirectTo({
+							this.value='';
+							/* uni.redirectTo({
 								url:'../cardDetails/cardDetails?pushId='+this.pushId+'&cardId='+this.cardId+'&show=0'
-							})
+							}) */
+							 if (res.resultCode == 0) {
+								var data=res.obj;
+								this.showCardCommentlist=data
+							} 
+							
 						})
 					
 				}
