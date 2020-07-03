@@ -54,13 +54,13 @@
 				<view class="actionLook" v-show="tab===1">
 					<block v-for="(attention, index) in lookerList" :key="index" >
 						<view class="actionLi" >
-							<view class="ali-main" @tap="goPush(attention.pushId)">
+							<view class="ali-main" @tap="goPush(attention.id)">
 								<view class="ali-main-img">
-									<image class='xd-mag xd-box-shadow' :src="attention.pushPictures == null || attention.pushPictures == ''? '../../static/images/icon/img/title1.png' : attention.pushPictures"></image>
+									<image class='xd-mag xd-box-shadow' :src="attention.pictures"></image>
 								</view>
 								<view class="lli-main-content xd-list-body ">
 									<view class="xd-list-title-text">
-										<text>{{attention.pushContent}}</text>
+										<text>{{attention.content}}</text>
 									</view>
 									<!-- <view>
 										<text>{{attention.pushCreateTime}}</text>
@@ -182,15 +182,24 @@
 				return dataList;
 			},
 			getLookerList(){
-				this.xd_request_post(this.xdServerUrls.xd_getLookerByUserId,{
+				this.xd_request_post(this.xdServerUrls.xd_lookerPushListByUserId,{
 					userId:this.userId,
 					pageNum:1,
 					pageSize:10,
 				},true)
 				.then(res=>{
-					
 					this.lookerList=res.obj.list;
 					this.lookTotal=res.obj.total
+					this.lookerList.forEach(function (item) {
+						if(typeof item.pictures ==='undefined' || item.pictures == ''){
+							item.pictures = '../../static/images/icon/img/title1.png'
+						}else{
+							if(item.pictures.indexOf(",")> -1){
+								item.pictures = item.pictures.split(",")[0]
+							}
+						}
+					})			
+					
 				})
 			},
 			

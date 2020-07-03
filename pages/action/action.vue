@@ -20,11 +20,11 @@
 					<block v-for="(attention, index) in lookerList" :key="index" >					
 							<view class="ali-main">
 								<view class="ali-main-img" >
-									<image class='userhead xd-box-shadow' :src="attention.pushPictures == null || attention.pushPictures == ''? '../../static/images/icon/img/title1.png' : attention.pushPictures" @tap="toAction(attention.pushId)"></image>
+									<image class='userhead xd-box-shadow' :src="attention.pictures" @tap="toAction(attention.id)"></image>
 								</view>
 								<view class="lli-main-content xd-list-body ">
-									<view class="xd-list-title-text" @tap="toAction(attention.pushId)">
-										<text>{{attention.pushContent}}</text>
+									<view class="xd-list-title-text" @tap="toAction(attention.id)">
+										<text>{{attention.content}}</text>
 									</view>
 									<!-- <view  >
 										<text v-if="attention.sex==1" class="boy">♂</text>
@@ -231,22 +231,29 @@ export default {
 			   	}).catch(Error=>{
 			   		console.log(Error)
 			   	})
-				this.xd_request_post(this.xdServerUrls.xd_getLookerByUserId,
+				this.xd_request_post(this.xdServerUrls.xd_lookerPushListByUserId,
 				{
-				userId:uni.getStorageSync("id"),
-				pageNum:1,
-				pageSize:10,
+					userId:uni.getStorageSync("id"),
+					pageNum:1,
+					pageSize:10,
 				},
-				true
-				
-				    ).then(res=>{
-									  
-										 this.lookerList=res.obj.list;
-										 this.nextPageTwo=res.obj.nextPage;
-										 this.looktotal=res.obj.total;
-					}).catch(Error=>{
-						console.log(Error)
-					})
+				true).then(res=>{
+					this.lookerList=res.obj.list;
+					this.nextPageTwo=res.obj.nextPage;
+					this.looktotal=res.obj.total;
+					this.lookerList.forEach(function (item) {
+						if(typeof item.pictures ==='undefined' || item.pictures == ''){
+							item.pictures = '../../static/images/icon/img/title1.png'
+						}else{
+							if(item.pictures.indexOf(",")> -1){
+								item.pictures = item.pictures.split(",")[0]
+							}
+						}
+					})			  
+					
+				}).catch(Error=>{
+					console.log(Error)
+				})
 			},
 			getReachList(){
 				if(this.tab==0){
