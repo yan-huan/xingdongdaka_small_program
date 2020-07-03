@@ -192,7 +192,7 @@
 							   that.pusCardLists.lookerCount++;
 							  if(uni.getStorageSync("dycwgKey") != 1){
 								   uni.showModal({
-										 content: '围观成功,如果行动项打卡失败，系统会自动将保证金的70%平均分配给有效围观者',
+										 content: '感谢你的围观鼓励帮助！\r\n如果我未达成，你将瓜分保证金，鼓励帮助【评论量】越多、获得我的【认可度】越高，分得越多。\r\n如果我已达成，你的鼓励帮助有效，我对你的认可度高，我也愿意给你感谢金',
 										 showCancel: false,
 										 buttonText: '知道了',
 										 success: (res) => {
