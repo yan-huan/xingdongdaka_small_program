@@ -8,12 +8,12 @@
 						<view class="content flex-sub">
 							<view @tap="goUser(pusCardLists.userId)">{{pusCardLists.userName}}</view>
 							<view class="text-gray text-sm flex justify-between">
-								{{pusCardLists.createTime }} 
+								{{xdUniUtils.xd_timestampToTime(pusCardLists.pushCardList[0].createTime,false,true,false) }} 
 							</view>
 						</view>
 						<view >
 							<view class="cu-tag line-orange radius"  @tap="tags">
-								关注
+								{{guanzhu}}
 							</view>
 						</view>
 					</view>
@@ -82,7 +82,7 @@
 									</view>
 									<view class="text-grey" @tap="userRepaly(item,index)">回复</view>
 								</view>
-								<view class="text-gray text-content text-df commenttext">
+								<view class="text-content text-df commenttext">
 									评论：{{item.content}}
 								</view>
 								<view class="bg-gray padding-sm radius margin-top-sm  text-sm" v-if="showCardCommentlist.pushCommentList[index].cardReplayCommentList.length>0">
@@ -132,9 +132,8 @@
 				pushId:'',
 				tolist:false,
 				conmmmenttext:'请输入评论内容',
-				
 				showCardCommentlist:'',
-				
+				guanzhu:'关注'
 				
 			}
 		},
@@ -168,6 +167,7 @@
 			}
 			this.getshowCardComment();
 			this.getpushList();
+			this.getLookerList();
 		},
 		methods: {
 			//围观
@@ -190,11 +190,26 @@
 						   if(res.resultCode==0){
 							   that.pusCardLists.onlooker=true
 							   that.pusCardLists.lookerCount++;
-							   uni.showToast({
-								title:'围观成功',
-								 duration: 1000,
-								 icon:'none',
-							   })
+							  if(uni.getStorageSync("dycwgKey") != 1){
+								   uni.showModal({
+										 content: '感谢你的围观鼓励帮助！\r\n如果我未达成，你将瓜分保证金，鼓励帮助【评论量】越多、获得我的【认可度】越高，分得越多。\r\n如果我已达成，你的鼓励帮助有效，我对你的认可度高，我也愿意给你感谢金',
+										 showCancel: false,
+										 buttonText: '知道了',
+										 success: (res) => {
+										   if (res.confirm) {
+											 uni.setStorageSync('dycwgKey',1);
+										   } else if (res.cancel) {
+											 uni.setStorageSync('dycwgKey',1);
+										   }
+										 }
+									})
+							  }else{
+								  uni.showToast({
+										title:'围观成功',
+										 duration: 1000,
+										 icon:'none',
+								  }) 
+							  }
 						   }else if(res.resultCode==10015){
 							   uni.showToast({
 								title:'您已经围观了',
@@ -355,7 +370,19 @@
 					
 				})
 			},
-			
+			getLookerList(){
+				this.xd_request_post(this.xdServerUrls.xd_getLookerByPushId,{
+					pushId:this.pushId,
+				},true)
+				.then(res=>{
+					res.obj.list.forEach(item =>{
+						if(item.userId == uni.getStorageSync('id')){
+							this.guanzhu ='已关注'
+						}
+					})
+					
+				})
+			},
 			strToArr(res){
 				var dataList=res;
 				for(var i=0;i <res.length;i++){
@@ -367,6 +394,9 @@
 				return dataList;
 			},
 			tags(){
+				if(this.guanzhu =='已关注'){
+					return
+				}
 				this.xd_request_post(this.xdServerUrls.xd_saveAttention,{
 					userId:uni.getStorageSync('id'),
 					attentionUserId:this.pusCardLists.userId,		

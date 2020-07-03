@@ -5,11 +5,11 @@ export const env = accountInfo.miniProgram.envVersion;
 console.log(env)
 const baseApi = {
   // 开发版
-  develop: "testxingdongdaka.zhidashixun.com",
+  develop: "http://testxingdongdaka.zhidashixun.com",
   // 体验版
-  trial: "testxingdongdaka.zhidashixun.com",
+  trial: "http://testxingdongdaka.zhidashixun.com",
   // 正式版
-  release: "xingdongdaka.zhidashixun.com"
+  release: "https://xingdongdaka.zhidashixun.com"
 };
 // 系统配置
 const appConfig = {

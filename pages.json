@@ -70,12 +70,12 @@
 		}, {
 			"path": "pages/index/cardDetails/cardDetails",
 			"style": {
-				"navigationBarTitleText": "行动打卡" //打卡详情
+				"navigationBarTitleText": "打卡详情" //打卡详情
 			}
 		}, {
 		    "path" : "pages/index/action/action",
 		    "style" : {
-				 "navigationBarTitleText": "行动打卡" //行动项
+				 "navigationBarTitleText": "行动详情" //行动项
 			 }
 		},
 		{

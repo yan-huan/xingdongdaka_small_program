@@ -3,9 +3,20 @@
 		<view class="cu-card dynamic " :class="pushList.pictures!=''?'no-card':''">
 			<view class="cu-item shadow">
 				<view class="cu-list menu-avatar">
+					<view class="cu-item ">
+						<view @tap="goUser(pushList.userId)" class="cu-avatar round lg" :style="{backgroundImage: 'url(' +pushList.userHead + ')'}" ></view>
+						<view class="content flex-sub">
+							<view @tap="goUser(pushList.userId)">{{pushList.userName}}</view>
+						</view>
+						<view >
+							<view class="cu-tag line-orange radius"  @tap="tags">
+								{{guanzhu}}
+							</view>
+						</view>
+					</view>
 					<view class="flex flex-wrap padding justify-between">
 						<view class=" " >
-							<view class="cu-tag bg-grey radio">标签</view>
+							<view class="cu-tag bg-grey radio">{{labelName}}</view>
 							<view class="text-gray text-sm ">
 								{{pushList.createTime }}  ({{pushList.pushCardCount}}/{{pushList.targetDay}})
 							</view>
@@ -71,6 +82,28 @@
 					</view>
 				</view>
 			</block>
+			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1">
+				<view class="actionLi" @tap="goUser(attention.userId)">
+					<view class="ali-main">
+						<view class="ali-main-img">
+							<image class='xd-mag xd-box-shadow' :src="attention.userHead"></image>
+						</view>
+						<view class="lli-main-content xd-list-body ">
+							<view class="xd-list-title-text">
+								<text>{{attention.userName}}</text>
+								<text v-if="attention.sex==1" class="boy">♂</text>
+								<text v-else-if="attention.sex==0" class="boy">♀</text>
+								<text v-else class="boy">密</text>
+							</view>
+							<view class="moreInfoIn">
+								<image class='address' src="/static/images/icon/address.png"></image>
+								<text class="province">{{attention.province}}.{{attention.city}}</text>
+							</view>
+						</view>
+						
+					</view>
+				</view>
+			</block>
 		</view>
 	</view>
 </template>
@@ -90,8 +123,12 @@
 				userId:uni.getStorageSync('id'),
 				share:'',
 				lookerList:[],
+				looktotal:'',
+				lookNextPageTwo:'',
 				pushId:'',
 				isShare:0,
+				labelName:'',
+				guanzhu:'关注'
 				
 			};
 		},
@@ -107,6 +144,7 @@
 					console.log(option.isopen)
 				}
 				this.getpushList();
+				this.getLookerList();
 			}
 		},
 		onShow() {	
@@ -333,6 +371,23 @@
 						if(this.share!=''){
 							this.getShareInfo();
 						}
+						
+						if(typeof this.pushList.label != 'undefined'){
+							var labelId_=''
+							if(this.pushList.label.indexOf(',') > -1){
+								var labelId_ = this.pushList.label.split(',')[0]
+							}else{
+								labelId_ = this.pushList.label
+							}
+							this.xd_request_post(this.xdServerUrls.xd_getLabelsById,{
+								labelId:labelId_
+							},true).then(res=>{	
+								if(res.resultCode==0){
+									this.labelName=res.obj.labelName
+								}
+							})	
+						}
+						
 					}else{
 						uni.showToast({
 							title:res.msg,
@@ -385,6 +440,9 @@
 				this.getLookerList();
 			},
 			tags(){
+				if(this.guanzhu =='已关注'){
+					return
+				}
 				this.xd_request_post(this.xdServerUrls.xd_saveAttention,{
 					userId:uni.getStorageSync('id'),
 					attentionUserId:this.pushList.userId,		
@@ -400,14 +458,21 @@
 			getLookerList(){
 				this.xd_request_post(this.xdServerUrls.xd_getLookerByPushId,{
 					pushId:this.pushId,
-					pageNum:1,
+					pageNum: this.lookNextPageTwo,
 					pageSize:10,
 				},true)
 				.then(res=>{
 					this.lookerList=res.obj.list;
-					this.lookTotal=res.obj.total
+					this.looktotal=res.obj.total;
+					this.lookNextPageTwo=res.obj.nextPage;
+					this.lookerList.forEach(item =>{
+						if(item.userId == uni.getStorageSync('id')){
+							this.guanzhu ='已关注'
+						}
+					})
+					
 				})
-			},
+			}
 		}
 	}
 	
@@ -427,4 +492,42 @@
 	.commentCount{
 		right: 0;
 	}
+	.ali-main{
+		display: flex;
+		padding: 20rpx;
+		border-bottom: 3px solid #fff;
+
+		.ali-main-img .xd-mag{
+			border-radius: 100%;
+			height: 125rpx;
+			width: 125rpx;
+		}
+		.lli-main-content {
+			.boy{
+				background:#66CCFF;
+				color:#fff;
+				display: inline-block;
+				padding:0 6rpx;
+				border-radius: 100%;
+				font-size: 22rpx;
+				margin-left: 14rpx;
+			}
+			.lli-main-content-text{
+				line-height: 90rpx;
+				margin-right: 20rpx;
+			}
+			.moreInfoIn {
+				.address {
+					width: 30rpx;
+					height: 30rpx;
+				}
+			
+				.province {
+					font-size: 28rpx;
+					margin-left: 6rpx;
+				}
+			}
+		}
+	}
+	
 </style>

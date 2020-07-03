@@ -2,7 +2,7 @@
 import xdConfig from './xdConfig.js';
 const config = xdConfig.appConfig; // 配置
 
-const serverBaseUrl=config.serverProtocal+'://'+config.serverIp;//动态根据小程序类型自动获取接口地址
+const serverBaseUrl=config.serverIp;//动态根据小程序类型自动获取接口地址
 const serverUrls = { //根据接口具体配置
 	xd_register: serverBaseUrl + '/xxx', // 注册
 	xd_login: serverBaseUrl + '/xxx', // 登录
@@ -11,6 +11,7 @@ const serverUrls = { //根据接口具体配置
 	
 	xd_bannerList: serverBaseUrl + '/banner/bannerList' ,// banner广告
 	xd_label: serverBaseUrl + '/label/getLabels' ,//标签
+	xd_getLabelsById: serverBaseUrl + '/label/getLabelsById' ,//通过标签id获取标签信息
 	xd_tacitlyPushPng: serverBaseUrl + '/publishTarget/tacitlyPushPng' ,//标签
 	
 	xd_saveCardReplayComment: serverBaseUrl + '/cardReplayComment/saveCardReplayComment' ,//保存打卡回复评论
