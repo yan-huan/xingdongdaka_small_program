@@ -190,11 +190,26 @@
 						   if(res.resultCode==0){
 							   that.pusCardLists.onlooker=true
 							   that.pusCardLists.lookerCount++;
-							   uni.showToast({
-								title:'围观成功',
-								 duration: 1000,
-								 icon:'none',
-							   })
+							  if(uni.getStorageSync("dycwgKey") != 1){
+								   uni.showModal({
+										 content: '围观成功,如果行动项打卡失败，系统会自动将保证金的70%平均分配给有效围观者',
+										 showCancel: false,
+										 buttonText: '知道了',
+										 success: (res) => {
+										   if (res.confirm) {
+											 uni.setStorageSync('dycwgKey',1);
+										   } else if (res.cancel) {
+											 uni.setStorageSync('dycwgKey',1);
+										   }
+										 }
+									})
+							  }else{
+								  uni.showToast({
+										title:'围观成功',
+										 duration: 1000,
+										 icon:'none',
+								  }) 
+							  }
 						   }else if(res.resultCode==10015){
 							   uni.showToast({
 								title:'您已经围观了',
