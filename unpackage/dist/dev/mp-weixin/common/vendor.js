@@ -7649,6 +7649,7 @@ module.exports = g;
 var accountInfo = uni.getAccountInfoSync();
 // env类型
 var env = accountInfo.miniProgram.envVersion;exports.env = env;
+uni.setStorageSync("env", env);
 var baseApi = {
   // 开发版
   develop: "http://testxingdongdaka.zhidashixun.com",
@@ -7659,24 +7660,11 @@ var baseApi = {
 
 // 系统配置
 var appConfig = {
-  // 关于
-  contractWebsite: "www.xxx.cn", // 联系网址
-  contractTel: "010-xxxxxxxx", //  联系电话
-  contractAddress: "xxxxxxxx", // 联系地址
-  contractName: "北京xxxxxxxx公司", // 公司名称
-  // 基本配置
-  appName: "xingdongdaka", // 项目名字
-  appLogTag: "xingdongdaka-log", // log tag
   enableDebug: true, // 设置是否打开调试开关。此开关对正式版也能生效。
   // server 配置
-  serverName: 'xingdongdaka', // server项目名称
-
-  serverProtocal: 'https', // server 协议
   serverIp: baseApi[env] // server IP
-
-  //serverProtocaltest: 'http', // server 协议
-  //serverIptest: baseApi[env],
 };var _default =
+
 {
   appConfig: appConfig };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

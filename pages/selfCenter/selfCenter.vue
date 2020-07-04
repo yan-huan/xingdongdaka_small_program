@@ -1,6 +1,5 @@
 <template>
-	<view class="selfCenter">
-		<!-- <button @click="clickMe">支付</button> -->
+	<view class="selfCenter padding">
 		<view class="personContent">
 			<view class="personHead" @click="goPage('/pages/selfCenter/editUserInfo')">
 				<img :src="userInfo.avatarUrl" alt="" class="imgHead">
@@ -22,8 +21,7 @@
 				</view>
 			</view>
 			<view class="personOpt">
-				<!-- <text class="viewself link"  @click="goPage('/pages/selfCenter/selfView')">个人主页</text> -->
-				<button @click="clickMe" class="pay" v-if="onOff">支付</button>
+				<button @click="clickMe" class="pay" v-if="env!='release'">支付</button>
 			</view>
 		</view>
 		<view class="moreInfo">
@@ -40,20 +38,18 @@
 			</view>
 
 			<view class="moreInfoRow2">
-				<!-- <view class='user_column_item' @click="goPage('/pages/selfCenter/feedback')">
-					<view class='user_column_item_text'>
-						<image class='user_column_item_image' src='/static/images/icon/feedback.png'></image><text class="thin">意见反馈</text>
-					</view>
-				</view> -->
+				
 				<view class="user_column_item">
 				    <button class='content cu-btn' open-type="feedback">
-				      <image class='user_column_item_image' src='/static/images/icon/feedback.png'></image>
+				      <text class="lg text-gray cuIcon-question"></text>
 				      <text class='thin'>问题反馈</text>
 				    </button>
 				</view>
 				<view class='user_column_item'>
 					<button class="content cu-btn" open-type="contact">
-						<image class='user_column_item_image' src='/static/images/icon/customer.png'></image>
+						<view class="text-lg">
+							<text class="lg text-gray cuIcon-service"></text>
+						</view>
 						<text class="thin">联系客服</text>
 					</button>
 				</view>
@@ -79,6 +75,7 @@
 				lookerCount: 0,
 				likeCount: 0,
 				onOff: true,
+				env:uni.getStorageSync('env'),
 			}
 		},
 		computed: {
