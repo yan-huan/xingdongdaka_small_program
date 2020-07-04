@@ -1,6 +1,6 @@
 <template>
 	<view class="selfCenter">
-		<usershow  :list="userInfo"></usershow>
+		<usershow  :list="userInfo" :looktotals="looktotals"></usershow>
 		<view class="actionInfo">
 			<view class="tabbar bg-white">
 				<view class="tab " :class="tab===0?'active':''" @click="tab=0" >
@@ -42,6 +42,7 @@
 				lookerList:[],
 				pushId:'',
 				lookTotal:0,
+				looktotals:'',
 			}
 		},
 		onShow() {
@@ -95,6 +96,20 @@
 					
 				})
 			},
+			getShowFollow(){
+				this.xd_request_post(this.xdServerUrls.xd_getLookerCountByUserId,
+				{
+					userId:userId,
+				
+				},
+				true
+					   ).then((res) => {
+						   this.looktotals=res.obj.total;
+					   }).catch(err => {											
+				                           });
+				
+				
+			},
 			getUserInfo(){
 				this.xd_request_post(this.xdServerUrls.xd_getUserInfoByUserId,{
 					userId:this.userId,
@@ -118,8 +133,6 @@
 			timeStamp(res){
 				let dataList=res.obj.list;
 				for(var i=0;i <res.obj.list.length;i++){
-				   var  time=this.xdUniUtils.xd_timestampToTime(res.obj.list[i].createTime);
-					dataList[i].createTime=time;
 					dataList[i].challengeRmb=Math.floor(dataList[i].challengeRmb/100);
 					
 				}
@@ -156,104 +169,6 @@
 	.selfCenter{
 		padding:0 20rpx;
 	}
-.personContent{
-	padding:12rpx 0;
-	display: flex;
-	justify-content: flex-start;
-	.personHead{
-		padding: 6rpx;
-		.imgHead{
-			height: 104rpx;
-			width: 104rpx;
-			display: inline-block;
-			border-radius: 100%;
-		}
-	}
-	.personInfo{
-		margin:0 20rpx;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		.subInfo{
-			font-size: 24rpx;
-			color:#888;
-		}
-	}
-	.personOpt{
-		flex: 1;
-		display: flex;
-		justify-content: flex-end;
-		padding:0;
-		.pay{
-			display: block;
-			font-size: 26rpx;
-			height: 66rpx;
-			background: $xd-color-base;
-			width:200rpx;
-			margin:0;
-		}
-	}
-}
-.moreInfo{
-	padding:20rpx 0;
-	border-bottom: 1px solid #d9d9d9;
-	border-top: 1px solid #d9d9d9;
-	font-size: 26rpx;
-	.link{
-		color:$xd-color-base;
-	}
-	.gender{
-		background:#fd5107;
-		color:#fff;
-		display: inline-block;
-		padding:0 6rpx;
-		border-radius: 100%;
-		font-size: 22rpx;
-		margin-right: 2rpx;
-		// height: 24rpx;
-		// line-height: 24rpx;
-	}
-	.moreInfoRow{
-		display: flex;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		margin:0 0 14rpx 0;
-		&.rowaction{
-			margin-top:18rpx;
-		}
-		.moreInfoIn{
-			width: 170rpx;
-			overflow: hidden;
-			
-			margin:0;
-			padding:0;
-			&.flex1{
-				flex: 1;
-			}
-			text-align: left;
-			.gender{
-				background:#fd5107;
-				color:#fff;
-				display: inline-block;
-				padding:0 6rpx;
-				border-radius: 100%;
-				font-size: 22rpx;
-				margin-right: 2rpx;
-				// height: 24rpx;
-				// line-height: 24rpx;
-			}
-			.boy{
-				background:#66CCFF;
-				color:#fff;
-				display: inline-block;
-				padding:0 6rpx;
-				border-radius: 100%;
-				font-size: 22rpx;
-				margin-right: 2rpx;
-			}
-		}
-	}
-}
 .actionInfo{
 	margin:24rpx 0;
 	.tabbar{
@@ -272,26 +187,5 @@
 		}
 	}
 }
-.actionLi{
-		padding-top: 20rpx;
-		border-bottom: 1upx solid #ffa700;
-		.ali-main{
-			display: flex;
-			}
-			.xd-mag{
-				height: 125rpx;
-				width: 125rpx;
-			}
-		}
-	.boy{
-		background:#66CCFF;
-		color:#fff;
-		display: inline-block;
-		padding:0 6rpx;
-		border-radius: 100%;
-		font-size: 22rpx;
-		margin-right: 2rpx;
-	}
-
 
 </style>

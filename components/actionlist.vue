@@ -24,7 +24,7 @@
 							</view>
 						</view>
 						<view class="text-gray text-sm ">
-							{{item.createTime }}  ({{item.pushCardCount}}/{{item.targetDay}})
+							{{xdUniUtils.xd_timestampToTime(item.createTime,false,true,false) }}  ({{item.pushCardCount}}/{{item.targetDay}})
 						</view>
 					</view>
 					<view v-if="item.challengeRmb>0">

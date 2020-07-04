@@ -2,7 +2,6 @@
 const accountInfo = uni.getAccountInfoSync();
 // env类型
 export const env = accountInfo.miniProgram.envVersion;
-console.log(env)
 const baseApi = {
   // 开发版
   develop: "http://testxingdongdaka.zhidashixun.com",

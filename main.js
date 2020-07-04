@@ -3,7 +3,7 @@ import App from './App';
 import store from './store';
 import xdServerUrls from '@/common/xdServerUrls.js'; // 服务 url
 import xdUniUtils from '@/common/xdUniUtils.js'; // 工具包
-import moment from '@/common/moment.js'
+
 const prePage = () => {
 	let pages = getCurrentPages();
 	let prePage = pages[pages.length - 2];
@@ -24,8 +24,6 @@ Vue.prototype.xdUniUtils = xdUniUtils; //
 Vue.prototype.$store=store;
 Vue.prototype.$api=prePage;
 
-moment.locale('zh-cn');
-Vue.prototype.moment = moment;
 
 App.mpType = 'app'
 

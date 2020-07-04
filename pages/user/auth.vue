@@ -1,5 +1,5 @@
 <template>
-	<view class="container auth">
+	<view class="container auth bg-white">
 		<view class="logo">
 			<img src="/static/logo.png" class="img">
 		</view>
@@ -15,7 +15,7 @@
 		</view>
 		<view class="btns">
 			<button class="btn btn-create"  open-type="getUserInfo" @getuserinfo="bindGetUserInfo">微信信息授权</button>
-			<!-- <button class="btn btn-create"  open-type="getPhoneNumber">微信手机号快速登录</button> -->
+			
 		</view>
 	</view>
 </template>

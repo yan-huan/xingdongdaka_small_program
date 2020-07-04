@@ -1,9 +1,9 @@
 <template>
  <view>
 	<!-- #ifdef MP-WEIXIN -->
-	<view v-if="!hasLogin"><!--  -->
-		<view>
-			<view class='header'>
+	<view ><!--  -->
+		<view class="bg-white">
+			<view class='header bg-white' >
 				<image src='../../static/images/icon/img/xddak.jpg'></image>
 			</view>
 			<view class='content'>
