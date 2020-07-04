@@ -26,7 +26,7 @@
 /* 文章场景相关 */
 /*公共样式*/
 .selfCenter {
-  padding: 30rpx;
+  padding: 0 20rpx;
 }
 .personContent {
   padding: 12rpx 0;

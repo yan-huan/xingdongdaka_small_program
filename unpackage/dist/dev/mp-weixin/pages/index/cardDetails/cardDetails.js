@@ -158,9 +158,8 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
       pushId: '',
       tolist: false,
       conmmmenttext: '请输入评论内容',
-
-      showCardCommentlist: '' };
-
+      showCardCommentlist: '',
+      guanzhu: '关注' };
 
 
   },
@@ -194,6 +193,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
     }
     this.getshowCardComment();
     this.getpushList();
+    this.getLookerList();
   },
   methods: {
     //围观
@@ -216,11 +216,26 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
         if (res.resultCode == 0) {
           that.pusCardLists.onlooker = true;
           that.pusCardLists.lookerCount++;
-          uni.showToast({
-            title: '围观成功',
-            duration: 1000,
-            icon: 'none' });
+          if (uni.getStorageSync("dycwgKey") != 1) {
+            uni.showModal({
+              content: '感谢你的围观鼓励帮助！\r\n如果我未达成，你将瓜分保证金，鼓励帮助【评论量】越多、获得我的【认可度】越高，分得越多。\r\n如果我已达成，你的鼓励帮助有效，我对你的认可度高，我也愿意给你感谢金',
+              showCancel: false,
+              buttonText: '知道了',
+              success: function success(res) {
+                if (res.confirm) {
+                  uni.setStorageSync('dycwgKey', 1);
+                } else if (res.cancel) {
+                  uni.setStorageSync('dycwgKey', 1);
+                }
+              } });
 
+          } else {
+            uni.showToast({
+              title: '围观成功',
+              duration: 1000,
+              icon: 'none' });
+
+          }
         } else if (res.resultCode == 10015) {
           uni.showToast({
             title: '您已经围观了',
@@ -323,9 +338,13 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
 
           _this2.showInput = false;
           _this2.value = '';
-          uni.redirectTo({
-            url: '../cardDetails/cardDetails?pushId=' + _this2.pushId + '&cardId=' + _this2.cardId + '&show=0' });
-
+          /* uni.redirectTo({
+                             	url:'../cardDetails/cardDetails?pushId='+this.pushId+'&cardId='+this.cardId+'&show=0'
+                             }) */
+          if (res.resultCode == 0) {
+            var data = res.obj;
+            _this2.showCardCommentlist = data;
+          }
         });
       } else if (this.inputType == 2) {
         this.xd_request_post(this.xdServerUrls.xd_saveCardComment, {
@@ -335,9 +354,14 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
         true).then(function (res) {
 
           _this2.showInput = false;
-          _this2.value = '',
-          uni.redirectTo({
-            url: '../cardDetails/cardDetails?pushId=' + _this2.pushId + '&cardId=' + _this2.cardId + '&show=0' });
+          _this2.value = '';
+          /* uni.redirectTo({
+                             	url:'../cardDetails/cardDetails?pushId='+this.pushId+'&cardId='+this.cardId+'&show=0'
+                             }) */
+          if (res.resultCode == 0) {
+            var data = res.obj;
+            _this2.showCardCommentlist = data;
+          }
 
         });
 
@@ -372,7 +396,19 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
 
       });
     },
+    getLookerList: function getLookerList() {var _this4 = this;
+      this.xd_request_post(this.xdServerUrls.xd_getLookerByPushId, {
+        pushId: this.pushId },
+      true).
+      then(function (res) {
+        res.obj.list.forEach(function (item) {
+          if (item.userId == uni.getStorageSync('id')) {
+            _this4.guanzhu = '已关注';
+          }
+        });
 
+      });
+    },
     strToArr: function strToArr(res) {
       var dataList = res;
       for (var i = 0; i < res.length; i++) {
@@ -384,6 +420,9 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
       return dataList;
     },
     tags: function tags() {
+      if (this.guanzhu == '已关注') {
+        return;
+      }
       this.xd_request_post(this.xdServerUrls.xd_saveAttention, {
         userId: uni.getStorageSync('id'),
         attentionUserId: this.pusCardLists.userId },
@@ -526,6 +565,20 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var g0 = _vm.xdUniUtils.xd_timestampToTime(
+    _vm.pusCardLists.pushCardList[0].createTime,
+    false,
+    true,
+    false
+  )
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        g0: g0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []

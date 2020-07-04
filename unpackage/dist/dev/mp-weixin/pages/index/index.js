@@ -374,11 +374,27 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _toConsumableArray(arr)
         if (res.resultCode == 0) {
           that.listsTab[index].onlooker = true;
           that.listsTab[index].lookerCount++;
-          uni.showToast({
-            title: '围观成功',
-            duration: 1000,
-            icon: 'none' });
 
+          if (uni.getStorageSync("dycwgKey") != 1) {
+            uni.showModal({
+              content: '感谢你的围观鼓励帮助！\r\n如果我未达成，你将瓜分保证金，鼓励帮助【评论量】越多、获得我的【认可度】越高，分得越多。\r\n如果我已达成，你的鼓励帮助有效，我对你的认可度高，我也愿意给你感谢金',
+              showCancel: false,
+              buttonText: '知道了',
+              success: function success(res) {
+                if (res.confirm) {
+                  uni.setStorageSync('dycwgKey', 1);
+                } else if (res.cancel) {
+                  uni.setStorageSync('dycwgKey', 1);
+                }
+              } });
+
+          } else {
+            uni.showToast({
+              title: '围观成功',
+              duration: 1000,
+              icon: 'none' });
+
+          }
         } else if (res.resultCode == 10015) {
           uni.showToast({
             title: '您已经围观了',

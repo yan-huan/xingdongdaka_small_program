@@ -139,65 +139,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var actionlist = function actionlist() {__webpack_require__.e(/*! require.ensure | components/actionlist */ "components/actionlist").then((function () {return resolve(__webpack_require__(/*! @/components/actionlist.vue */ 173));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var actionlist = function actionlist() {__webpack_require__.e(/*! require.ensure | components/actionlist */ "components/actionlist").then((function () {return resolve(__webpack_require__(/*! @/components/actionlist.vue */ 173));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var usershow = function usershow() {__webpack_require__.e(/*! require.ensure | components/usershow */ "components/usershow").then((function () {return resolve(__webpack_require__(/*! @/components/usershow.vue */ 200));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -226,6 +168,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 {
+  components: {
+    usershow: usershow,
+    actionlist: actionlist },
+
   data: function data() {
     return {
       tab: 0, //行动，围观，收藏
@@ -321,22 +267,26 @@ __webpack_require__.r(__webpack_exports__);
       return dataList;
     },
     getLookerList: function getLookerList() {var _this3 = this;
-      this.xd_request_post(this.xdServerUrls.xd_getLookerByUserId, {
+      this.xd_request_post(this.xdServerUrls.xd_lookerPushListByUserId, {
         userId: this.userId,
         pageNum: 1,
         pageSize: 10 },
       true).
       then(function (res) {
-
         _this3.lookerList = res.obj.list;
         _this3.lookTotal = res.obj.total;
+        _this3.lookerList.forEach(function (item) {
+          if (typeof item.pictures === 'undefined' || item.pictures == '') {
+            item.pictures = '../../static/images/icon/img/title1.png';
+          } else {
+            if (item.pictures.indexOf(",") > -1) {
+              item.pictures = item.pictures.split(",")[0];
+            }
+          }
+        });
+
       });
-    } },
-
-
-
-  components: {
-    actionlist: actionlist } };exports.default = _default;
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

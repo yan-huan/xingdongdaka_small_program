@@ -760,7 +760,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7096,7 +7096,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7117,14 +7117,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7200,7 +7200,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7652,11 +7652,11 @@ var env = accountInfo.miniProgram.envVersion;exports.env = env;
 console.log(env);
 var baseApi = {
   // 开发版
-  develop: "testxingdongdaka.zhidashixun.com",
+  develop: "http://testxingdongdaka.zhidashixun.com",
   // 体验版
-  trial: "testxingdongdaka.zhidashixun.com",
+  trial: "http://testxingdongdaka.zhidashixun.com",
   // 正式版
-  release: "xingdongdaka.zhidashixun.com" };
+  release: "https://xingdongdaka.zhidashixun.com" };
 
 // 系统配置
 var appConfig = {
@@ -7693,8 +7693,9 @@ var appConfig = {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 var _xdConfig = _interopRequireDefault(__webpack_require__(/*! ./xdConfig.js */ 8));var _serverUrls;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+var config = _xdConfig.default.appConfig; // 配置
 
-var serverBaseUrl = _xdConfig.default.appConfig.serverProtocal + '://' + _xdConfig.default.appConfig.serverIp; //动态根据小程序类型自动获取接口地址
+var serverBaseUrl = config.serverIp; //动态根据小程序类型自动获取接口地址
 var serverUrls = (_serverUrls = { //根据接口具体配置
   xd_register: serverBaseUrl + '/xxx', // 注册
   xd_login: serverBaseUrl + '/xxx', // 登录
@@ -7703,6 +7704,7 @@ var serverUrls = (_serverUrls = { //根据接口具体配置
 
   xd_bannerList: serverBaseUrl + '/banner/bannerList', // banner广告
   xd_label: serverBaseUrl + '/label/getLabels', //标签
+  xd_getLabelsById: serverBaseUrl + '/label/getLabelsById', //通过标签id获取标签信息
   xd_tacitlyPushPng: serverBaseUrl + '/publishTarget/tacitlyPushPng', //标签
 
   xd_saveCardReplayComment: serverBaseUrl + '/cardReplayComment/saveCardReplayComment', //保存打卡回复评论
@@ -9210,27 +9212,34 @@ function xd_navigateBack(delta) {
 function xd_timestampToTime(timestamp, times, times1, times2) {
   var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
   var Y = date.getFullYear() + '-';
-  var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-  var D = date.getDate() + ' ';
+  var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1) + '-';
+  var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
   if (times) {
-    var h = date.getHours() + ':';
-    var m = date.getMinutes() + ':';
-    // var m = date.getMinutes() ;
-    var s = date.getSeconds();
-    return M + D + h + m + s;
+    /* var h = date.getHours() + ':';
+               var m = date.getMinutes() + ':';
+               // var m = date.getMinutes() ;
+               var s = date.getSeconds(); */
+    var h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+    var m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+    var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+    return M + D + ' ' + h + m + s;
   }
   if (times1) {
-    var h = date.getHours() + ':';
-    var m = date.getMinutes() + ':';
-    // var m = date.getMinutes() ;
-    var s = date.getSeconds();
-    return Y + M + D + h + m + s;
+    /* var h = date.getHours() + ':';
+                var m = date.getMinutes() + ':';
+                // var m = date.getMinutes() ;
+                var s = date.getSeconds(); */
+    var h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+    var m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+    var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+    return Y + M + D + ' ' + h + m + s;
   }
   if (times2) {
-    var h = date.getHours() + ':';
-    var m = date.getMinutes();
-
-    return Y + M + D + h + m;
+    /* var h = date.getHours() + ':';
+                var m = date.getMinutes() ; */
+    var h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+    var m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+    return Y + M + D + ' ' + h + m;
   }
   return Y + M + D;
 }

@@ -97,6 +97,29 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.__map(_vm.pusCardList, function(item, index) {
+    var m0 = _vm.compareDate(_vm.pusCardList[index - 1], item)
+    var g0 = _vm.xdUniUtils.xd_timestampToTime(
+      item.createTime,
+      false,
+      false,
+      false
+    )
+    return {
+      $orig: _vm.__get_orig(item),
+      m0: m0,
+      g0: g0
+    }
+  })
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -208,6 +231,40 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 {
   data: function data() {
@@ -222,8 +279,12 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
       userId: uni.getStorageSync('id'),
       share: '',
       lookerList: [],
+      looktotal: '',
+      lookNextPageTwo: '',
       pushId: '',
-      isShare: 0 };
+      isShare: 0,
+      labelName: '',
+      guanzhu: '关注' };
 
 
   },
@@ -239,6 +300,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
         console.log(option.isopen);
       }
       this.getpushList();
+      this.getLookerList();
     }
   },
   onShow: function onShow() {
@@ -273,6 +335,15 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
 
   },
   methods: {
+    compareDate: function compareDate(d1, d2) {
+      if (typeof d1 == 'undefined') {
+        return true;
+      }
+      if (typeof d2 == 'undefined') {
+        return true;
+      }
+      return this.xdUniUtils.xd_timestampToTime(d1.createTime, false, false, false) > this.xdUniUtils.xd_timestampToTime(d2.createTime, false, false, false);
+    },
     tabSelect: function tabSelect(e) {
       this.TabCur = e.target.id;
     },
@@ -456,6 +527,23 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
           if (_this2.share != '') {
             _this2.getShareInfo();
           }
+
+          if (typeof _this2.pushList.label != 'undefined') {
+            var labelId_ = '';
+            if (_this2.pushList.label.indexOf(',') > -1) {
+              var labelId_ = _this2.pushList.label.split(',')[0];
+            } else {
+              labelId_ = _this2.pushList.label;
+            }
+            _this2.xd_request_post(_this2.xdServerUrls.xd_getLabelsById, {
+              labelId: labelId_ },
+            true).then(function (res) {
+              if (res.resultCode == 0) {
+                _this2.labelName = res.obj.labelName;
+              }
+            });
+          }
+
         } else {
           uni.showToast({
             title: res.msg,
@@ -508,6 +596,9 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
       this.getLookerList();
     },
     tags: function tags() {
+      if (this.guanzhu == '已关注') {
+        return;
+      }
       this.xd_request_post(this.xdServerUrls.xd_saveAttention, {
         userId: uni.getStorageSync('id'),
         attentionUserId: this.pushList.userId },
@@ -523,12 +614,19 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
     getLookerList: function getLookerList() {var _this5 = this;
       this.xd_request_post(this.xdServerUrls.xd_getLookerByPushId, {
         pushId: this.pushId,
-        pageNum: 1,
+        pageNum: this.lookNextPageTwo,
         pageSize: 10 },
       true).
       then(function (res) {
         _this5.lookerList = res.obj.list;
-        _this5.lookTotal = res.obj.total;
+        _this5.looktotal = res.obj.total;
+        _this5.lookNextPageTwo = res.obj.nextPage;
+        _this5.lookerList.forEach(function (item) {
+          if (item.userId == uni.getStorageSync('id')) {
+            _this5.guanzhu = '已关注';
+          }
+        });
+
       });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

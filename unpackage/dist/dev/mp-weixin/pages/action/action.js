@@ -170,32 +170,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var actionlist = function actionlist() {__webpack_require__.e(/*! require.ensure | components/actionlist */ "components/actionlist").then((function () {return resolve(__webpack_require__(/*! @/components/actionlist.vue */ 173));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
@@ -203,6 +177,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
     return {
       vi: 1,
       tab: 0, //行动，围观，收藏
+      userId: uni.getStorageSync('id'),
       cardList: [],
       lookerList: [],
       maskState: 0,
@@ -364,19 +339,26 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
       }).catch(function (Error) {
         console.log(Error);
       });
-      this.xd_request_post(this.xdServerUrls.xd_getLookerByUserId,
+      this.xd_request_post(this.xdServerUrls.xd_lookerPushListByUserId,
       {
         userId: uni.getStorageSync("id"),
         pageNum: 1,
         pageSize: 10 },
 
-      true).
-
-      then(function (res) {
-
+      true).then(function (res) {
         _this2.lookerList = res.obj.list;
         _this2.nextPageTwo = res.obj.nextPage;
         _this2.looktotal = res.obj.total;
+        _this2.lookerList.forEach(function (item) {
+          if (typeof item.pictures === 'undefined' || item.pictures == '') {
+            item.pictures = '../../static/images/icon/img/title1.png';
+          } else {
+            if (item.pictures.indexOf(",") > -1) {
+              item.pictures = item.pictures.split(",")[0];
+            }
+          }
+        });
+
       }).catch(function (Error) {
         console.log(Error);
       });
@@ -441,7 +423,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
         false).
         then(function (res) {
           _this3.nextPageTwo = res.obj.nextPage;
-          _this3.cardList = _this3.lookerList.concat(res.obj.list);
+          _this3.lookerList = _this3.lookerList.concat(res.obj.list);
           setTimeout(function () {
             uni.hideLoading();
           }, 1000);

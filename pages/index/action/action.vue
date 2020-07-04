@@ -29,8 +29,9 @@
 					</view>
 				</view>
 				
-				<view class="text-content">
-					<text class="contentext" >{{pushList.content}}</text>
+				<view class="text-contents">
+					<text class="contentext" >{{pushList.content}}
+					</text>
 				</view>
 				<view class="grid flex-sub padding-lr"  >
 					<image class="bg-img imgheit"  :src="pushList.pictures" mode="aspectFill"

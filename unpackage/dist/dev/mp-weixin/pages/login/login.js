@@ -204,6 +204,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
         userHead: _this.userInfo.avatarUrl,
         city: _this.userInfo.city,
         province: _this.userInfo.province,
+        sex: _this.userInfo.gender,
         encryptedData: _this.encryptedData,
         iv: _this.iv,
         code: _this.code },

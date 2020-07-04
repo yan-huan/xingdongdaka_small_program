@@ -25,79 +25,8 @@
 /* 透明度 */
 /* 文章场景相关 */
 /*公共样式*/
-.actionLi .ali-top {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
-  color: #888;
-  font-size: 24rpx;
-  line-height: 36rpx;
-  padding: 18rpx 0 12rpx 0;
-}
-.actionLi .ali-main {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-}
-.actionLi .ali-main .ali-main-img ._img {
-  width: 236rpx;
-}
-.actionLi .ali-footer {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
-  padding: 20rpx;
-}
-.actionLi .ali-footer .actionBar {
-  position: relative;
-  background: #f9ebe5;
-  color: #e17175;
-}
-.actionLi .ali-footer .actionBar .price {
-  color: #ea030b;
-}
-.actionLi .ali-btns {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-}
-.actionLi .ali-btns .btn {
-  text-align: center;
-  padding: 0;
-  font-size: 26rpx;
-  height: 66rpx;
-  background: #ffa700;
-  width: 200rpx;
-  margin: 0 20rpx 0 0;
-}
-.buttclass {
-  background: #f9ebe5;
-  color: #e17175;
-  height: 40rpx;
-  border-radius: 20rpx;
-  font-size: 25rpx;
-  margin-top: -4px;
-}
-button::after {
-  border: none;
-}
-.buttonShare {
-  background: #f9ebe5;
-  color: #e17175;
-  border-radius: 20rpx;
-  font-size: 25rpx;
-  line-height: 1.4;
-}
-.ali_right {
-  font-size: 40rpx;
+.imgheit {
+  height: 320rpx;
+  width: 100%;
 }
 

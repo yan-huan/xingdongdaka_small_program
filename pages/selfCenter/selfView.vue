@@ -1,44 +1,8 @@
 <template>
 	<view class="selfCenter">
-		
-		<view class="personContent">
-			<view class="personHead" >
-				<image class="imgHead" :src="userInfo.userHead" ></image>
-				
-			</view>
-			<view class="personInfo"  >
-				<view class="xd-list-title-text name ">
-					<text>{{userInfo.userName}}</text>
-				</view>
-				
-			</view>
-			<view class="personOpt">
-				
-			</view>
-		</view>
-		<view class="moreInfo">
-			<view class="moreInfoRow">
-				<view class="moreInfoIn">
-					<text>{{userInfo.province}}.{{userInfo.city}}</text>
-				</view>
-		
-				<view class="moreInfoIn" >
-					<text v-if="userInfo.sex==1" class="boy">♂</text>
-					<text v-else-if="userInfo.sex==0" class="gender">♀</text>
-					<text v-else class="boy">密</text>
-					
-				</view>
-			
-				<view class="moreInfoIn flex1" v-if="userInfo.schoolName">
-					<text>{{userInfo.schoolName}}</text>
-				</view>
-			
-			</view>
-		
-		</view>
-		
+		<usershow  :list="userInfo"></usershow>
 		<view class="actionInfo">
-			<view class="tabbar">
+			<view class="tabbar bg-white">
 				<view class="tab " :class="tab===0?'active':''" @click="tab=0" >
 					<text>行动 ({{total}})</text>
 				</view>
@@ -52,32 +16,7 @@
 					<actionlist v-for="(item,index) in list" :key="index" :tab="tab" :showBut='1' :item='item'></actionlist>
 				</view>
 				<view class="actionLook" v-show="tab===1">
-					<block v-for="(attention, index) in lookerList" :key="index" >
-						<view class="actionLi" >
-							<view class="ali-main" @tap="goPush(attention.id)">
-								<view class="ali-main-img">
-									<image class='xd-mag xd-box-shadow' :src="attention.pictures"></image>
-								</view>
-								<view class="lli-main-content xd-list-body ">
-									<view class="xd-list-title-text">
-										<text>{{attention.content}}</text>
-									</view>
-									<!-- <view>
-										<text>{{attention.pushCreateTime}}</text>
-									</view> -->
-									<!-- <view  >
-										<text v-if="attention.sex==1" class="boy">♂</text>
-										<text v-else-if="attention.sex==0" class="gender">♀</text>
-										<text v-else class="boy">密</text>
-										
-									</view> -->
-								</view>
-							</view>
-						</view>
-					</block>
-				</view>
-				<view class="actionFavorite" v-show="tab===2">
-					<actionlist v-for="(item,index) in [1,2]" :key="index" :tab="tab"  :showBut='1' v-on:lookerClick="lookerClick"  :userId='userId'></actionlist>
+					<actionlist v-for="(item,index) in lookerList" :key="index" :tab="tab" :showBut='1' :item='item'></actionlist>
 				</view>
 			</view>
 		</view>
@@ -86,7 +25,12 @@
 
 <script>
 	import actionlist from "@/components/actionlist.vue"
+	import usershow from "@/components/usershow.vue"
 	export default {
+		components:{
+			usershow,
+			actionlist
+		},
 		data() {
 			return {
 				tab:0,//行动，围观，收藏
@@ -205,15 +149,12 @@
 			
 			
 		},
-		components:{
-			actionlist
-		}
 	}
 </script>
 
 <style  lang="scss">
 	.selfCenter{
-		padding:30rpx;
+		padding:0 20rpx;
 	}
 .personContent{
 	padding:12rpx 0;

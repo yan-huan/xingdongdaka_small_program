@@ -72,6 +72,7 @@ export default {
 					   userHead: _this.userInfo.avatarUrl,
 					   city:_this.userInfo.city,
 					   province:_this.userInfo.province,
+					    sex:_this.userInfo.gender,
 				   encryptedData:_this.encryptedData,
 				   iv:_this.iv,
 				   code:_this.code,

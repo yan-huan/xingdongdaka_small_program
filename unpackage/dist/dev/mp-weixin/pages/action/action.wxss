@@ -26,11 +26,8 @@
 /* 文章场景相关 */
 /*公共样式*/
 .action {
-  padding: 0 30rpx 150rpx 30rpx;
+  padding: 0 20rpx 0 20rpx;
   font-size: 30rpx;
-}
-.actionInfo {
-  margin: 24rpx 0;
 }
 .actionInfo .tabbar {
   font-size: 28rpx;
@@ -82,45 +79,6 @@
   background: #ffa700;
   font-size: 28rpx;
   border-radius: 40rpx;
-}
-.ali-main {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-          flex-direction: row;
-  padding-top: 10rpx;
-}
-.xd-mag {
-  height: 125rpx;
-  width: 125rpx;
-}
-.lli-main-content {
-  padding-top: 20rpx;
-}
-.gender {
-  background: #fd5107;
-  color: #fff;
-  display: inline-block;
-  padding: 0 6rpx;
-  border-radius: 100%;
-  font-size: 22rpx;
-  margin-right: 2rpx;
-}
-.boy {
-  background: #66CCFF;
-  color: #fff;
-  display: inline-block;
-  padding: 0 6rpx;
-  border-radius: 100%;
-  font-size: 22rpx;
-  margin-right: 2rpx;
-}
-.userhead {
-  height: 120rpx;
-  width: 120rpx;
 }
 .mask {
   display: -webkit-box;

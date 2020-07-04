@@ -1,45 +1,20 @@
 <template>
 	<view class="action">
 		<view class="actionInfo">
-			<view class="tabbar">
+			<view class="tabbar bg-white">
 				<view class="tab " :class="tab===0?'active':''" @click="tabs(0)">
 					<text>行动 ({{total}})</text>
 				</view>
 				<view class="tab" :class="tab===1?'active':''" @click="tabs(1)">
 					<text>我围观行动({{looktotal}})</text>
 				</view>
-				<view class="tab" :class="tab===2?'active':''"  v-show="false">
-					<text>收藏 ({{0}})</text>
-				</view>
 			</view>
 			<view class="actionTabList">
 				<view class="actionMy" v-show="tab===0">
-					<actionlist v-for="(item,index) in cardList" :item="item" :key="index" :tab="tab" :index='index' v-on:toggleMask="toggleMask"></actionlist>
+					<actionlist v-for="(item,index) in cardList" :item="item" :key="index" :tab="tab" :index='index' v-on:toggleMask="toggleMask" :userId="userId"></actionlist>
 				</view>
 				<view class="actionLook" v-show="tab===1">
-					<block v-for="(attention, index) in lookerList" :key="index" >					
-							<view class="ali-main">
-								<view class="ali-main-img" >
-									<image class='userhead xd-box-shadow' :src="attention.pictures" @tap="toAction(attention.id)"></image>
-								</view>
-								<view class="lli-main-content xd-list-body ">
-									<view class="xd-list-title-text" @tap="toAction(attention.id)">
-										<text>{{attention.content}}</text>
-									</view>
-									<!-- <view  >
-										<text v-if="attention.sex==1" class="boy">♂</text>
-										<text v-else-if="attention.sex==0" class="gender">♀</text>
-										<text v-else class="boy">密</text>
-									</view> -->
-								</view>
-								<view class="lli-main-content">
-									
-								</view>
-							</view>
-					</block>
-				</view>
-				<view class="actionFavorite" v-show="tab===2">
-					<actionlist v-for="(item,index) in cardList" :item="item" :key="index" :tab="tab"></actionlist>
+					<actionlist v-for="(item,index) in lookerList" :item="item" :key="index" :tab="tab" :index='index' v-on:toggleMask="toggleMask" :userId="userId"></actionlist>
 				</view>
 			</view>
 		</view>	
@@ -70,6 +45,7 @@ export default {
 		return {
 			vi:1,
 			tab:0,//行动，围观，收藏
+			userId:uni.getStorageSync('id'),
 			cardList:[],
 			lookerList:[],
 			maskState:0,
@@ -315,7 +291,7 @@ export default {
 					 false
 					 	   ).then(res=>{
 					 		   this.nextPageTwo=res.obj.nextPage;
-					 		this.cardList = this.lookerList.concat(res.obj.list);					
+					 		this.lookerList = this.lookerList.concat(res.obj.list);					
 					 		setTimeout(function () {
 					 			uni.hideLoading()
 					 		}, 1000);	
@@ -366,11 +342,10 @@ export default {
 
 <style lang="scss">
 .action {
-	padding: 0 30rpx 150rpx 30rpx;
+	padding: 0 20rpx 0 20rpx;
 	font-size: 30rpx;
 }
 .actionInfo{
-	margin:24rpx 0;
 	.tabbar{
 		font-size: 28rpx;
 		display: flex;
@@ -411,43 +386,6 @@ export default {
 
 		}
 	}
-	}
-	.ali-main{
-		display: flex;
-		flex-direction: row;
-		padding-top: 10rpx;
-		}
-		.xd-mag{
-			height: 125rpx;
-			width: 125rpx;
-		}
-		.lli-main-content{
-			padding-top: 20rpx;
-		}
-		
-	.gender{
-		background:#fd5107;
-		color:#fff;
-		display: inline-block;
-		padding:0 6rpx;
-		border-radius: 100%;
-		font-size: 22rpx;
-		margin-right: 2rpx;
-		// height: 24rpx;
-		// line-height: 24rpx;
-	}
-	.boy{
-		background:#66CCFF;
-		color:#fff;
-		display: inline-block;
-		padding:0 6rpx;
-		border-radius: 100%;
-		font-size: 22rpx;
-		margin-right: 2rpx;
-	}
-	.userhead{
-		height: 120rpx;
-		width: 120rpx;
 	}
 	
 	.mask{

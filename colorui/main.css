@@ -2250,6 +2250,12 @@ button.cuIcon.lg {
 	font-size: 30upx;
 	margin-bottom: 20upx;
 }
+.cu-card.dynamic>.cu-item>.text-contents {
+	padding: 0 30upx 0;
+	overflow: hidden;
+	font-size: 30upx;
+	margin-bottom: 20upx;
+}
 
 .cu-card.dynamic>.cu-item .square-img {
 	width: 100%;
@@ -3435,7 +3441,7 @@ scroll-view.cu-steps .cu-item {
 }
 
 .bg-blue {
-	background-color: #E0FFFF;
+	background-color:  rgb(235, 244, 255);;
 	color: #000000;
 }
 
