@@ -250,9 +250,9 @@
 								 duration: 1000,
 								 icon:'none',
 							   })
-						   }else if(res.resultCode==10015){
+						   }else{
 							   uni.showToast({
-								title:'您已经围观了',
+								title:res.msg,
 								 duration: 1000,
 								 icon:'none',
 							   })
@@ -316,18 +316,18 @@
 												this.pushList.giveLike++;
 						   }else{
 						   uni.showToast({
-														title:'已经赞过了',
-														 duration: 1000,
-														 icon:'none',
+								title:'已经赞过了',
+								 duration: 1000,
+								 icon:'none',
 						   })}
 					  }).catch(err => {
-					  						   if(err=='操作失败'){
-					  							   uni.showToast({
-					  								title:'已经赞过了',
-					  								 duration: 1000,
-					  								 icon:'none',
-					  							   })
-					  						   }
+						   if(err=='操作失败'){
+							   uni.showToast({
+								title:'已经赞过了',
+								 duration: 1000,
+								 icon:'none',
+							   })
+						   }
 					
 				})
 				
@@ -467,8 +467,11 @@
 					this.looktotal=res.obj.total;
 					this.lookNextPageTwo=res.obj.nextPage;
 					this.lookerList.forEach(item =>{
-						if(item.userId == uni.getStorageSync('id')){
+						if(item.lookUserId == uni.getStorageSync('id')){
 							this.guanzhu ='已关注'
+						}
+						if(item.userId == uni.getStorageSync('id')){
+							this.guanzhu ='未关注'
 						}
 					})
 					
