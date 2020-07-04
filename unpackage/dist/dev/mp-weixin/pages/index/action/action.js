@@ -405,9 +405,9 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
             duration: 1000,
             icon: 'none' });
 
-        } else if (res.resultCode == 10015) {
+        } else {
           uni.showToast({
-            title: '您已经围观了',
+            title: res.msg,
             duration: 1000,
             icon: 'none' });
 
@@ -622,8 +622,11 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
         _this5.looktotal = res.obj.total;
         _this5.lookNextPageTwo = res.obj.nextPage;
         _this5.lookerList.forEach(function (item) {
-          if (item.userId == uni.getStorageSync('id')) {
+          if (item.lookUserId == uni.getStorageSync('id')) {
             _this5.guanzhu = '已关注';
+          }
+          if (item.userId == uni.getStorageSync('id')) {
+            _this5.guanzhu = '未关注';
           }
         });
 
