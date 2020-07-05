@@ -190,16 +190,16 @@
 						   if(res.resultCode==0){
 							   that.pusCardLists.onlooker=true
 							   that.pusCardLists.lookerCount++;
-							  if(uni.getStorageSync("dycwgKey") != 1){
+							  if(uni.getStorageSync(new Date().toLocaleDateString()+"dycwgKey") != 1){
 								   uni.showModal({
-										 content: '感谢你的围观鼓励帮助！\r\n如果我未达成，你将瓜分保证金，鼓励帮助【评论量】越多、获得我的【认可度】越高，分得越多。\r\n如果我已达成，你的鼓励帮助有效，我对你的认可度高，我也愿意给你感谢金',
+										 content: '感谢你的围观鼓励帮助！如果我未达成，你将瓜分保证金，鼓励帮助【评论量】越多、获得我的【认可度】越高，分得越多。如果我已达成，你的鼓励帮助有效，我对你的认可度高，我也愿意给你感谢金',
 										 showCancel: false,
 										 buttonText: '知道了',
 										 success: (res) => {
 										   if (res.confirm) {
-											 uni.setStorageSync('dycwgKey',1);
+											 uni.setStorageSync(new Date().toLocaleDateString()+'dycwgKey',1);
 										   } else if (res.cancel) {
-											 uni.setStorageSync('dycwgKey',1);
+											 uni.setStorageSync(new Date().toLocaleDateString()+'dycwgKey',1);
 										   }
 										 }
 									})
