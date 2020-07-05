@@ -743,5 +743,4 @@
 		height: 208upx;
 		margin: 0 5.5%;
 	}
-		
 </style>
