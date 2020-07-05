@@ -26,7 +26,10 @@
 					<text class="contentext" v-if="list.pushCardCount==0" @tap="goPageCard(list)">{{list.content}}</text>
 				</view>
 				
-				<view class="grid flex-sub padding-lr" :class="list.pushCardList[0].pictures.length>1?'col-3 grid-square':'col-1'" v-if="list.pushCardCount>0">
+				<view class="grid flex-sub padding-lr" :class="list.pushCardList[0].videos!=''?'col-3 grid-square':'col-1'" v-if="list.pushCardList[0].videos!=undefined && list.pushCardList[0].videos!=null && list.pushCardList[0].videos!=''">
+					<video  :src="list.pushCardList[0].videos" controls></video>
+				</view>
+				<view class="grid flex-sub padding-lr" :class="list.pushCardList[0].pictures.length>1?'col-3 grid-square':'col-1'" v-else-if="list.pushCardCount>0">
 					<view class="bg-img" :class="list.pushCardList[0].pictures.length>1?'':'only-img'" :style="{backgroundImage:'url('+item+')'}"
 					 v-for="(item,index) in list.pushCardList[0].pictures" :key="index" @tap="goPageImg(list.pushCardList[0].pictures)" v-if="list.pushCardList[0].pictures.length>0">
 					</view>
@@ -50,7 +53,7 @@
 					</view>
 					<view>
 						<button class="cu-btn bg-light-blue sm round" v-if="list.userId==userId"  :id="index" open-type="share">分享邀请</button>
-						<button class="cu-btn bg-orange sm round  " v-else-if="list.onlooker"  @tap="lookerClick(list,index)">为你打call</button>
+						<button class="cu-btn bg-orange sm round  " v-else-if="list.onlooker"  open-type="share">为TA打Call</button>
 						<button class="cu-btn bg-green sm round  " v-else-if="list.userId!=userId && !list.onlooker&&list.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(list,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{list.onlookerCount}}</text>

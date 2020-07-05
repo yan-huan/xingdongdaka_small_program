@@ -23,15 +23,15 @@
 				<view class="swiper-banner">
 				  <swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-color="#aeaeae" indicator-active-color="#ffffff">
 					<swiper-item v-for="(item , index) in bannerList" :key="index">
-						<image v-if="index<bannerList.length-1" :src="item.bannerImage" @tap="tonewurl(item.bannerUrl)" ></image>
+						<image v-if="index<bannerList.length" :src="item.bannerImage" @tap="tonewurl(item.bannerUrl)" ></image>
 						<view class="adclass "  v-else>
-							<ad
+							<!-- <ad
 							   unit-id="adunit-333032749ac71266"
 							   bindload="adLoad"
 							   :ad-intervals="adtime"
 							   binderror="adError"
 							   bindclose="adClose"
-							 ></ad>
+							 ></ad> -->
 						</view>
 					</swiper-item>
 				  </swiper>
@@ -245,7 +245,7 @@
 							   
 							   if(uni.getStorageSync(new Date().toLocaleDateString()+"dycwgKey") != 1){
 								   uni.showModal({
-										 content: '感谢你的围观鼓励帮助！如果我未达成，你将瓜分保证金，鼓励帮助【评论量】越多、获得我的【认可度】越高，分得越多。如果我已达成，你的鼓励帮助有效，我对你的认可度高，我也愿意给你感谢金',
+										 content: '感谢你的围观鼓励帮助！如果TA未达成，你将瓜分保证金，为TA打Call越多、【评论量】越多、获得我的【认可度】越高，分得越多。如果TA已达成，你的鼓励帮助有效，TA对你的认可度高，TA也愿意给你感谢金',
 										 showCancel: false,
 										 buttonText: '知道了',
 										 success: (res) => {

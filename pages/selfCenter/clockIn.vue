@@ -1,6 +1,6 @@
  <template>
 	 <view class=" bg-white">
-		 <view class="padding margin-bottom-df">
+		 <view class="padding marginbottom">
 			 <form @submit="submitFrom">
 			 			 <view class="cu-list bg-blue menu-avatar">
 			 				<view class="flex flex-wrap padding justify-between align-center">
@@ -16,14 +16,14 @@
 			 						</view>
 			 					</view>
 			 				</view>
-			 				<view class=" flex  padding">
-			 					<image class="bg-img imgheit"  :src="pushList.pictures" mode="aspectFill"
+			 				<view class=" flex  p-xs padding mb-sm ">
+			 					<image class="flex-sub bg-img imgheit"  :src="pushList.pictures" mode="aspectFill"
 			 					 @tap="goPageImg(pushList.pictures)" v-if="pushList.pictures!=''">
 			 					</image>
-			 					<image class="bg-img imgheit"  :src="audioPlaySrc" mode="aspectFill"
+			 					<image class="flex-sub bg-img imgheit"  :src="audioPlaySrc" mode="aspectFill"
 			 					 @tap="goPageImg(audioPlaySrc)" v-else @error="error">
 			 					</image>
-			 					<view class="text-content textheit" @tap="goAction(pushList.id)">
+			 					<view class="flex-twice text-content textheit" @tap="goAction(pushList.id)">
 			 						<text class="contentext" >{{pushList.content}}</text>		
 			 					</view>	
 			 				</view>		
@@ -46,7 +46,7 @@
 			 					<view class="text-xl">
 			 						<text class="lg text-gray cuIcon-camera"></text>
 			 					</view>
-			 					<text class=" margin-left-xs">上传图片、视频、录音</text>
+			 					<text class=" margin-left-xs">上传图片、视频(视频小于20M)</text>
 			 				</view>
 			 				<view class="padding bg-white" v-if="loading>1">
 			 					<view class="cu-progress round sm striped active">
@@ -104,9 +104,9 @@
 					<view class="">
 						<button type="default"  @tap="popUpVideo">上传视频</button>
 					</view>
-					<view class="">
+					<!-- <view class="">
 						<button type="default"  @tap="showmp">录音上传</button>
-					</view>
+					</view> -->
 		 		</view>
 		 	</view>
 		 </view>
@@ -344,29 +344,38 @@ export default {
 					sourceType: ['album'],
 					success: (responent) => {
 						let videoFile = responent.tempFilePath;
-						
-						const uploadTask =uni.uploadFile({
-							url:that.xdServerUrls.xd_uploadFile,
-							method:"POST",
-							formData: {
-								'userId': uni.getStorageSync('id'),
-							},
-							filePath:videoFile,
-							name:'files',
-							success: (res) => {                    
-								that.videodata = JSON.parse(res.data).obj[0] 
-						
-							}
-						})
-						uploadTask.onProgressUpdate((res) => {
-							 that.loading=res.progress
-							 if(that.loading>=100){
-								 setTimeout(function(){
-									  that.loading=0;
-											},1000);
-							 }
-					
-						 });  
+						if(responent.size<20480){
+							const uploadTask =uni.uploadFile({
+								url:that.xdServerUrls.xd_uploadFile,
+								method:"POST",
+								formData: {
+									'userId': uni.getStorageSync('id'),
+								},
+								filePath:videoFile,
+								name:'files',
+								success: (res) => {                    
+									that.videodata = JSON.parse(res.data).obj[0] 
+							
+								}
+							})
+							uploadTask.onProgressUpdate((res) => {
+								 that.loading=res.progress
+								 if(that.loading>=100){
+									 setTimeout(function(){
+										  that.loading=0;
+												},1000);
+								 }
+												
+							 });  
+						}else{
+							uni.showToast({
+							    title: '视频应<20M',
+								mask:true,
+							    duration: 2000,
+								
+							});
+							return false
+						}
 						
 					}
 				})
@@ -490,5 +499,15 @@ export default {
 		z-index: 100;
 		right: 10upx;
 		top: 10upx;
+	}
+	.marginbottom{
+		margin-bottom: 30upx;
+	}
+	.textheit{
+		overflow: hidden;
+		text-overflow:ellipsis;
+		display:-webkit-box; 
+		-webkit-box-orient:vertical;
+		-webkit-line-clamp:2; ; 
 	}
 </style>

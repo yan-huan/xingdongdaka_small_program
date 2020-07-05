@@ -52,7 +52,8 @@
 			</view>
 			<view class="flex padding justify-between" >
 				<view>
-					<button class="cu-btn bg-pink sm round" v-if="item.userId==userId || item.onlooker "  :id="index" open-type="share">邀请围观</button>
+					<button class="cu-btn bg-pink sm round" v-if="item.userId==userId "  :id="index" open-type="share">分享邀请</button>
+					<button class="cu-btn bg-orange sm round  " v-else-if="item.onlooker" open-type="share">为TA打Call</button>
 					<button class="cu-btn bg-pink sm round  " v-else-if="item.userId!=userId && !item.onlooker&&item.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
 					<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(item,index)">围观分钱</button>
 					<text class="text-gray text-df ">{{item.onlookerCount}}</text>

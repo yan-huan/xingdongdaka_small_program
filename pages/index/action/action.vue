@@ -44,7 +44,7 @@
 				<view class="flex padding justify-between" >
 					<view>
 						<button class="cu-btn bg-light-blue sm round" v-if="pushList.userId==userId"  :id="index" open-type="share">分享邀请</button>
-						<button class="cu-btn bg-orange sm round" v-else-if="pushList.onlooker"  :id="index" open-type="share">为你打call</button>
+						<button class="cu-btn bg-orange sm round" v-else-if="pushList.onlooker"  :id="index" open-type="share">为TA打Call</button>
 						<button class="cu-btn bg-green sm round  " v-else-if="pushList.userId!=userId && !pushList.onlooker&&pushList.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(pushList,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{pushList.onlookerCount}}</text>
@@ -70,8 +70,11 @@
 							<view class="">
 								<view class="cu-tag line-green">第{{pusCardList.length-index}}次打卡</view>
 							</view>
-							<view class="margin-top margin-left-lg textcon" @tap="gocardComentList(item,0)">{{item.content}}</view>
-							<view class="grid flex-sub padding-lr"  >
+							<view  class="margin-top margin-left-lg textcon" @tap="gocardComentList(item,0)">{{item.content}}</view>
+							<view class="videheit" v-if="item.videos!=''&&item.videos!=undefined &&item.videos!=null ">
+								<video class="videos"  :src="item.videos" controls></video>
+							</view>
+							<view v-else class="grid flex-sub padding-lr" v-else  >
 								<image class="bg-img imgheit"  :src="item.pictures[0]" mode="aspectFill"
 								 @tap="goPageImg(item.pictures)" v-if="item.pictures.length!=''">
 								</image>
@@ -559,5 +562,10 @@
 	}
 
 	.bg-light-blue{background-color: #007AFF;}
+	
+	.videos{
+		width: 500upx;
+		height: 325upx;
+	}
 
 </style>

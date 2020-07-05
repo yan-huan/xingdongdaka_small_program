@@ -63,4 +63,8 @@
 .bg-light-blue.data-v-085dabaf {
   background-color: #007AFF;
 }
+.videoheit.data-v-085dabaf {
+  width: 100%;
+  height: 360rpx;
+}
 

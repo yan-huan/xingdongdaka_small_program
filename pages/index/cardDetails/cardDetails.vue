@@ -21,7 +21,10 @@
 				<view class="text-contents">
 					<view class="cu-tag bg-pink radius sm" >第{{pusCardLists.pushCardCount}}次打卡</view>
 					<text class="contentext" >{{showCardCommentlist.pushCard.content}}</text>			
-				</view>			
+				</view>	
+				<view class="padding-lr" v-if="showCardCommentlist.pushCard.videos!=''&&showCardCommentlist.pushCard.videos!=undefined&&showCardCommentlist.pushCard.videos!=null">
+					<video class="videoheit" :src="showCardCommentlist.pushCard.videos" controls></video>
+				</view>
 				<view class="grid flex-sub padding-lr" :class="showCardCommentlist.pushCard.pictures.length>1?'col-3 grid-square':'col-1'" >
 					<view class="bg-img" :class="showCardCommentlist.pushCard.pictures.length>1?'':'only-img'" :style="{backgroundImage:'url('+item+')'}"
 					 v-for="(item,index) in showCardCommentlist.pushCard.pictures" :key="index" @tap="goPageImg(showCardCommentlist.pushCard.pictures)" >
@@ -64,7 +67,7 @@
 					</view>
 					<view>
 						<button class="cu-btn bg-light-blue sm round" v-if="pusCardLists.userId==userId"  :id="index" open-type="share">分享邀请</button>
-						<button class="cu-btn bg-orange sm round  " v-else-if="pusCardLists.onlooker"  @tap="lookerClick(list,index)">为你打call</button>
+						<button class="cu-btn bg-orange sm round  " v-else-if="pusCardLists.onlooker" open-type="share">为TA打Call</button>
 						<button class="cu-btn bg-green sm round  " v-else-if="pusCardLists.userId!=userId && !pusCardLists.onlooker&&pusCardLists.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(pusCardLists,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{pusCardLists.onlookerCount}}</text>
@@ -455,4 +458,8 @@
 		margin-left: 30upx;
 	}
 	.bg-light-blue{background-color: #007AFF;}
+	.videoheit{
+		width: 100%;
+		height: 360upx;
+	}
 </style>

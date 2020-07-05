@@ -66,4 +66,14 @@
   right: 10rpx;
   top: 10rpx;
 }
+.marginbottom {
+  margin-bottom: 30rpx;
+}
+.textheit {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
 

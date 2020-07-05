@@ -476,29 +476,38 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
         sourceType: ['album'],
         success: function success(responent) {
           var videoFile = responent.tempFilePath;
+          if (responent.size < 20480) {
+            var uploadTask = uni.uploadFile({
+              url: that.xdServerUrls.xd_uploadFile,
+              method: "POST",
+              formData: {
+                'userId': uni.getStorageSync('id') },
 
-          var uploadTask = uni.uploadFile({
-            url: that.xdServerUrls.xd_uploadFile,
-            method: "POST",
-            formData: {
-              'userId': uni.getStorageSync('id') },
+              filePath: videoFile,
+              name: 'files',
+              success: function success(res) {
+                that.videodata = JSON.parse(res.data).obj[0];
 
-            filePath: videoFile,
-            name: 'files',
-            success: function success(res) {
-              that.videodata = JSON.parse(res.data).obj[0];
+              } });
 
-            } });
+            uploadTask.onProgressUpdate(function (res) {
+              that.loading = res.progress;
+              if (that.loading >= 100) {
+                setTimeout(function () {
+                  that.loading = 0;
+                }, 1000);
+              }
 
-          uploadTask.onProgressUpdate(function (res) {
-            that.loading = res.progress;
-            if (that.loading >= 100) {
-              setTimeout(function () {
-                that.loading = 0;
-              }, 1000);
-            }
+            });
+          } else {
+            uni.showToast({
+              title: '视频应<20M',
+              mask: true,
+              duration: 2000 });
 
-          });
+
+            return false;
+          }
 
         } });
 
