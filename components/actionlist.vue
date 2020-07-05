@@ -39,7 +39,7 @@
 				</view>
 			</view>
 			
-			<view class="text-content padding-lr">
+			<view class="text-content padding-lr textcen">
 				<text class="contentext" @tap="goPageCard(item)" >{{item.content}}</text>
 			</view>
 			<view class="grid flex-sub padding-lr"  >
@@ -112,9 +112,16 @@
 </script>
 
 <style  lang="scss">
-	// page{background: #fcfcfc;}
+
 	.imgheit{
 		height: 320upx;
 		width: 100%;
+	}
+	.textcen{
+		max-height: 6.4em;
+		overflow: hidden;
+		font-size: 30rpx;
+		margin-bottom: 20rpx;
+
 	}
 </style>

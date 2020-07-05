@@ -31,7 +31,11 @@
 }
 .textheit.data-v-085dabaf {
   width: 80%;
-  height: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 .cu-barbox.data-v-085dabaf {
   position: fixed;

@@ -29,4 +29,10 @@
   height: 320rpx;
   width: 100%;
 }
+.textcen {
+  max-height: 6.4em;
+  overflow: hidden;
+  font-size: 30rpx;
+  margin-bottom: 20rpx;
+}
 

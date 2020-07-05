@@ -110,20 +110,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var g0 = _vm.xdUniUtils.xd_timestampToTime(
-    _vm.pusCardLists.pushCardList[0].createTime,
-    false,
-    true,
-    false
-  )
-  _vm.$mp.data = Object.assign(
-    {},
-    {
-      $root: {
-        g0: g0
-      }
-    }
-  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -281,7 +267,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
 
       value: '',
       id: uni.getStorageSync('id'),
-      userId: '',
+      userId: uni.getStorageSync('id'),
       inputType: 2, //2评论，1回复
       cardId: '',
       dataCardId: '',
@@ -292,7 +278,8 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
       tolist: false,
       conmmmenttext: '请输入评论内容',
       showCardCommentlist: '',
-      guanzhu: '关注' };
+      guanzhu: '关注',
+      pushCardCreateTime: '' };
 
 
   },
@@ -348,17 +335,17 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
 
         if (res.resultCode == 0) {
           that.pusCardLists.onlooker = true;
-          that.pusCardLists.lookerCount++;
-          if (uni.getStorageSync("dycwgKey") != 1) {
+          that.pusCardLists.onlookerCount++;
+          if (uni.getStorageSync(new Date().toLocaleDateString() + "dycwgKey") != 1) {
             uni.showModal({
-              content: '感谢你的围观鼓励帮助！\r\n如果我未达成，你将瓜分保证金，鼓励帮助【评论量】越多、获得我的【认可度】越高，分得越多。\r\n如果我已达成，你的鼓励帮助有效，我对你的认可度高，我也愿意给你感谢金',
+              content: '感谢你的围观鼓励帮助！如果我未达成，你将瓜分保证金，鼓励帮助【评论量】越多、获得我的【认可度】越高，分得越多。如果我已达成，你的鼓励帮助有效，我对你的认可度高，我也愿意给你感谢金',
               showCancel: false,
               buttonText: '知道了',
               success: function success(res) {
                 if (res.confirm) {
-                  uni.setStorageSync('dycwgKey', 1);
+                  uni.setStorageSync(new Date().toLocaleDateString() + 'dycwgKey', 1);
                 } else if (res.cancel) {
-                  uni.setStorageSync('dycwgKey', 1);
+                  uni.setStorageSync(new Date().toLocaleDateString() + 'dycwgKey', 1);
                 }
               } });
 
@@ -526,7 +513,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
         var time = _this3.xdUniUtils.xd_timestampToTime(res.obj.createTime, false, false, true);
         data.createTime = time;
         _this3.pusCardLists = data;
-
+        _this3.pushCardCreateTime = _this3.xdUniUtils.xd_timestampToTime(_this3.pusCardLists.pushCardList[0].createTime, false, true, false);
       });
     },
     getLookerList: function getLookerList() {var _this4 = this;
@@ -539,7 +526,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
             _this4.guanzhu = '已关注';
           }
           if (item.userId == uni.getStorageSync('id')) {
-            _this4.guanzhu = '未关注';
+            _this4.guanzhu = '';
           }
         });
 

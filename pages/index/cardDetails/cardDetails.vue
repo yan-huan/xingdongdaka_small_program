@@ -18,7 +18,7 @@
 						</view>
 					</view>
 				</view>				
-				<view class="text-content">
+				<view class="text-contents">
 					<view class="cu-tag bg-pink radius sm" >第{{pusCardLists.pushCardCount}}次打卡</view>
 					<text class="contentext" >{{showCardCommentlist.pushCard.content}}</text>			
 				</view>			
@@ -425,7 +425,11 @@
 	}
 	.textheit{
 		width: 80%;
-		height: auto;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		display:-webkit-box; 
+		-webkit-box-orient:vertical;
+		-webkit-line-clamp:2; ; 
 	}
 	.cu-barbox{
 		position: fixed;

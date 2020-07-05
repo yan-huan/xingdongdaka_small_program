@@ -69,7 +69,7 @@
 							<view class="">
 								<view class="cu-tag line-green">第{{pusCardList.length-index}}次打卡</view>
 							</view>
-							<view class="margin-top margin-left-lg" @tap="gocardComentList(item,0)">{{item.content}}</view>
+							<view class="margin-top margin-left-lg textcon" @tap="gocardComentList(item,0)">{{item.content}}</view>
 							<view class="grid flex-sub padding-lr"  >
 								<image class="bg-img imgheit"  :src="item.pictures[0]" mode="aspectFill"
 								 @tap="goPageImg(item.pictures)" v-if="item.pictures.length!=''">
@@ -548,5 +548,11 @@
 			}
 		}
 	}
-	
+	.textcon{
+		overflow: hidden;
+		text-overflow:ellipsis;
+		display:-webkit-box; 
+		-webkit-box-orient:vertical;
+		-webkit-line-clamp:2; ; 
+	}
 </style>

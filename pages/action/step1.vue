@@ -30,7 +30,7 @@
 			</view>
 			<view class="">
 				<view class="cu-form-group align-start textare-heght">
-					<textarea :value="content" name="content" maxlength="-1" :disabled="modalName!=null" placeholder="减肥,锻炼意志力,提高耐性,提升魅力..."></textarea>
+					<textarea :value="content" name="content" maxlength="500" :disabled="modalName!=null" placeholder="减肥,锻炼意志力,提高耐性,提升魅力..."></textarea>
 				</view>
 			</view>
 			<view class="padding solid-top">
