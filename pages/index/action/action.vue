@@ -42,15 +42,15 @@
 					</image>
 				</view>
 				<view class="flex padding justify-between" >
-					<view class="text-xxl" @click="goSteps"  v-if="userId==pushList.userId&&pushList.pushCardCount<pushList.targetDay">
-						<button class="cu-btn line-green sm round  " @click="goSteps" >立即打卡</button>
-					</view>
 					<view>
 						<button class="cu-btn bg-light-blue sm round" v-if="pushList.userId==userId"  :id="index" open-type="share">分享邀请</button>
 						<button class="cu-btn bg-orange sm round" v-else-if="pushList.onlooker"  :id="index" open-type="share">为你打call</button>
 						<button class="cu-btn bg-green sm round  " v-else-if="pushList.userId!=userId && !pushList.onlooker&&pushList.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(pushList,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{pushList.onlookerCount}}</text>
+					</view>
+					<view class="text-xxl" @click="goSteps"  v-if="userId==pushList.userId&&pushList.pushCardCount<pushList.targetDay">
+						<button class="cu-btn line-green sm round  " @click="goSteps" >立即打卡</button>
 					</view>
 				
 				</view>
@@ -549,7 +549,7 @@
 			}
 		}
 	}
-<<<<<<< HEAD
+
 	.textcon{
 		overflow: hidden;
 		text-overflow:ellipsis;
@@ -557,7 +557,7 @@
 		-webkit-box-orient:vertical;
 		-webkit-line-clamp:2; ; 
 	}
-=======
+
 	.bg-light-blue{background-color: #007AFF;}
->>>>>>> 83518d2e193c70e1aaa4158de4acd4bd4007f24c
+
 </style>

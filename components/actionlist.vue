@@ -51,14 +51,14 @@
 				</image>
 			</view>
 			<view class="flex padding justify-between" >
-				<view class="text-xxl" @click="goPage(item.id)" v-if="userId==item.userId&&item.pushCardCount<item.targetDay" >
-					<button class="cu-btn line-green sm round  "  >立即打卡</button>
-				</view>
 				<view>
 					<button class="cu-btn bg-pink sm round" v-if="item.userId==userId || item.onlooker "  :id="index" open-type="share">邀请围观</button>
 					<button class="cu-btn bg-pink sm round  " v-else-if="item.userId!=userId && !item.onlooker&&item.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
 					<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(item,index)">围观分钱</button>
 					<text class="text-gray text-df ">{{item.onlookerCount}}</text>
+				</view>
+				<view class="text-xxl" @click="goPage(item.id)" v-if="userId==item.userId&&item.pushCardCount<item.targetDay" >
+					<button class="cu-btn line-green sm round  "  >立即打卡</button>
 				</view>
 			
 			</view>
