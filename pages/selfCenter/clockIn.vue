@@ -68,18 +68,32 @@
 					</view>
 				</view>
 			 </view>
+			
 			 <view class="btn_bar">
 				<button class="bg-green " form-type="submit">提交</button>
 			 </view>
 		 </form>
+		 <button type="default" @tap="showmp">12313213 </button>
+		 <view class="cu-modal bottom-modal" :class="showmp3?'show':''">
+		 	<view class="cu-dialog">
+		 		<view class="padding-xl">
+		 			<canvas canvas-id="canvas" style="width:100px;height:100px;">
+		 				<span class="recording-button" @touchstart="startRecord" @touchmove="move" @touchend="endRecord"></span>
+		 			</canvas>
+		 		</view>
+		 	</view>
+		 </view>
 	 </view>
 </template>
 
 <script>
 	import{ mapState,mapMutations} from 'vuex'
+	const recorderManager = uni.getRecorderManager();
+	const innerAudioContext = uni.createInnerAudioContext();
 export default {
 	data() {
 		return {
+			showmp3:false,
 			buttonStart:false,
 			param:{
 				'pictures':[],
@@ -93,9 +107,19 @@ export default {
 			j:0,
 			isShare:1,
 			pushList:'',
+			voicePath:'',
+			
+			max: 5000, // 录音最大时长，单位毫秒
+			frame: 50, // 执行绘画的频率，单位毫秒
+			longTag: false, // 判定长按和点击的标识
+			maxTiming: false, // 最长录音时间的定时器
+			draw: undefined,
+			seconds: '00',
+			ms: '00'
 			
 		};
 	},
+
 	computed: {
 	           ...mapState(['hasLogin'])  
 	       },  
@@ -104,6 +128,9 @@ export default {
 		this.getpushList();
 	},
 	methods: {
+		showmp(){
+			this.showmp3=!this.showmp3;
+		},
 		ViewImage(){
 			
 			this.param.pictures=[];
@@ -247,19 +274,22 @@ export default {
 				uni.chooseVideo({
 					maxDuration:60,
 					count: 1,
-				   compressed:false,
+				    compressed:false,
+					sourceType: ['album'],
 					success: (responent) => {
 						let videoFile = responent.tempFilePath;
+						console.log(videoFile)
 						uni.uploadFile({
 							url:this.xdServerUrls.xd_uploadFile,
+							method:"POST",
 							formData: {
 								'userId': uni.getStorageSync('id'),
 							},
 							filePath:videoFile,
-							name:'file',
+							name:'files',
 							success: (res) => {                    
-								// let videoUrls = JSON.parse(res.data) //微信和头条支持
-								
+								let videoUrls = JSON.parse(res.data) //微信和头条支持
+								console.log(videoUrls.obj[0])
 							  
 								
 							}
@@ -268,9 +298,59 @@ export default {
 				})
 			
 		},
-		popUpMP3(){
-			
-		},		
+		startRecord(e) {
+			console.log(e)
+		                console.log('开始录音');
+		     let that=this;
+		                recorderManager.start({
+							duration:600000,
+							format:'mp3'
+						}
+						);
+						that.maxTiming = setTimeout(function() {
+							clearInterval(that.draw);
+							console.log('时间到');
+					
+						}, that.max);
+						
+						// 录音过程圆圈动画
+						let angle = -0.5;
+						let context = uni.createCanvasContext('canvas');
+						that.draw = setInterval(function() {
+							context.beginPath();
+							context.setStrokeStyle("#1296db");
+							context.setLineWidth(3);
+							context.arc(50, 50, 25, -0.5 * Math.PI, (angle += 2 / (that.max / that.frame)) * Math.PI, false);
+							context.stroke();
+							context.draw();
+						}, that.frame);
+		            },
+		endRecord(e) {
+			console.log(e)
+			let that=this;
+			console.log('录音结束');
+			recorderManager.stop();
+	        recorderManager.onStop(function (res) {
+				const	voicePath = res.tempFilePath;
+					uni.uploadFile({
+						url:that.xdServerUrls.xd_uploadFile,
+						 header: {
+						          "Content-Type": "multipart/form-data"
+						        },
+						formData: {
+							'userId': uni.getStorageSync('id'),
+						},
+						filePath:voicePath,
+						name:'files',
+						success: (res) => {                    
+							let videoUrls = JSON.parse(res.data) //微信和头条支持
+							console.log(videoUrls.obj[0])
+						  
+							
+						}
+					})
+				});
+		},
 	},
 };
 </script>
@@ -290,4 +370,32 @@ export default {
 	min-height: 250upx;
 	max-height: 400upx;
 }
+.mp3img{
+	position: absolute;
+	width: 100%;
+	height: 300upx;
+	bottom: 0;
+	z-index: 999;
+}
+#canvas {
+		position: relative;
+		width: 200upx;
+		height: 200upx;
+		z-index: 10;
+	}
+
+	.recording-button {
+		position: absolute;
+		box-sizing: border-box;
+		top: 50upx;
+		left: 50upx;
+		display: inline-block;
+		width: 100upx;
+		height: 100upx;
+		border: 1px dashed #1296DB;
+		border-radius: 100upx;
+		background: url(../../static/images/icon/recording.png) no-repeat 50% 50%;
+		background-size: 50% 50%;
+		z-index: 100;
+	}
 </style>

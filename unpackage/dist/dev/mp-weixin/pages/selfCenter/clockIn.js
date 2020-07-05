@@ -208,10 +208,24 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+
+
+
+
+
+
+
+
+
+
+
+var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+var recorderManager = uni.getRecorderManager();
+var innerAudioContext = uni.createInnerAudioContext();var _default =
 {
   data: function data() {
     return {
+      showmp3: false,
       buttonStart: false,
       param: {
         'pictures': [] },
@@ -224,10 +238,20 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
       tempFilePaths: [],
       j: 0,
       isShare: 1,
-      pushList: '' };
+      pushList: '',
+      voicePath: '',
+
+      max: 5000, // 录音最大时长，单位毫秒
+      frame: 50, // 执行绘画的频率，单位毫秒
+      longTag: false, // 判定长按和点击的标识
+      maxTiming: false, // 最长录音时间的定时器
+      draw: undefined,
+      seconds: '00',
+      ms: '00' };
 
 
   },
+
   computed: _objectSpread({},
   (0, _vuex.mapState)(['hasLogin'])),
 
@@ -236,6 +260,9 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
     this.getpushList();
   },
   methods: {
+    showmp: function showmp() {
+      this.showmp3 = !this.showmp3;
+    },
     ViewImage: function ViewImage() {
 
       this.param.pictures = [];
@@ -380,18 +407,21 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
         maxDuration: 60,
         count: 1,
         compressed: false,
+        sourceType: ['album'],
         success: function success(responent) {
           var videoFile = responent.tempFilePath;
+          console.log(videoFile);
           uni.uploadFile({
             url: _this3.xdServerUrls.xd_uploadFile,
+            method: "POST",
             formData: {
               'userId': uni.getStorageSync('id') },
 
             filePath: videoFile,
-            name: 'file',
+            name: 'files',
             success: function success(res) {
-              // let videoUrls = JSON.parse(res.data) //微信和头条支持
-
+              var videoUrls = JSON.parse(res.data); //微信和头条支持
+              console.log(videoUrls.obj[0]);
 
 
             } });
@@ -400,8 +430,58 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumera
 
 
     },
-    popUpMP3: function popUpMP3() {
+    startRecord: function startRecord(e) {
+      console.log(e);
+      console.log('开始录音');
+      var that = this;
+      recorderManager.start({
+        duration: 600000,
+        format: 'mp3' });
 
+
+      that.maxTiming = setTimeout(function () {
+        clearInterval(that.draw);
+        console.log('时间到');
+
+      }, that.max);
+
+      // 录音过程圆圈动画
+      var angle = -0.5;
+      var context = uni.createCanvasContext('canvas');
+      that.draw = setInterval(function () {
+        context.beginPath();
+        context.setStrokeStyle("#1296db");
+        context.setLineWidth(3);
+        context.arc(50, 50, 25, -0.5 * Math.PI, (angle += 2 / (that.max / that.frame)) * Math.PI, false);
+        context.stroke();
+        context.draw();
+      }, that.frame);
+    },
+    endRecord: function endRecord(e) {
+      console.log(e);
+      var that = this;
+      console.log('录音结束');
+      recorderManager.stop();
+      recorderManager.onStop(function (res) {
+        var voicePath = res.tempFilePath;
+        uni.uploadFile({
+          url: that.xdServerUrls.xd_uploadFile,
+          header: {
+            "Content-Type": "multipart/form-data" },
+
+          formData: {
+            'userId': uni.getStorageSync('id') },
+
+          filePath: voicePath,
+          name: 'files',
+          success: function success(res) {
+            var videoUrls = JSON.parse(res.data); //微信和头条支持
+            console.log(videoUrls.obj[0]);
+
+
+          } });
+
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
