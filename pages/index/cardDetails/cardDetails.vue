@@ -63,8 +63,9 @@
 						<text class="text-gray text-df">评论:({{showCardCommentlist.pushCommentList.length?showCardCommentlist.pushCommentList.length:0}})</text>
 					</view>
 					<view>
-						<button class="cu-btn bg-pink sm round" v-if="pusCardLists.userId==userId || pusCardLists.onlooker "  :id="index" open-type="share">邀请围观</button>
-						<button class="cu-btn bg-pink sm round  " v-else-if="pusCardLists.userId!=userId && !pusCardLists.onlooker&&pusCardLists.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
+						<button class="cu-btn bg-light-blue sm round" v-if="pusCardLists.userId==userId"  :id="index" open-type="share">分享邀请</button>
+						<button class="cu-btn bg-orange sm round  " v-else-if="pusCardLists.onlooker"  @tap="lookerClick(list,index)">为你打call</button>
+						<button class="cu-btn bg-green sm round  " v-else-if="pusCardLists.userId!=userId && !pusCardLists.onlooker&&pusCardLists.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(pusCardLists,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{pusCardLists.onlookerCount}}</text>
 					</view>
@@ -453,4 +454,5 @@
 	.commenttext{
 		margin-left: 30upx;
 	}
+	.bg-light-blue{background-color: #007AFF;}
 </style>

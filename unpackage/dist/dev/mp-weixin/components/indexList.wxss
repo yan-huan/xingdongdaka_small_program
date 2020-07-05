@@ -32,4 +32,7 @@
 .contentext {
   margin-left: 50rpx;
 }
+.bg-light-blue {
+  background-color: #007AFF;
+}
 

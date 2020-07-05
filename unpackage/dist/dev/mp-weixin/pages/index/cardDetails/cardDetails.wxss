@@ -60,4 +60,7 @@
 .commenttext.data-v-085dabaf {
   margin-left: 30rpx;
 }
+.bg-light-blue.data-v-085dabaf {
+  background-color: #007AFF;
+}
 
