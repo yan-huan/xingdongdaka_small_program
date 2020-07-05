@@ -49,8 +49,9 @@
 						<text class="text-gray text-df"></text>
 					</view>
 					<view>
-						<button class="cu-btn bg-pink sm round" v-if="list.userId==userId || list.onlooker "  :id="index" open-type="share">邀请围观</button>
-						<button class="cu-btn bg-pink sm round  " v-else-if="list.userId!=userId && !list.onlooker&&list.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
+						<button class="cu-btn bg-light-blue sm round" v-if="list.userId==userId"  :id="index" open-type="share">分享邀请</button>
+						<button class="cu-btn bg-orange sm round  " v-else-if="list.onlooker"  @tap="lookerClick(list,index)">为你打call</button>
+						<button class="cu-btn bg-green sm round  " v-else-if="list.userId!=userId && !list.onlooker&&list.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(list,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{list.onlookerCount}}</text>
 					</view>
@@ -132,5 +133,5 @@
 			.contentext{
 				margin-left: 50upx;
 			}
-
+.bg-light-blue{background-color: #007AFF;}
 </style>
