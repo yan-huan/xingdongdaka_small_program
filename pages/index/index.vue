@@ -241,7 +241,7 @@
 				
 						   if(res.resultCode==0){
 							   that.listsTab[index].onlooker=true
-							   that.listsTab[index].lookerCount++;
+							   that.listsTab[index].onlookerCount++;
 							   
 							   if(uni.getStorageSync(new Date().toLocaleDateString()+"dycwgKey") != 1){
 								   uni.showModal({
