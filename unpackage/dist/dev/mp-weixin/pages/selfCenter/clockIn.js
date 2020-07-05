@@ -219,13 +219,60 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _vuex = __webpack_require__(/*! vuex */ 14);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 var recorderManager = uni.getRecorderManager();
 var innerAudioContext = uni.createInnerAudioContext();var _default =
 {
   data: function data() {
     return {
+      plays: true,
       showmp3: false,
+      popUp: false,
       buttonStart: false,
       param: {
         'pictures': [] },
@@ -234,6 +281,7 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
       loading: '',
       pushId: '',
       videodata: '',
+      MP3data: '',
       progreessnum: '',
       tempFilePaths: [],
       j: 0,
@@ -241,13 +289,12 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
       pushList: '',
       voicePath: '',
 
-      max: 5000, // 录音最大时长，单位毫秒
+      max: 600000, // 录音最大时长，单位毫秒
       frame: 50, // 执行绘画的频率，单位毫秒
-      longTag: false, // 判定长按和点击的标识
       maxTiming: false, // 最长录音时间的定时器
       draw: undefined,
-      seconds: '00',
-      ms: '00' };
+      timeminute: 0 //显示秒数
+    };
 
 
   },
@@ -260,12 +307,25 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
     this.getpushList();
   },
   methods: {
+    stopplay: function stopplay() {
+      innerAudioContext.stop;
+      this.plays = true;
+    },
+    play: function play() {
+      innerAudioContext.setSrc = this.MP3data;
+      innerAudioContext.play;
+      this.plays = false;
+    },
+    popUpImgs: function popUpImgs() {
+      this.popUp = !this.popUp;
+    },
     showmp: function showmp() {
+      this.popUp = false;
       this.showmp3 = !this.showmp3;
     },
-    ViewImage: function ViewImage() {
-
-      this.param.pictures = [];
+    ViewImage: function ViewImage(e) {
+      console.log(e);
+      this.param.pictures.splice(e, 1);
     },
     error: function error() {
 
@@ -322,13 +382,16 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
             pushId: _this2.pushId,
             userId: uni.getStorageSync('id'),
             content: e.detail.value.content,
-            pictures: _this2.param.pictures },
+            pictures: _this2.param.pictures,
+            videos: _this2.videodata,
+            extendContent: _this2.MP3data },
           true).then(function (res) {
             var that = _this2;
             uni.showToast({
               title: '保存成功',
               icon: 'success',
               duration: 1500,
+
               success: function success() {
                 uni.reLaunch({
                   url: '../index/cardDetails/cardDetails?pushId=' + that.pushId + '&cardId=' + res.obj + '&show=0' });
@@ -355,6 +418,7 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
     },
     popUpImg: function popUpImg() {
       var that = this;
+      that.popUp = false;
       uni.chooseImage({
         count: 4, //默认9
         sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
@@ -401,8 +465,10 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
         }
       });
     },
-    popUpVideo: function popUpVideo() {var _this3 = this;
+    popUpVideo: function popUpVideo() {
       // 上传视频
+      var that = this;
+      that.popUp = false;
       uni.chooseVideo({
         maxDuration: 60,
         count: 1,
@@ -410,9 +476,9 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
         sourceType: ['album'],
         success: function success(responent) {
           var videoFile = responent.tempFilePath;
-          console.log(videoFile);
-          uni.uploadFile({
-            url: _this3.xdServerUrls.xd_uploadFile,
+
+          var uploadTask = uni.uploadFile({
+            url: that.xdServerUrls.xd_uploadFile,
             method: "POST",
             formData: {
               'userId': uni.getStorageSync('id') },
@@ -420,19 +486,26 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
             filePath: videoFile,
             name: 'files',
             success: function success(res) {
-              var videoUrls = JSON.parse(res.data); //微信和头条支持
-              console.log(videoUrls.obj[0]);
-
+              that.videodata = JSON.parse(res.data).obj[0];
 
             } });
+
+          uploadTask.onProgressUpdate(function (res) {
+            that.loading = res.progress;
+            if (that.loading >= 100) {
+              setTimeout(function () {
+                that.loading = 0;
+              }, 1000);
+            }
+
+          });
 
         } });
 
 
     },
     startRecord: function startRecord(e) {
-      console.log(e);
-      console.log('开始录音');
+
       var that = this;
       recorderManager.start({
         duration: 600000,
@@ -444,28 +517,40 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
         console.log('时间到');
 
       }, that.max);
-
+      var x = e.detail.x / 2;
+      var y = e.detail.y / 2;
+      console.log(x);
+      console.log(y);
       // 录音过程圆圈动画
       var angle = -0.5;
+      var millisecond = 0; //毫秒
       var context = uni.createCanvasContext('canvas');
       that.draw = setInterval(function () {
+        millisecond = millisecond + 50;
+        if (millisecond >= 1000) {
+          console.log(millisecond);
+          millisecond = 0;
+          that.timeminute = that.timeminute + 1;
+        }
         context.beginPath();
         context.setStrokeStyle("#1296db");
         context.setLineWidth(3);
-        context.arc(50, 50, 25, -0.5 * Math.PI, (angle += 2 / (that.max / that.frame)) * Math.PI, false);
+        context.arc(30, 30, 25, -0.5 * Math.PI, (angle += 2 / (that.max / that.frame)) * Math.PI, false);
         context.stroke();
         context.draw();
       }, that.frame);
     },
     endRecord: function endRecord(e) {
-      console.log(e);
       var that = this;
-      console.log('录音结束');
+      clearInterval(that.draw);
+      that.showmp3 = false;
       recorderManager.stop();
       recorderManager.onStop(function (res) {
         var voicePath = res.tempFilePath;
-        uni.uploadFile({
+
+        var uploadTask = uni.uploadFile({
           url: that.xdServerUrls.xd_uploadFile,
+          method: "POST",
           header: {
             "Content-Type": "multipart/form-data" },
 
@@ -475,11 +560,19 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
           filePath: voicePath,
           name: 'files',
           success: function success(res) {
-            var videoUrls = JSON.parse(res.data); //微信和头条支持
-            console.log(videoUrls.obj[0]);
 
-
+            that.MP3data = JSON.parse(res.data).obj[0];
           } });
+
+        uploadTask.onProgressUpdate(function (res) {
+          that.loading = res.progress;
+          if (that.loading >= 100) {
+            setTimeout(function () {
+              that.loading = 0;
+            }, 1000);
+          }
+
+        });
 
       });
     } } };exports.default = _default;
