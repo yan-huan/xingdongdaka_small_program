@@ -9,7 +9,7 @@
 							<view @tap="goUser(pushList.userId)">{{pushList.userName}}</view>
 						</view>
 						<view >
-							<view class="cu-tag line-orange radius"  @tap="tags">
+							<view class="cu-tag line-orange radius" v-if="guanzhu.length > 0" @tap="tags">
 								{{guanzhu}}
 							</view>
 						</view>
@@ -486,7 +486,7 @@
 							this.guanzhu ='已关注'
 						}
 						if(item.userId == uni.getStorageSync('id')){
-							this.guanzhu ='未关注'
+							this.guanzhu =''
 						}
 					})
 					

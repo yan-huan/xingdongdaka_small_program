@@ -115,7 +115,7 @@
 				token:uni.getStorageSync('token'),
 				pageNum:1,//当前页数
 				pageSize:10,//每页条数
-				userId:'',
+				userId:uni.getStorageSync('id'),
 				searchValue:'请输入行动项·昵称',
 					
 			};

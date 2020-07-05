@@ -8,11 +8,11 @@
 						<view class="content flex-sub">
 							<view @tap="goUser(pusCardLists.userId)">{{pusCardLists.userName}}</view>
 							<view class="text-gray text-sm flex justify-between">
-								{{xdUniUtils.xd_timestampToTime(pusCardLists.pushCardList[0].createTime,false,true,false) }} 
+								{{pushCardCreateTime }} 
 							</view>
 						</view>
 						<view >
-							<view class="cu-tag line-orange radius"  @tap="tags">
+							<view class="cu-tag line-orange radius" v-if="guanzhu.length > 0" @tap="tags">
 								{{guanzhu}}
 							</view>
 						</view>
@@ -122,7 +122,7 @@
 			
 				value:'',
 				id:uni.getStorageSync('id'),
-				userId:'',
+				userId:uni.getStorageSync('id'),
 				inputType:2,//2评论，1回复
 				cardId:'',
 				dataCardId:'',
@@ -133,7 +133,8 @@
 				tolist:false,
 				conmmmenttext:'请输入评论内容',
 				showCardCommentlist:'',
-				guanzhu:'关注'
+				guanzhu:'关注',
+				pushCardCreateTime:''
 				
 			}
 		},
@@ -367,7 +368,7 @@
 					var time=this.xdUniUtils.xd_timestampToTime(res.obj.createTime,false,false,true);
 					data.createTime=time;
 					this.pusCardLists=data;
-					
+					this.pushCardCreateTime=this.xdUniUtils.xd_timestampToTime(this.pusCardLists.pushCardList[0].createTime,false,true,false)
 				})
 			},
 			getLookerList(){
@@ -380,7 +381,7 @@
 							this.guanzhu ='已关注'
 						}
 						if(item.userId == uni.getStorageSync('id')){
-							this.guanzhu ='未关注'
+							this.guanzhu =''
 						}
 					})
 					
