@@ -344,7 +344,7 @@ export default {
 					sourceType: ['album'],
 					success: (responent) => {
 						let videoFile = responent.tempFilePath;
-						if(responent.size<20480){
+						if(responent.size<20*1024*1024){
 							const uploadTask =uni.uploadFile({
 								url:that.xdServerUrls.xd_uploadFile,
 								method:"POST",

@@ -407,7 +407,9 @@
 								}
 							})	
 						}
-						
+						if(this.pushList.userId == uni.getStorageSync('id')){
+							this.guanzhu =''
+						}
 					}else{
 						uni.showToast({
 							title:res.msg,
@@ -488,9 +490,6 @@
 					this.lookerList.forEach(item =>{
 						if(item.lookUserId == uni.getStorageSync('id')){
 							this.guanzhu ='已关注'
-						}
-						if(item.userId == uni.getStorageSync('id')){
-							this.guanzhu =''
 						}
 					})
 					

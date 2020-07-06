@@ -373,6 +373,9 @@
 					data.createTime=time;
 					this.pusCardLists=data;
 					this.pushCardCreateTime=this.xdUniUtils.xd_timestampToTime(this.pusCardLists.pushCardList[0].createTime,false,true,false)
+					if(data.userId == uni.getStorageSync('id')){
+						this.guanzhu =''
+					}
 				})
 			},
 			getLookerList(){
@@ -383,9 +386,6 @@
 					res.obj.list.forEach(item =>{
 						if(item.lookUserId == uni.getStorageSync('id')){
 							this.guanzhu ='已关注'
-						}
-						if(item.userId == uni.getStorageSync('id')){
-							this.guanzhu =''
 						}
 					})
 					
