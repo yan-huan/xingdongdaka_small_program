@@ -50,15 +50,16 @@
             "ios" : {},
             /* SDK配置 */
             "sdkConfigs" : {}
+        },
+        "uniStatistics" : {
+            "enable" : true
         }
     },
     /* 快应用特有相关 */
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-		 "navigateToMiniProgramAppIdList": [
-		            "wxf9286c35b3f9d0d0"  
-		        ],
+        "navigateToMiniProgramAppIdList" : [ "wxf9286c35b3f9d0d0" ],
         "appid" : "wxc2af58f1589eb15d",
         "setting" : {
             "urlCheck" : false,
@@ -67,18 +68,40 @@
             "es6" : true
         },
         "usingComponents" : true,
-        "permission" : {}
+        "permission" : {},
+        "uniStatistics" : {
+            "enable" : true
+        }
     },
     "mp-alipay" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : false
+        }
     },
     "mp-baidu" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : false
+        }
     },
     "mp-toutiao" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : false
+        }
     },
     "uniStatistics" : {
-        "enable" : false //全局关闭统计
+        "enable" : true //全局关闭统计
+    },
+    "h5" : {
+        "uniStatistics" : {
+            "enable" : true
+        }
+    },
+    "mp-qq" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
     }
 }
