@@ -16,7 +16,7 @@
 					</view>
 					<view class="flex flex-wrap padding justify-between">
 						<view class=" " >
-							<view class="cu-tag bg-grey radio">{{labelName}}</view>
+							<view class="cu-tag bg-grey radio">{{pushList.label}}</view>
 							<view class="text-gray text-sm ">
 								{{pushList.createTime }}  ({{pushList.pushCardCount}}/{{pushList.targetDay}})
 							</view>
@@ -132,7 +132,6 @@
 				lookNextPageTwo:'',
 				pushId:'',
 				isShare:0,
-				labelName:'',
 				guanzhu:'关注'
 				
 			};
@@ -392,7 +391,7 @@
 							this.getShareInfo();
 						}
 						
-						if(typeof this.pushList.label != 'undefined'){
+						/* if(typeof this.pushList.label != 'undefined'){
 							var labelId_=''
 							if(this.pushList.label.indexOf(',') > -1){
 								var labelId_ = this.pushList.label.split(',')[0]
@@ -406,7 +405,7 @@
 									this.labelName=res.obj.labelName
 								}
 							})	
-						}
+						} */
 						if(this.pushList.userId == uni.getStorageSync('id')){
 							this.guanzhu =''
 						}
