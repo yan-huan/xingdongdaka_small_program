@@ -31,8 +31,8 @@
 						<view class="uni-input">{{ date }}</view>
 					</picker>
 				</view> -->
-				<view class="f-list"><input class="uni-input" name="userMobile" placeholder="请输入手机号" maxlength="80" /></view>
-				<view class="f-list"><input class="uni-input" name="schoolName" placeholder="请输入学校名称" maxlength="80" /></view>
+				<view class="f-list"><input class="uni-input" name="userMobile" placeholder="请输入手机号" maxlength="80" v-model="userMobile"/></view>
+				<view class="f-list"><input class="uni-input" name="schoolName" placeholder="请输入学校名称" maxlength="80" v-model="schoolName"/></view>
 				<view class="f-btns"><button class="f-btn f-btn-b" form-type="submit">保存</button></view>
 			</view>
 		</form>
@@ -77,6 +77,7 @@ export default {
 		this.openId=userInfo.openId;
 		this.schoolName=userInfo.schoolName;
 		this.unionId=userInfo.unionId;
+		this.userMobile=userInfo.userMobile;
 	},
 	methods: {
 		// openAddres() {
@@ -170,6 +171,7 @@ export default {
 									userInfo.city=res.obj.city;
 									userInfo.gender=res.obj.sex?res.obj.sex:'2';
 									userInfo.schoolName=res.obj.schoolName?res.obj.schoolName:'无';
+									userInfo.userMobile=res.obj.userMobile;
 									uni.setStorageSync('userInfo',userInfo);
 									uni.showToast({
 									    title: '保存成功',

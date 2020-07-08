@@ -97,7 +97,7 @@ export default {
 									_this.userInfo.city=res.obj.city;
 									_this.userInfo.gender=res.obj.sex?res.obj.sex:'2';
 									_this.userInfo.schoolName=res.obj.schoolName?res.obj.schoolName:'无';
-									
+									_this.userInfo.userMobile=res.obj.userMobile;
 									 _this.logIn(_this.userInfo);
 								   })
 								   let pages = getCurrentPages()
