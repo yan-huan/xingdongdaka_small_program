@@ -36,7 +36,7 @@ export default {
 			saveData:{},
 			pushData:'',
 			payNum:0,
-			j:0,
+			
 				
 			
 		};
@@ -129,17 +129,12 @@ export default {
 		},
 		updataPushId(){
 			var that=this;
-			if( that.j>3){
-				return false
+			that.xd_request_post(that.xdServerUrls.xd_updatePushDataByPushId,{
+				pushid:that.pushData.obj.id,
+				challengeRmb:that.saveData.challengeRmb,
 			}
-			that.xd_request_post(that.xdServerUrls.xd_delPushDataByPushId,{pushid:that.pushData.obj.id}
 			,true).then( res=>{
-				if(res.resultCode==0){
-					that.saveData.challengeRmb=0;
-				}else{
-					that.j++;
-					that.updataPushId();
-				}		 	
+				
 			})
 		},
 		getPushId(){
@@ -197,7 +192,7 @@ export default {
 			data.province=userInfo.province;
 			data.unionId=userInfo.unionId;
 			data.openid=userInfo.openId;
-			data.payRmb=that.saveData.challengeRmb
+			data.payRmb=0;
 			data.pushId=that.pushData.obj.id;
 			wx.getSetting({
 			  success: res => {
@@ -216,6 +211,7 @@ export default {
 									icon: 'success',
 									duration: 2000,
 									success:function(){
+										that.updataPushId();
 										uni.setStorageSync('pushData','' );
 										uni.reLaunch({
 											url: '../index/action/action?pushId='+that.pushData.obj.id
@@ -233,12 +229,12 @@ export default {
 									success:function(ress) {
 										 if (ress.confirm) {
 											 uni.setStorageSync('pushData',that.pushData.obj );
-											 that.updataPushId();
+											
 											 uni.reLaunch({
 												url: 'step1'
 												  })
 														}else if (ress.cancel) {
-											that.updataPushId();				
+										
 											uni.setStorageSync('pushData',that.pushData.obj );
 											uni.reLaunch({
 												url: '../index/index'
