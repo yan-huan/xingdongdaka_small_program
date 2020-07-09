@@ -46,7 +46,7 @@
 			 					<view class="text-xl">
 			 						<text class="lg text-gray cuIcon-camera"></text>
 			 					</view>
-			 					<text class=" margin-left-xs">上传图片、视频(视频小于20M)</text>
+			 					<text class=" margin-left-xs">上传图片、视频(视频小于100M)</text>
 			 				</view>
 			 				<view class="padding bg-white" v-if="loading>1">
 			 					<view class="cu-progress round sm striped active">
@@ -344,7 +344,7 @@ export default {
 					sourceType: ['album'],
 					success: (responent) => {
 						let videoFile = responent.tempFilePath;
-						if(responent.size<20*1024*1024){
+						if(responent.size<100*1024*1024){
 							const uploadTask =uni.uploadFile({
 								url:that.xdServerUrls.xd_uploadFile,
 								method:"POST",

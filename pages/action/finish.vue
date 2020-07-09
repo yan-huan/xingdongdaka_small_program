@@ -36,6 +36,7 @@ export default {
 			saveData:{},
 			pushData:'',
 			payNum:0,
+			mony:0,
 			
 				
 			
@@ -115,13 +116,15 @@ export default {
 						}
 					})
 				}else{
-					that.saveData.challengeRmb=that.saveData.challengeRmb*100;
+					that.mony=that.saveData.challengeRmb*100;
+					that.saveData.challengeRmb=0;
 					
 						that.getPushId();		  		
 				}
 			}
 			else{
-				that.saveData.challengeRmb=that.saveData.challengeRmb*100;
+				that.mony=that.saveData.challengeRmb*100;
+				that.saveData.challengeRmb=0;
 				
 					that.getPushId();		
 			
@@ -131,14 +134,14 @@ export default {
 			var that=this;
 			that.xd_request_post(that.xdServerUrls.xd_updatePushDataByPushId,{
 				pushid:that.pushData.obj.id,
-				challengeRmb:that.saveData.challengeRmb,
+				challengeRmb:that.mony,
 			}
 			,true).then( res=>{
 				
 			})
 		},
 		getPushId(){
-			console.log(this.saveData)
+			
 			this.xd_request_post(this.xdServerUrls.xd_savePush,this.saveData,true).then( res=>{
 				if(res.resultCode==0){
 					this.pushData=res;
@@ -192,7 +195,7 @@ export default {
 			data.province=userInfo.province;
 			data.unionId=userInfo.unionId;
 			data.openid=userInfo.openId;
-			data.payRmb=0;
+			data.payRmb=that.mony;
 			data.pushId=that.pushData.obj.id;
 			wx.getSetting({
 			  success: res => {
