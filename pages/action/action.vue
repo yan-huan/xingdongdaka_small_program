@@ -218,6 +218,9 @@ export default {
 					this.nextPageTwo=res.obj.nextPage;
 					this.looktotal=res.obj.total;
 					this.lookerList.forEach(function (item) {
+						if(typeof item.challengeRmb !='undefined' && item.challengeRmb != '' && item.challengeRmb != '0'){
+							item.challengeRmb=Math.floor(item.challengeRmb/100);	
+						}
 						if(typeof item.pictures ==='undefined' || item.pictures == ''){
 							item.pictures = '../../static/images/icon/img/title1.png'
 						}else{
