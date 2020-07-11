@@ -18,7 +18,10 @@
 						<view class=" " >
 							<view class="cu-tag bg-grey radio">{{pushList.label}}</view>
 							<view class="text-gray text-sm ">
-								{{pushList.createTime }}  ({{pushList.pushCardCount}}/{{pushList.targetDay}})
+								阶段期限：{{pushList.createTime}}--{{pushList.endTime}}
+							</view>
+							<view class="text-gray text-sm ">
+								坚持天数：{{pushList.pushCardCount}}/{{pushList.targetDay}}
 							</view>
 						</view>
 						<view v-if="pushList.challengeRmb>0">
@@ -70,7 +73,7 @@
 							<view class="">
 								<view class="cu-tag line-green">第{{pusCardList.length-index}}次打卡</view>
 							</view>
-							<view  class="margin-top margin-left-lg textcon" @tap="gocardComentList(item,0)">{{item.content}}</view>
+							<view  class="margin-top-sm margin-bottom-sm margin-left-lg textcon" @tap="gocardComentList(item,0)">{{item.content}}</view>
 							<view class="videheit" v-if="item.videos!=''&&item.videos!=undefined &&item.videos!=null ">
 								<video class="videos"  :src="item.videos" controls></video>
 							</view>
@@ -145,18 +148,18 @@
 				if(option.share!=undefined){
 					this.share=option.share;
 					this.isShare=option.isopen;
-					console.log(option.isopen)
 				}
 				this.getpushList();
 				this.getLookerList();
+				this.getPushCardList();
 			}
 		},
 		watch: {
 			hasLogin() {
-				console.log('登录刷新')
 				setTimeout(() => {
 					this.getpushList();
 					this.clickSaveShareInfo();
+					this.getShareInfo();
 				}, 100);
 			},
 		},
@@ -232,6 +235,12 @@
 					   })
 			},
 			goUser(e){
+				if(!uni.getStorageSync('token')){
+					uni.navigateTo({
+						url: '../../login/login' 
+					});
+									return false
+				}
 				uni.navigateTo({
 					url:'../../selfCenter/selfView?userId='+e
 				})
@@ -299,6 +308,12 @@
 			            }  ,
 						
 			gocardComentList(e,index){
+				if(!uni.getStorageSync('token')){
+					uni.navigateTo({
+						url: '../../login/login' 
+					});
+									return false
+				}
 				uni.navigateTo({
 					url: '../cardDetails/cardDetails?pushId='+e.pushId+'&cardId='+e.id+'&show='+index
 				});
@@ -369,13 +384,7 @@
 			});
 			     
 			  },
-			  getpushList(){
-				 if(!uni.getStorageSync('token')){
-				 	uni.navigateTo({
-				 		url: '../../login/login' 
-				 	});
-					return false
-				 }
+		async	getpushList(){
 			  	this.xd_request_post(this.xdServerUrls.xd_pushDataByPushId,{
 			  		pushId:this.pushId,
 					isShare:this.isShare,
@@ -383,15 +392,10 @@
 			  	},true).then(res=>{	
 					if(res.resultCode==0){
 						var data=res.obj;
-						data.createTime=this.xdUniUtils.xd_timestampToTime(res.obj.createTime,false,false,true)
-						data.endTime=this.xdUniUtils.xd_timestampToTime(res.obj.endTime,false,false,true)
+						data.createTime=this.xdUniUtils.xd_timestampToTime(res.obj.createTime)
+						data.endTime=this.xdUniUtils.xd_timestampToTime(res.obj.endTime)
 						data.challengeRmb=res.obj.challengeRmb/100;
 						this.pushList=data;
-						this.getPushCardList();
-						if(this.share!=''){
-							this.getShareInfo();
-						}
-						
 						if(this.pushList.userId == uni.getStorageSync('id')){
 							this.guanzhu =''
 						}
@@ -419,7 +423,7 @@
 					this.pushComentList=this.timeStamp(res);
 				})
 			},
-			getPushCardList(){
+		async	getPushCardList(){
 				this.xd_request_post(this.xdServerUrls.xd_pushCardListByPushId,{
 					pushId:this.pushId,		
 					
@@ -447,6 +451,12 @@
 				this.getLookerList();
 			},
 			tags(){
+				if(!uni.getStorageSync('token')){
+					uni.navigateTo({
+						url: '../../login/login' 
+					});
+									return false
+				}
 				if(this.guanzhu =='已关注'){
 					return
 				}

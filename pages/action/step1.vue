@@ -97,6 +97,18 @@
 				<view class=" ">
 					<switch @change="SwitchB"  :class="switchB==1?'checked':''" :checked="switchB==1?true:false"  ></switch>
 				</view>
+				 
+			</view>
+			<view class=" flex flex-wrap padding solid-top align-center" v-if="switchB==1">
+				<view class="title margin-left-xs">选择提现时间</view>
+				<view class="flex flex-wrap  bg-gray radius align-center card-time-left ">
+					<picker mode="time" class="data-time-left-whint" @change="bindTimeChange"   >
+						<view class="picker">
+							{{time}}
+						</view>
+					</picker>
+					<text class="lg text-gray cuIcon-triangledownfill"></text>
+				</view>
 			</view>
 			<view class="btn_bar">
 				<button class="bg-orange " form-type="submit">下一步</button>
@@ -118,6 +130,7 @@ export default {
 			punchCardWay:'',
 			indexlabel:-1,
 			indextime:0,
+			time:'12:00',
 			indexholiday:0,
 			param:{
 				pictures:""
@@ -158,6 +171,9 @@ export default {
 		this.tabs();
 	},
 	methods: {
+		bindTimeChange(e) {
+		            this.time = e.target.value
+		        },
 		PickerChangelabel(e){
 			this.labeldata=Number(e.detail.value)+1;
 			this.indexlabel=e.detail.value;

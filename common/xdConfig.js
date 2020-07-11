@@ -7,7 +7,7 @@ const baseApi = {
   // 开发版
   develop: "http://testxingdongdaka.zhidashixun.com",
   // 体验版
-  trial: "http://testxingdongdaka.zhidashixun.com",
+  trial: "https://xingdongdaka.zhidashixun.com",
   // 正式版
   release: "https://xingdongdaka.zhidashixun.com"
 };

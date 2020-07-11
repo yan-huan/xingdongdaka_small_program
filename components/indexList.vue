@@ -19,7 +19,7 @@
 					</view>
 				</view>
 				
-				<view class="text-content">
+				<view class="text-content margin-top-sm">
 					<view class="cu-tag bg-green radius sm" v-if="list.pushCardCount==0">行动</view>
 					<view class="cu-tag bg-pink radius sm" v-if="list.pushCardCount>0">打卡</view>
 					<text class="contentext" v-if="list.pushCardCount>0" @tap="goComentConten(list)">{{list.pushCardList[0].content}}</text>
@@ -53,7 +53,7 @@
 					</view>
 					<view>
 						<button class="cu-btn bg-light-blue sm round" v-if="list.userId==userId"  :id="index" open-type="share">分享邀请</button>
-						<button class="cu-btn bg-orange sm round  " v-else-if="list.onlooker"  open-type="share">为TA打Call</button>
+						<button class="cu-btn bg-orange sm round  " v-else-if="list.onlooker"  :id="index"  open-type="share">为TA打Call</button>
 						<button class="cu-btn bg-green sm round  " v-else-if="list.userId!=userId && !list.onlooker&&list.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(list,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{list.onlookerCount}}</text>

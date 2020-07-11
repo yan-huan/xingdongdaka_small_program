@@ -18,7 +18,7 @@
 						</view>
 					</view>
 				</view>				
-				<view class="text-contents">
+				<view class="text-contents margin-top-sm">
 					<view class="cu-tag bg-pink radius sm" >第{{pusCardLists.pushCardCount}}次打卡</view>
 					<text class="contentext" >{{showCardCommentlist.pushCard.content}}</text>			
 				</view>	

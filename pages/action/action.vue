@@ -69,12 +69,20 @@ export default {
 	       },  
 	onShareAppMessage(res) {
 		let that = this;
-		that.setSaveShareInfo(res);
-		return {
-			title: that.cardList[res.target.id].content,
-			path: '/pages/index/action/action?pushId='+ that.cardList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.cardList[res.target.id].isopen,
-			imageUrl:that.cardList[res.target.id].pictures?that.cardList[res.target.id].pictures:'../../static/images/icon/img/title1.png',
+		if(that.tab==0){
+			return {
+				title: that.cardList[res.target.id].content,
+				path: '/pages/index/action/action?pushId='+ that.cardList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.cardList[res.target.id].isopen,
+				imageUrl:that.cardList[res.target.id].pictures?that.cardList[res.target.id].pictures:'../../static/images/icon/img/title1.png',
+			}
+		}else if(that.tab==1){
+			return {
+				title: that.lookerList[res.target.id].content,
+				path: '/pages/index/action/action?pushId='+ that.lookerList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.lookerList[res.target.id].isopen,
+				imageUrl:that.lookerList[res.target.id].pictures?that.lookerList[res.target.id].pictures:'../../static/images/icon/img/title1.png',
+			}
 		}
+		
 				
 	},
 	methods: {
@@ -321,8 +329,7 @@ export default {
 							dataList[i].btn=1}//未达成
 							else if(num==0&&num2==num4){
 								dataList[i].btn=2}	//已完成    
-						// var  time=this.xdUniUtils.xd_timestampToTime(res.obj.list[i].createTime);
-						// dataList[i].createTime=time;
+						
 						dataList[i].challengeRmb=Math.floor(dataList[i].challengeRmb/100);		
 						
 					}

@@ -3,7 +3,7 @@
 		<view class="bg-green padding flex flex-direction justify-center hedersize align-center">
 			<view class=" text-xxl">
 				<text>余额：</text>
-				<text>0.00</text>
+				<text>{{rmb}}</text>
 			</view>
 			<view class="margin-top-sm">
 				<button class="cu-btn bg-white round shadow" @tap="gobalance">提现</button>
@@ -41,15 +41,28 @@
 			return {
 				page:0,
 				balanceList:[],
+				rmb:0.00,
 			};
 		},
 		onLoad() {
-			this.loadata()
+			this.loadata();
+			this.getBalance();
 		},
 		onReachBottom() {
 			this.loadata()
 		},
 		methods:{
+			getBalance(){
+				this.xd_request_post(this.xdServerUrls.xd_inquireBalance,
+				{
+					token:uni.getStorageSync('token'),
+				
+				},
+				true
+					   ).then((res) => {
+						  this.rmb=res.obj.rmb;
+				})
+			},
 			loadata(){
 				let pages=this.page++ 
 				this.xd_request_post(this.xdServerUrls.xd_balanceOrderQuery,
@@ -64,9 +77,7 @@
 							    this.balanceList=res.obj.list;
 						   }else{
 							   this.xdUniUtils.xd_showToast('没有更多了')
-						   }
-						   
-						   
+						   }	   	   
 				})
 			},
 			gobalance(){

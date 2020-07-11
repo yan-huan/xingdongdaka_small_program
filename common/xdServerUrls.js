@@ -75,7 +75,7 @@ const serverUrls = { //根据接口具体配置
 	xd_balanceOrderQuery: serverBaseUrl + '/balance/balanceOrderQuery' ,//余额订单查询
 	xd_balanceWithdrawal: serverBaseUrl + '/balance/balanceWithdrawal' ,//余额提现
 	xd_topUpBalance: serverBaseUrl + '/balance/topUpBalance' ,//余额充值
-	
+	xd_inquireBalance: serverBaseUrl + '/balance/inquireBalance' ,//余额查询
 	
 }
 export default {

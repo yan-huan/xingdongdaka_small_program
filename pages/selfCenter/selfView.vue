@@ -13,10 +13,10 @@
 			</view>
 			<view class="actionTabList">
 				<view class="actionMy" v-show="tab===0">
-					<actionlist v-for="(item,index) in list" :key="index" :tab="tab" :showBut='1' :item='item'></actionlist>
+					<actionlist v-for="(item,index) in list" :key="index" :tab="tab" :showBut='1' :item='item' :index='index' v-on:lookerClick="lookerClick" :userId="userId"></actionlist>
 				</view>
 				<view class="actionLook" v-show="tab===1">
-					<actionlist v-for="(item,index) in lookerList" :key="index" :tab="tab" :showBut='1' :item='item'></actionlist>
+					<actionlist v-for="(item,index) in lookerList" :key="index" :tab="tab" :showBut='1' :item='item' :index='index' v-on:lookerClick="lookerClick" :userId="userId"></actionlist>
 				</view>
 			</view>
 		</view>
@@ -45,6 +45,24 @@
 				looktotals:'',
 			}
 		},
+		onShareAppMessage(res) {
+			let that = this;
+			if(that.tab==0){
+				return {
+					title: that.list[res.target.id].content,
+					path: '/pages/index/action/action?pushId='+ that.list[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.list[res.target.id].isopen,
+					imageUrl:that.list[res.target.id].pictures?that.list[res.target.id].pictures:'../../static/images/icon/img/title1.png',
+				}
+			}else if(that.tab==1){
+				return {
+					title: that.lookerList[res.target.id].content,
+					path: '/pages/index/action/action?pushId='+ that.lookerList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.lookerList[res.target.id].isopen,
+					imageUrl:that.lookerList[res.target.id].pictures?that.lookerList[res.target.id].pictures:'../../static/images/icon/img/title1.png',
+				}
+			}
+			
+					
+		},
 		onShow() {
 			
 		},
@@ -63,11 +81,11 @@
 			//围观
 			lookerClick:function(list,index){
 				var that=this ;
-				if(!that.hasLogin){
+				if(!uni.getStorageSync('token')){
 					uni.navigateTo({
-						url: '../login/login' 
+						url: '../../login/login' 
 					});
-					return false;
+									return false
 				}
 				that.userId=uni.getStorageSync('id');
 				that.xd_request_post(that.xdServerUrls.xd_saveLooker,{
@@ -145,7 +163,7 @@
 					pageSize:10,
 				},true)
 				.then(res=>{
-					this.lookerList=res.obj.list;
+					this.lookerList=this.timeStamp(res);
 					this.lookTotal=res.obj.total
 					this.lookerList.forEach(function (item) {
 						if(typeof item.pictures ==='undefined' || item.pictures == ''){

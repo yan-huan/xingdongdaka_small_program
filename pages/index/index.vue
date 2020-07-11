@@ -22,16 +22,16 @@
 			<view class="xd-list-info" :hidden="active == 0||active==2">
 				<view class="swiper-banner">
 				  <swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-color="#aeaeae" indicator-active-color="#ffffff">
-					<swiper-item v-for="(item , index) in bannerList" :key="index">
-						<image v-if="index<bannerList.length" :src="item.bannerImage" @tap="tonewurl(item.bannerUrl)" ></image>
-						<view class="adclass "  v-else>
-							<!-- <ad
-							   unit-id="adunit-333032749ac71266"
+					<swiper-item v-for="(item , index) in adswiper" :key="index">
+						<image v-if="index<bannerList.length" :src="bannerList[index].bannerImage" @tap="tonewurl(bannerList[index].bannerUrl)" ></image>
+						<view class="adclass " v-else >
+							<ad
+							   :unit-id=adid[index-3]
 							   bindload="adLoad"
 							   :ad-intervals="adtime"
-							   binderror="adError"
+							   @error='aderror'
 							   bindclose="adClose"
-							 ></ad> -->
+							 ></ad>
 						</view>
 					</swiper-item>
 				  </swiper>
@@ -106,6 +106,7 @@
 				inimg:'',
 				adtime:30,
 				active:1,
+				adid:['adunit-333032749ac71266','adunit-177916543bde0660','adunit-a4c464a26f8907dc'],
 				currentIndex:-1,
 				labelId:1,
 				bannerList:[],
@@ -117,6 +118,7 @@
 				pageSize:10,//每页条数
 				userId:uni.getStorageSync('id'),
 				searchValue:'请输入行动项·昵称',
+				adswiper:'',
 					
 			};
 		},
@@ -146,6 +148,9 @@
 		        },  
 		methods:{
 			...mapMutations(['logIn','logOut','IndexlogIn'])  ,
+			aderror(e){
+				console.log(e)
+			},
 			goUser(e){
 				if(!this.hasLogin){
 					uni.navigateTo({
@@ -206,6 +211,7 @@
 				this.xd_request_post(this.xdServerUrls.xd_bannerList,{},true
 				 ).then((res) => {
 														   this.bannerList=res.obj
+														   this.adswiper=(res.obj.length)+3
 													   
 													   }).catch(err => {						
 													});
@@ -245,7 +251,7 @@
 							   
 							   if(uni.getStorageSync(new Date().toLocaleDateString()+"dycwgKey") != 1){
 								   uni.showModal({
-										 content: '感谢你的围观鼓励帮助！如果TA未达成，你将瓜分保证金，为TA打Call越多、【评论量】越多、获得我的【认可度】越高，分得越多。如果TA已达成，你的鼓励帮助有效，TA对你的认可度高，TA也愿意给你感谢金',
+										 content: '感谢你的围观鼓励帮助！如果TA未达成，你将瓜分保证金，鼓励帮助【评论量】越多、获得TA的【认可度】越高，分得越多。如果TA已达成，你的鼓励帮助有效，TA对你的认可度高，TA也愿意给你感谢金',
 										 showCancel: false,
 										 buttonText: '知道了',
 										 success: (res) => {
