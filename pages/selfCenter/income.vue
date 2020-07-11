@@ -1,198 +1,95 @@
 <template>
-	<view class="income">
-		<view class="incomeItem">
-			<view class="incomeTxt">
+	<view class="">
+		<view class="bg-green padding flex flex-direction justify-center hedersize align-center">
+			<view class=" text-xxl">
 				<text>余额：</text>
-				<text class="price">3000</text>
+				<text>0.00</text>
 			</view>
-			<view class="incomBtns">
-				<button class="btn">充值</button>
-				<button class="btn other">提现</button>
+			<view class="margin-top-sm">
+				<button class="cu-btn bg-white round shadow" @tap="gobalance">提现</button>
 			</view>
+			
 		</view>
-		<view class="incomeItem">
-			<view class="incomeTxt">
-				<text>收益：</text>
-				<text  class="price">3000</text>
-			</view>
+		<view class="padding-top-sm padding-bottom-sm ">
+			<view class="padding-sm  solids-bottom solids-top">账单</view>
 		</view>
-		
-		<view class="actionInfo">
-			<view class="tabbar">
-				<view class="tab " :class="tab===0?'active':''" @click="tab=0">
-					<text>收益明细</text>
+		<block v-for="(item,index) in balanceList" :key="index">
+			<view class="margin bg-gray radius ">
+				<view class="padding ">
+					<view class="mabottom">订单号：{{item.payNo}}</view>
 				</view>
-				<view class="tab" :class="tab===1?'active':''" @click="tab=1">
-					<text>支出明细</text>
+				<view class="bg-white"></view>
+				<view class="padding-left padding-bottom">
+					<view class="flex flex-direction">
+						<text >金额:￥{{item.rmb/100}}</text>
+						<text >支付方式:微信支付</text>
+						<text v-if="item.type==1">账单类型:充值</text>
+						<text v-if="item.type==2">账单类型:退款</text>
+						<text v-if="item.type==3">账单类型:围观分钱</text>
+						<text >说明:{{item.cause}}</text>
+					</view>
 				</view>
-
 			</view>
-			<view class="actionTabList">
-				<view class="actionbody" v-show="tab===0">
-					<!-- <view class="brow">
-						<view class="rowItem">
-							<text>围观分配：</text>
-							<text>100</text>
-						</view>
-						<view class="rowItem">
-							<text>被打赏：</text>
-							<text>100</text>
-						</view>
-					</view>
-					<view class="brow">
-						<view class="rowItem">
-							<text>拉赞助：</text>
-							<text>100</text>
-						</view>
-						<view class="rowItem">
-							<text>行动项分配：</text>
-							<text>100</text>
-						</view>
-					</view>
-					<view class="brow">
-						<view class="rowItem">
-							<text>挑战赛分配：</text>
-							<text>100</text>
-						</view>
-						<view class="rowItem">
-							<text>圈费分配：</text>
-							<text>100</text>
-						</view>
-					</view>
-					<view class="brow">
-						<view class="rowItem">
-							<text>邀请分配：</text>
-							<text>100</text>
-						</view>
-					</view> -->
-					<view class="icm-list">
-						<view class="icm-item icm-name">
-							<text>围观分配</text>
-						</view>
-						<view class="icm-item ">
-							<text>200元</text>
-						</view>
-						<view class="icm-item">
-							<text>2020年1月1日 12:20:34</text>
-						</view>
-					</view>
-					<view class="icm-list">
-						<view class="icm-item icm-name">
-							<text>被打赏</text>
-						</view>
-						<view class="icm-item ">
-							<text>200元</text>
-						</view>
-						<view class="icm-item">
-							<text>2020年1月1日 12:20:34</text>
-						</view>
-					</view>
-					<view class="icm-list">
-						<view class="icm-item icm-name">
-							<text>圈费分配</text>
-						</view>
-						<view class="icm-item ">
-							<text>200元</text>
-						</view>
-						<view class="icm-item">
-							<text>2020年1月1日 12:20:34</text>
-						</view>
-					</view>
-				</view>
-				<view class="actionbody" v-show="tab===1">
-
-				</view>
-
-			</view>
-		</view>
-		
-		
+		</block>
 	</view>
+		
 </template>
 
 <script>
 	export default {
 		data(){
 			return {
-				tab:0
+				page:0,
+				balanceList:[],
 			};
+		},
+		onLoad() {
+			this.loadata()
+		},
+		onReachBottom() {
+			this.loadata()
+		},
+		methods:{
+			loadata(){
+				let pages=this.page++ 
+				this.xd_request_post(this.xdServerUrls.xd_balanceOrderQuery,
+				{
+					token:uni.getStorageSync('token'),
+					pageNum:pages,
+				
+				},
+				true
+					   ).then((res) => {
+						   if(res.obj.pages>=pages){
+							    this.balanceList=res.obj.list;
+						   }else{
+							   this.xdUniUtils.xd_showToast('没有更多了')
+						   }
+						   
+						   
+				})
+			},
+			gobalance(){
+				uni.navigateTo({
+					url:'balanDrawal'
+				})
+			}
+			
 		}
 	}
 </script>
 
 <style lang="scss">
-	.income{
-		padding:30rpx;
-		font-size: 30rpx;
-		.price{
-			font-weight: bold;
-		}
+	page{
+		background-color: #FFFFFF;
 	}
-	.incomeItem{
-		display: flex;
-		justify-content: space-between;
-		.incomBtns{
-			flex: 1;
-			display: flex;
-			justify-content: flex-end;
-			align-items: center;
-		}
-		height: 80rpx;
-		line-height: 80rpx;
+	.hedersize{
+		min-height: 250upx;
+		max-height: 350upx;
+		width: 100%;
 	}
-	.btn{
-		display: block;
-		font-size: 26rpx;
-		height: 50rpx;
-		line-height: 50rpx;
-		background: $xd-color-base;
-		width:150rpx;
-		margin:0 20rpx 0 0;
-		&.other{
-			background: #fd5107;
-			color:#fff;
-		}
+	.mabottom{
+		border-bottom:5upx solid #FFFFFF ;
 	}
-	.actionInfo{
-		margin:24rpx 0;
-		.tabbar{
-			font-size: 28rpx;
-			display: flex;
-			justify-content: space-between;
-			margin-bottom: 20rpx;;
-			.tab{
-				flex: 1;
-				text-align: center;
-				border-bottom: 1px solid #d9d9d9;
-				padding:16rpx;
-				&.active{
-					border-bottom: 1px solid #fd5107;
-					color:#fd5107;
-				}
-			}
-		}
-	}
-	.brow{
-		font-size: 24rpx;
-		display: flex;
-		padding:20rpx 0 10rpx 0;
-		.rowItem{
-			flex:1;
-		}
-	}
-	.actionbody{
-		padding:12rpx 0 ;
-		.icm-list{
-			display: flex;
-			justify-content: space-between;
-			font-size: 28rpx;
-			margin-bottom: 10rpx;
-			.icm-name{
-				width: 200rpx;
-				overflow: hidden;
-				text-overflow:ellipsis;
-			}
-		}
-	}
-	
+
 </style>

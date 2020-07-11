@@ -57,6 +57,10 @@ const store = new Vuex.Store({
 			state.hasLogin=false;
 			uni.setStorageSync('userInfo','')
 			uni.setStorageSync('token','')
+		},
+		uPuserInfo(state,provider){
+			state.userInfo=provider;
+			uni.setStorageSync('userInfo',state.userInfo)
 		}
     }
 })

@@ -74,7 +74,7 @@
 							<view class="videheit" v-if="item.videos!=''&&item.videos!=undefined &&item.videos!=null ">
 								<video class="videos"  :src="item.videos" controls></video>
 							</view>
-							<view v-else class="grid flex-sub padding-lr" v-else  >
+							<view v-else class="grid flex-sub padding-lr"   >
 								<image class="bg-img imgheit"  :src="item.pictures[0]" mode="aspectFill"
 								 @tap="goPageImg(item.pictures)" v-if="item.pictures.length!=''">
 								</image>
@@ -151,14 +151,16 @@
 				this.getLookerList();
 			}
 		},
-		onShow() {	
-			
-		this.clickSaveShareInfo();
-		if(this.pushList){
-			this.getpushList();
-		}
+		watch: {
+			hasLogin() {
+				console.log('登录刷新')
+				setTimeout(() => {
+					this.getpushList();
+					this.clickSaveShareInfo();
+				}, 100);
+			},
 		},
-		
+	
 		onShareAppMessage(res) {
 			let that = this;
 			
@@ -322,7 +324,6 @@
 			},
 			loveClick:function(e,index){
 				this.xd_request_post(this.xdServerUrls.xd_saveGiveLikeByPush,{
-					
 					pushId:this.pushList.id,
 					initiatorUserId:uni.getStorageSync('id'),
 					giveLikeUserId:this.pushList.userId,
@@ -391,21 +392,6 @@
 							this.getShareInfo();
 						}
 						
-						/* if(typeof this.pushList.label != 'undefined'){
-							var labelId_=''
-							if(this.pushList.label.indexOf(',') > -1){
-								var labelId_ = this.pushList.label.split(',')[0]
-							}else{
-								labelId_ = this.pushList.label
-							}
-							this.xd_request_post(this.xdServerUrls.xd_getLabelsById,{
-								labelId:labelId_
-							},true).then(res=>{	
-								if(res.resultCode==0){
-									this.labelName=res.obj.labelName
-								}
-							})	
-						} */
 						if(this.pushList.userId == uni.getStorageSync('id')){
 							this.guanzhu =''
 						}

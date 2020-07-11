@@ -32,11 +32,13 @@ function xd_getAccessToken() {
 }
 /** *************** alert 相关 *********************** */
 // 弹出框
-function xd_showToast(title, icon, callbackFun) {
+function xd_showToast(title, time,icon, callbackFun) {
 	uni.showToast({
 		title: title,
+		duration:time,
 		icon: icon ? icon : "none",
-		success: function() {
+		success: function(res) {
+			console.log(res)
 			if (typeof(callbackFun) != "undefined" && callbackFun != null) {
 				callbackFun(); // 回调函数
 			}

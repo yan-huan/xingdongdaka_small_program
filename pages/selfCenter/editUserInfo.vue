@@ -40,7 +40,9 @@
 </template>
 
 <script>
-// import simpleAddress from '@/components/simple-address/simple-address.nvue';
+import {		
+		mapMutations
+	} from 'vuex'
 export default {
 	data() {
 		return {
@@ -80,9 +82,7 @@ export default {
 		this.userMobile=userInfo.userMobile;
 	},
 	methods: {
-		// openAddres() {
-		// 	this.$refs.simpleAddress.open();
-		// },
+			...mapMutations(['uPuserInfo']),
 		onConfirm(e) {
 			this.pickerText = e.label; //JSON.stringify(e);
 			
@@ -154,7 +154,6 @@ export default {
 							userId:	res.obj.id		
 							}, true ).then(res=>{
 								if(res.resultCode==0){
-									uni.setStorageSync('userInfo','');
 									let userInfo={
 										nickName:'',
 										avatarUrl:'',
@@ -172,7 +171,7 @@ export default {
 									userInfo.gender=res.obj.sex?res.obj.sex:'2';
 									userInfo.schoolName=res.obj.schoolName?res.obj.schoolName:'无';
 									userInfo.userMobile=res.obj.userMobile;
-									uni.setStorageSync('userInfo',userInfo);
+									this.uPuserInfo(userInfo);
 									uni.showToast({
 									    title: '保存成功',
 										mask:true,

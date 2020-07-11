@@ -2,19 +2,19 @@
 	<view class="selfCenter padding">
 		<view class="personContent">
 			<view class="personHead" @click="goPage('/pages/selfCenter/editUserInfo')">
-				<img :src="userInfo.avatarUrl" alt="" class="imgHead">
+				<img :src="userInfos.avatarUrl" alt="" class="imgHead">
 			</view>
 			<view class="personInfo" @click="goPage('/pages/selfCenter/editUserInfo')">
 				<view class="xd-list-title-text name moreInfo">
-					<text>{{userInfo.nickName}}</text>
-					<text v-if="userInfo.gender==1" class="boy">♂</text>
-					<text v-else-if="userInfo.gender==2" class="boy">♀</text>
+					<text>{{userInfos.nickName}}</text>
+					<text v-if="userInfos.gender==1" class="boy">♂</text>
+					<text v-else-if="userInfos.gender==2" class="boy">♀</text>
 					<text v-else class="boy">密</text>
-					<text>{{userInfo.schoolName == null ? '': userInfo.schoolName}}</text>
+					<text>{{userInfos.schoolName == null ? '': userInfos.schoolName}}</text>
 				</view>
 				<view class="moreInfoIn">
 					<image class='address' src="/static/images/icon/address.png"></image>
-					<text class="province">{{userInfo.province}}.{{userInfo.city}}</text>
+					<text class="province">{{userInfos.province}}.{{userInfos.city}}</text>
 				</view>
 				<view class="subInfo">
 					<text></text>
@@ -32,13 +32,15 @@
 					<text class="moreInfoIn_text" @click="goPage('/pages/selfCenter/myfans')">粉丝 {{likeCount}}</text>
 				</view>
 
-				<!-- <view class="moreInfoIn">
-					<text>  &nbsp;</text>
-				</view> -->
 			</view>
-
 			<view class="moreInfoRow2">
-				
+				<view class="user_column_item">
+				     <button class='content cu-btn' @tap="gomoney">
+					      <text class="lg text-gray cuIcon-moneybag"></text>
+					      <text class='thin'>钱包</text>
+						  <text class="lg text-orange cuIcon-pay margin-left-lg">0.00元</text>
+				     </button>
+				</view>
 				<view class="user_column_item">
 				    <button class='content cu-btn' open-type="feedback">
 				      <text class="lg text-gray cuIcon-question"></text>
@@ -53,9 +55,8 @@
 						<text class="thin">联系客服</text>
 					</button>
 				</view>
-			</view>
+			</view> 
 		</view>
-
 	</view>
 </template>
 
@@ -64,14 +65,13 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-	// import actionlist from "./selfCenterList.vue"
-	// import actionlist from "@/components/actionlist.vue"
+	
 	export default {
 		data() {
 			return {
 				tab: 0, //行动，围观，收藏
 				list: [1, 2, 3, 4, 5],
-				userInfo: '',
+				userInfos: '',
 				lookerCount: 0,
 				likeCount: 0,
 				onOff: true,
@@ -79,12 +79,12 @@
 			}
 		},
 		computed: {
-			...mapState(['hasLogin'])
+			...mapState(['hasLogin','userInfo'])
 		},
 		onShow() {
-			if (this.userInfo == '' || this.userInfo == undefined || this.userInfo == null) {
+			if (this.userInfos == '' || this.userInfos == undefined || this.userInfos == null) {
 				try {
-					this.userInfo = uni.getStorageSync('userInfo')
+					this.userInfos = uni.getStorageSync('userInfo')
 				} catch (e) {
 					console.log(Error)
 				};
@@ -99,15 +99,19 @@
 				});
 				return false;
 			};
-			try {
-
-				this.userInfo = uni.getStorageSync('userInfo')
-
-			} catch (e) {
-				console.log(Error)
-			};
+			this.userInfo=this.xdUniUtils.xd_getStorageSync('userInfo');
+			
 			this.onToOff();
 			this.lookerCountData();
+		},
+		watch: {
+			userInfo() {
+
+				this.userInfos= '';
+				setTimeout(() => {
+					this.userInfos=this.xdUniUtils.xd_getStorageSync('userInfo');
+				}, 100);
+			},
 		},
 		methods: {
 			...mapMutations(['logOut']),
@@ -117,12 +121,12 @@
 				const env = accountInfo.miniProgram.envVersion;		
 
 				this.onOff = (env != 'release' ? true : false)
-				/* this.xd_request_post(this.xdServerUrls.xd_onOff, {
-					versionCode: '2',
-
-				}, true).then(res => {
-					this.onOff = res.obj
-				}) */
+				
+			},
+			gomoney(){
+				uni.navigateTo({
+					url:'./income'
+				});
 			},
 			goPage(url) {
 				uni.navigateTo({
@@ -159,14 +163,14 @@
 
 						if (res.authSetting['scope.userInfo']) {
 							that.xd_request_post(that.xdServerUrls.xd_pay, {
-								unionId: that.userInfo.unionId,
-								openid: that.userInfo.openId,
-								userName: that.userInfo.nickName,
+								unionId: that.userInfos.unionId,
+								openid: that.userInfos.openId,
+								userName: that.userInfos.nickName,
 								id: uni.getStorageSync('id'),
 								token: uni.getStorageSync('token'),
-								userHead: that.userInfo.avatarUrl,
-								city: that.userInfo.city,
-								province: that.userInfo.province,
+								userHead: that.userInfos.avatarUrl,
+								city: that.userInfos.city,
+								province: that.userInfos.province,
 								payRmb: 1,
 								pushId: 1,
 

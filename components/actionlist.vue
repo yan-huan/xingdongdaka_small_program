@@ -79,12 +79,12 @@
 		},
 		methods:{
 			error: function(index) {
-				console.log(index)
+				
 				var num=Math.floor(Math.random()*8+1);
 				this.audioPlaySrc='../static/images/icon/img/title'+num+'.png'
 			            }  ,
 			goPage(item){
-				console.log(item)
+				
 				uni.navigateTo({
 					url:'/pages/selfCenter/clockIn?pushId='+item
 				});
@@ -96,7 +96,7 @@
 				})
 			},
 			goPageImg(e){
-				console.log(e)
+				
 				uni.navigateTo({
 					url:'../img/img?url='+encodeURIComponent(JSON.stringify(e))
 				})
