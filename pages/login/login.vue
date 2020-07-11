@@ -111,6 +111,16 @@ export default {
 												   };
 													_this.userid=res.obj.id;
 													 _this.getuserInfodata(); 
+													 let pages = getCurrentPages()
+													 if(pages.length<=1){
+													 						  uni.switchTab({
+													 						  	url:'../index/index'
+													 						  })
+													  }else{
+													 						   uni.navigateBack({
+													 						   	delta:1
+													 						   })
+													  }
 											   }
 										 
 						}).catch(Error=>{
@@ -145,6 +155,16 @@ export default {
 											   };
 											   _this.userid=res.obj.id;
 												 _this.getuserInfodata(); 
+												 let pages = getCurrentPages()
+												 if(pages.length<=1){
+												 						  uni.switchTab({
+												 						  	url:'../index/index'
+												 						  })
+												  }else{
+												 						   uni.navigateBack({
+												 						   	delta:1
+												 						   })
+												  }
 										   }
 												 
 								}).catch(Error=>{
@@ -154,6 +174,7 @@ export default {
 				})
 				   
 				},
+				//获取用户信息
 				getuserInfodata(){
 					let _this = this;
 					_this.xd_request_post(_this.xdServerUrls.xd_getUserInfoByUserId,
@@ -169,16 +190,6 @@ export default {
 						_this.userInfo.userMobile=res.obj.userMobile;
 						 _this.logIn(_this.userInfo);
 					   })
-					   let pages = getCurrentPages()
-					  if(pages.length==1){
-						  uni.switchTab({
-						  	url:'../index/index'
-						  })
-					   }else{
-						   uni.navigateBack({
-						   	delta:1
-						   })
-					   }
 				}
 			
         }

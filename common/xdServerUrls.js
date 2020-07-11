@@ -72,7 +72,9 @@ const serverUrls = { //根据接口具体配置
 	
 	xd_savefeedbackInfo: serverBaseUrl + '/feedback/savefeedbackInfo' ,//保存反馈信息
 	
-	// xd_getLookerByPushId: serverBaseUrl + '/cardComment/showCardCommentAndReplayCommtent' ,//通过打卡id查询打卡详情、评论及评论回复
+	xd_balanceOrderQuery: serverBaseUrl + '/balance/balanceOrderQuery' ,//余额订单查询
+	xd_balanceWithdrawal: serverBaseUrl + '/balance/balanceWithdrawal' ,//余额提现
+	xd_topUpBalance: serverBaseUrl + '/balance/topUpBalance' ,//余额充值
 	
 	
 }

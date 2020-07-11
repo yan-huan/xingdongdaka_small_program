@@ -26,8 +26,8 @@
 					<text class="contentext" v-if="list.pushCardCount==0" @tap="goPageCard(list)">{{list.content}}</text>
 				</view>
 				
-				<view class="grid flex-sub padding-lr" :class="list.pushCardList[0].videos!=''?'col-3 grid-square':'col-1'" v-if="list.pushCardList[0].videos!=undefined && list.pushCardList[0].videos!=null && list.pushCardList[0].videos!=''">
-					<video  :src="list.pushCardList[0].videos" controls></video>
+				<view class="grid flex-sub padding-lr " :class="list.pushCardList[0].videos!=''?'col-3 grid-square':'col-1'" v-if="list.pushCardList[0].videos!=undefined && list.pushCardList[0].videos!=null && list.pushCardList[0].videos!=''">
+					<video  class="videowhind" :src="list.pushCardList[0].videos" controls></video>
 				</view>
 				<view class="grid flex-sub padding-lr" :class="list.pushCardList[0].pictures.length>1?'col-3 grid-square':'col-1'" v-else-if="list.pushCardCount>0">
 					<view class="bg-img" :class="list.pushCardList[0].pictures.length>1?'':'only-img'" :style="{backgroundImage:'url('+item+')'}"
@@ -137,4 +137,7 @@
 				margin-left: 50upx;
 			}
 .bg-light-blue{background-color: #007AFF;}
+.videowhind{
+	width: 100%;
+}
 </style>
