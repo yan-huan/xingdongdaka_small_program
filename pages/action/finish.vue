@@ -13,7 +13,7 @@
 				</view>
 			</view>
 			<view class="uni-form-item uni-content">
-				<text>说明：目标达成则原额退回。否则将全部扣除，分配30%给平台；剩余的70%平均分配给有效围观者，或在24小时内进行自定义特别感谢。</text>
+				<text>说明：达成则原额退回。否则将全额扣除，分配给有效的围观者、平台等相关方。</text>
 			</view>
 			<!--  #ifdef  MP-WEIXIN -->
 			<view class="btn_bar">

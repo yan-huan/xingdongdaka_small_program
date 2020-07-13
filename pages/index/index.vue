@@ -22,12 +22,12 @@
 			<view class="xd-list-info" :hidden="active == 0||active==2">
 				<view class="swiper-banner">
 				  <swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-color="#aeaeae" indicator-active-color="#ffffff">
-					<swiper-item v-for="(item , index) in adswiper" :key="index">
-						<image v-if="index<bannerList.length" :src="bannerList[index].bannerImage" @tap="tonewurl(bannerList[index].bannerUrl)" ></image>
-						<view class="adclass " v-else >
+					<swiper-item v-for="(item , index) in 3" :key="index">
+						<!-- <image v-if="index<bannerList.length" :src="bannerList[index].bannerImage" @tap="tonewurl(bannerList[index].bannerUrl)" ></image> -->
+						<view class="adclass "  >
 							<ad
-							   :unit-id=adid[index-3]
-							   bindload="adLoad"
+							   :unit-id=adid[index]
+							  
 							   :ad-intervals="adtime"
 							   @error='aderror'
 							   bindclose="adClose"
@@ -132,7 +132,7 @@
 			 }
 			that.setSaveShareInfo(res);
 			return {
-				title: that.listsTab[res.target.id].pushCardList[0].content,
+				title:that.listsTab[res.target.id].userId==that.userId? '第'+that.listsTab[res.target.id].pushCardCishuCount+'次打卡:'+ that.listsTab[res.target.id].pushCardList[0].content:'我为@'+that.listsTab[res.target.id].userName+'打Call：'+ that.listsTab[res.target.id].pushCardList[0].content,
 				path: '/pages/index/action/action?pushId='+that.listsTab[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.listsTab[res.target.id].isopen,
 				imageUrl:that.listsTab[res.target.id].pushCardList[0].pictures[0]?that.listsTab[res.target.id].pushCardList[0].pictures[0]:'../../static/images/icon/img/title1.png',
 			}

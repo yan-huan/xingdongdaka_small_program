@@ -35,10 +35,11 @@
 			</view>
 			<view class="moreInfoRow2">
 				<view class="user_column_item">
-				     <button class='content cu-btn' @tap="gomoney">
+				    <!-- <button class='content cu-btn' @tap="gomoney"> -->
+					<button class='content cu-btn' >
 					      <text class="lg text-gray cuIcon-moneybag"></text>
 					      <text class='thin'>钱包</text>
-						  <text class="lg text-orange cuIcon-pay margin-left-lg">0.00元</text>
+						  <text class="lg text-orange cuIcon-pay margin-left-lg">{{rmb}}元</text>
 				     </button>
 				</view>
 				<view class="user_column_item">
@@ -76,6 +77,7 @@
 				likeCount: 0,
 				onOff: true,
 				env:uni.getStorageSync('env'),
+				rmb:0.00,
 			}
 		},
 		computed: {
@@ -103,6 +105,7 @@
 			
 			this.onToOff();
 			this.lookerCountData();
+			// this.getBalance();
 		},
 		watch: {
 			userInfo() {
@@ -115,6 +118,17 @@
 		},
 		methods: {
 			...mapMutations(['logOut']),
+			async getBalance(){
+				this.xd_request_post(this.xdServerUrls.xd_inquireBalance,
+				{
+					token:uni.getStorageSync('token'),
+				
+				},
+				true
+					   ).then((res) => {
+						  this.rmb=res.obj.rmb;
+				})
+			},
 			onToOff() {
 				const accountInfo = wx.getAccountInfoSync();
 				// env类型
@@ -124,6 +138,7 @@
 				
 			},
 			gomoney(){
+				
 				uni.navigateTo({
 					url:'./income'
 				});
@@ -133,7 +148,7 @@
 					url
 				});
 			},
-			lookerCountData: function(list) {
+		   lookerCountData: function(list) {
 				var that = this;
 				if (!that.hasLogin) {
 					uni.navigateTo({

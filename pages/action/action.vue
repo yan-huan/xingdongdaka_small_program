@@ -71,13 +71,13 @@ export default {
 		let that = this;
 		if(that.tab==0){
 			return {
-				title: that.cardList[res.target.id].content,
+				title:'第'+that.cardList[res.target.id].pushCardCishuCount+'次打卡:'+that.cardList[res.target.id].content,
 				path: '/pages/index/action/action?pushId='+ that.cardList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.cardList[res.target.id].isopen,
 				imageUrl:that.cardList[res.target.id].pictures?that.cardList[res.target.id].pictures:'../../static/images/icon/img/title1.png',
 			}
 		}else if(that.tab==1){
 			return {
-				title: that.lookerList[res.target.id].content,
+				title: '我为@'+that.lookerList[res.target.id].userName+'打Call：'+that.lookerList[res.target.id].content,
 				path: '/pages/index/action/action?pushId='+ that.lookerList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.lookerList[res.target.id].isopen,
 				imageUrl:that.lookerList[res.target.id].pictures?that.lookerList[res.target.id].pictures:'../../static/images/icon/img/title1.png',
 			}

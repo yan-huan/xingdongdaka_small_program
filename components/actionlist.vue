@@ -54,7 +54,7 @@
 				<view>
 					<button class="cu-btn bg-light-blue sm round" v-if="item.userId==userId "  :id="index" open-type="share">分享邀请</button>
 					<button class="cu-btn bg-orange sm round  " v-else-if="item.onlooker" :id="index" open-type="share">为TA打Call</button>
-					<button class="cu-btn bg-green sm round  " v-else-if="item.userId!=userId && !item.onlooker&&item.challengeRmb<=0"  @tap="lookerClick(item,index)">围观</button>
+					<button class="cu-btn bg-green sm round  " v-else-if="item.userId!=userId && !item.onlooker&&item.challengeRmb<=0" :id="index"  @tap="lookerClick(item,index)">围观</button>
 					<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(item,index)">围观分钱</button>
 					<text class="text-gray text-df ">{{item.onlookerCount}}</text>
 				</view>

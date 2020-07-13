@@ -70,6 +70,11 @@
 				this.pageNum = 1;
 				this.getShowFollow();
 			},
+			goUser(e){
+				uni.navigateTo({
+					url:'selfView?userId='+e
+				})
+			},
 			getShowFollow() {
 				var that = this;
 				that.userId = uni.getStorageSync('id');

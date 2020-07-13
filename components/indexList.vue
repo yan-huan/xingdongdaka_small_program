@@ -19,11 +19,13 @@
 					</view>
 				</view>
 				
-				<view class="text-content margin-top-sm">
-					<view class="cu-tag bg-green radius sm" v-if="list.pushCardCount==0">行动</view>
-					<view class="cu-tag bg-pink radius sm" v-if="list.pushCardCount>0">打卡</view>
-					<text class="contentext" v-if="list.pushCardCount>0" @tap="goComentConten(list)">{{list.pushCardList[0].content}}</text>
-					<text class="contentext" v-if="list.pushCardCount==0" @tap="goPageCard(list)">{{list.content}}</text>
+				<view class="text-content margin-top-sm padding-bottom-sm" @tap="goComentConten(list)">				
+					<view class="cu-tag bg-pink radius sm" >打卡</view>
+					<text class="contentext" >{{list.pushCardList[0].content}}</text>
+				</view>
+				<view class="text-content margin-top-sm padding-bottom-sm"  @tap="goPageCard(list)" v-if="list.pushCardCount==0">
+					<view class="cu-tag bg-green radius sm" >行动</view>
+					<text class="contentext" >{{list.content}}</text>
 				</view>
 				
 				<view class="grid flex-sub padding-lr " :class="list.pushCardList[0].videos!=''?'col-3 grid-square':'col-1'" v-if="list.pushCardList[0].videos!=undefined && list.pushCardList[0].videos!=null && list.pushCardList[0].videos!=''">
@@ -54,7 +56,7 @@
 					<view>
 						<button class="cu-btn bg-light-blue sm round" v-if="list.userId==userId"  :id="index" open-type="share">分享邀请</button>
 						<button class="cu-btn bg-orange sm round  " v-else-if="list.onlooker"  :id="index"  open-type="share">为TA打Call</button>
-						<button class="cu-btn bg-green sm round  " v-else-if="list.userId!=userId && !list.onlooker&&list.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
+						<button class="cu-btn bg-green sm round  " v-else-if="list.userId!=userId && !list.onlooker&&list.challengeRmb<=0" :id="index"  @tap="lookerClick(list,index)">围观</button>
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(list,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{list.onlookerCount}}</text>
 					</view>
@@ -133,9 +135,9 @@
 				height: 320upx;
 				width: 100%;
 			}
-			.contentext{
-				margin-left: 50upx;
-			}
+			// .contentext{
+			// 	margin-left: 50upx;
+			// }
 .bg-light-blue{background-color: #007AFF;}
 .videowhind{
 	width: 100%;

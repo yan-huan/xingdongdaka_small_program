@@ -20,8 +20,13 @@
 							<view class="text-gray text-sm ">
 								阶段期限：{{pushList.createTime}}--{{pushList.endTime}}
 							</view>
-							<view class="text-gray text-sm ">
-								坚持天数：{{pushList.pushCardCount}}/{{pushList.targetDay}}
+							<view class="text-gray text-sm  flex flex-wrap">
+								<view class="">
+									坚持天数：{{pushList.pushCardCount}}/{{pushList.targetDay}}
+								</view>
+								<view class="margin-left-sm"> 
+								    休假天数：{{pushList.holidayDay}}天
+								</view>
 							</view>
 						</view>
 						<view v-if="pushList.challengeRmb>0">
@@ -157,9 +162,8 @@
 		watch: {
 			hasLogin() {
 				setTimeout(() => {
-					this.getpushList();
 					this.clickSaveShareInfo();
-					this.getShareInfo();
+
 				}, 100);
 			},
 		},
@@ -170,16 +174,16 @@
 			if(that.pusCardList.length>0){
 				that.setSaveShareInfo();
 				return {
-					title: that.pusCardList[0].content,
-					path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.userId+'&isopen='+that.pushList.isopen,
+					title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'打Call：'+that.pusCardList[0].content,
+					path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
 					imageUrl:that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'../../../static/images/icon/img/title1.png',
 				}
 				
 			}else{
 				that.setSaveShareInfo();
 				return {
-					title: that.pushList.content,
-					path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.userId+'&isopen='+that.pushList.isopen,
+					title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pushList.content:'我为@'+that.pushList.userName+'打Call：'+that.pushList.content,
+					path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
 					imageUrl:that.pushList.pictures?that.pushList.pictures:'../../../static/images/icon/img/title1.png',
 				}
 				
@@ -214,25 +218,12 @@
 					this.xd_request_post(this.xdServerUrls.xd_saveShareInfo,{
 						pushId:this.pushId,
 						shareUserId:this.share,
-						clickUserId:this.userId,
+						clickUserId:uni.getStorageSync('id'),
 					},true
 					   ).then(res => {
-						 
+						  this.getpushList();
 						   })
 				}
-			},
-			getShareInfo(){
-				if(this.share==''||this.share==undefined){
-					return false;
-				}
-				this.xd_request_post(this.xdServerUrls.xd_saveShareInfo,{
-					pushId:this.pushId,
-					shareUserId:this.share,
-					clickUserId:this.userId,
-				},true
-				   ).then(res => {
-					  
-					   })
 			},
 			goUser(e){
 				if(!uni.getStorageSync('token')){
@@ -248,6 +239,12 @@
 			//围观
 			lookerClick:function(list,index){
 				var that=this ;
+				if(!uni.getStorageSync('token')){
+					uni.navigateTo({
+						url: '../../login/login' 
+					});
+									return false
+				}
 				that.userId=uni.getStorageSync('id');
 				that.xd_request_post(that.xdServerUrls.xd_saveLooker,{
 					
@@ -291,6 +288,7 @@
 				})
 			},
 			goSteps(){
+				
 				uni.navigateTo({
 					url: '../../selfCenter/clockIn?pushId='+this.pushList.id
 				});
@@ -337,36 +335,6 @@
 					url: '../cardDetails/cardDetails?pushCard='+encodeURIComponent(JSON.stringify(pushCard))
 				});
 			},
-			loveClick:function(e,index){
-				this.xd_request_post(this.xdServerUrls.xd_saveGiveLikeByPush,{
-					pushId:this.pushList.id,
-					initiatorUserId:uni.getStorageSync('id'),
-					giveLikeUserId:this.pushList.userId,
-					token:uni.getStorageSync('token'),
-				},false
-				   ).then(res => {		
-						   if(!this.pushList.currentUserGiveLike){								   
-												this.pushList.currentUserGiveLike=true;
-												this.pushList.giveLike++;
-						   }else{
-						   uni.showToast({
-								title:'已经赞过了',
-								 duration: 1000,
-								 icon:'none',
-						   })}
-					  }).catch(err => {
-						   if(err=='操作失败'){
-							   uni.showToast({
-								title:'已经赞过了',
-								 duration: 1000,
-								 icon:'none',
-							   })
-						   }
-					
-				})
-				
-				
-			},
 			timeStamp(res){
 				let dataList=res.obj;
 				for(var i=0;i <res.obj.length;i++){
@@ -385,6 +353,14 @@
 			     
 			  },
 		async	getpushList(){
+				if(this.isShare==1){
+					if(!uni.getStorageSync('token')){
+						uni.navigateTo({
+							url: '../../login/login' 
+						});
+						return false
+					}
+				}
 			  	this.xd_request_post(this.xdServerUrls.xd_pushDataByPushId,{
 			  		pushId:this.pushId,
 					isShare:this.isShare,

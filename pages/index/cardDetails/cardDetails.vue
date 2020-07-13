@@ -54,7 +54,7 @@
 						<image class="bg-img imgheit"  :src="audioPlaySrc" mode="aspectFill"
 						 @tap="goPageImg(audioPlaySrc)" v-else @error="error">
 						</image>
-						<view class="text-content textheit" @tap="goAction(pusCardLists.id)">
+						<view class="text-content textheit margin-left-sm" @tap="goAction(pusCardLists.id)">
 							<text class="contentext" >{{pusCardLists.content}}</text>		
 						</view>	
 					</view>		
@@ -68,7 +68,7 @@
 					<view>
 						<button class="cu-btn bg-light-blue sm round" v-if="pusCardLists.userId==userId"  :id="index" open-type="share">分享邀请</button>
 						<button class="cu-btn bg-orange sm round  " v-else-if="pusCardLists.onlooker" open-type="share">为TA打Call</button>
-						<button class="cu-btn bg-green sm round  " v-else-if="pusCardLists.userId!=userId && !pusCardLists.onlooker&&pusCardLists.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
+						<button class="cu-btn bg-green sm round  " v-else-if="pusCardLists.userId!=userId && !pusCardLists.onlooker&&pusCardLists.challengeRmb<=0"  @tap="lookerClick(pusCardLists,index)">围观</button>
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(pusCardLists,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{pusCardLists.onlookerCount}}</text>
 					</view>
@@ -154,10 +154,10 @@
 				});
 				return false;
 			}
-			
 			that.setSaveShareInfo();
 				return {
-					title: that.showCardCommentlist.pushCard.content,
+					
+					title: that.pusCardLists.userId==that.userId? '第'+that.pusCardLists.pushCardCishuCount+'次打卡:'+that.pusCardLists.pushCardList[0].content:'我为@'+that.pusCardLists.userName+'打Call：'+that.pusCardLists.pushCardList[0].content,
 					path: '/pages/index/action/action?pushId='+ that.pusCardLists.id+'&share='+that.id+'&isopen='+that.pusCardLists.isopen,
 					imageUrl:that.showCardCommentlist.pushCard.pictures[0]?that.showCardCommentlist.pushCard.pictures[0]:'../../../static/images/icon/img/title1.png',
 				}			
