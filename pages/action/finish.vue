@@ -117,14 +117,14 @@ export default {
 					})
 				}else{
 					that.mony=that.saveData.challengeRmb*100;
-					that.saveData.challengeRmb=0;
+					//that.saveData.challengeRmb=0;
 					
 						that.getPushId();		  		
 				}
 			}
 			else{
 				that.mony=that.saveData.challengeRmb*100;
-				that.saveData.challengeRmb=0;
+				//that.saveData.challengeRmb=0;
 				
 					that.getPushId();		
 			
@@ -141,11 +141,28 @@ export default {
 			})
 		},
 		getPushId(){
-			
+			var that=this;
+			that.saveData.challengeRmb=that.saveData.challengeRmb*100;
 			this.xd_request_post(this.xdServerUrls.xd_savePush,this.saveData,true).then( res=>{
 				if(res.resultCode==0){
 					this.pushData=res;
-					this.goPay();
+					if(res.obj.payWay != 1){
+						this.goPay();
+					}else{
+						uni.showToast({
+							title: '发布成功',
+							icon: 'success',
+							duration: 2000,
+							success:function(){
+								//that.updataPushId();
+								uni.setStorageSync('pushData','' );
+								uni.reLaunch({
+									url: '../index/action/action?pushId='+res.obj.id
+								})
+							}
+						});
+					}
+					
 					
 				}else{
 					
@@ -214,7 +231,7 @@ export default {
 									icon: 'success',
 									duration: 2000,
 									success:function(){
-										that.updataPushId();
+										//that.updataPushId();
 										uni.setStorageSync('pushData','' );
 										uni.reLaunch({
 											url: '../index/action/action?pushId='+that.pushData.obj.id
