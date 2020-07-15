@@ -96,7 +96,7 @@
 				</view>
 			</block>
 			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1">
-				<view class="actionLi" @tap="goUser(attention.userId)">
+				<view class="actionLi" @tap="goUser(attention.lookUserId)">
 					<view class="ali-main">
 						<view class="ali-main-img">
 							<image class='xd-mag xd-box-shadow' :src="attention.userHead"></image>
