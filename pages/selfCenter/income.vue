@@ -4,6 +4,7 @@
 			<view class=" text-xxl">
 				<text>余额：</text>
 				<text>{{rmb}}</text>
+				<text>元</text>
 			</view>
 			<view class="margin-top-sm">
 				<button class="cu-btn bg-white round shadow" @tap="gobalance">提现</button>
@@ -57,10 +58,10 @@
 				{
 					token:uni.getStorageSync('token'),
 				
-				},
-				true
-					   ).then((res) => {
-						  this.rmb=res.obj.rmb;
+				},true).then((res) => {
+					if(typeof res.obj.rmb !== undefined){
+						this.rmb=res.obj.rmb/100;
+					}
 				})
 			},
 			loadata(){

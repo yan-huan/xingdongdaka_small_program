@@ -36,7 +36,7 @@
 			<view class="moreInfoRow2">
 				<view class="user_column_item">
 				    <!-- <button class='content cu-btn' @tap="gomoney"> -->
-					<button class='content cu-btn' >
+					<button class='content cu-btn' @tap="gomoney">
 					      <text class="lg text-gray cuIcon-moneybag"></text>
 					      <text class='thin'>钱包</text>
 						  <text class="lg text-orange cuIcon-pay margin-left-lg">{{rmb}}元</text>
@@ -105,7 +105,7 @@
 			
 			this.onToOff();
 			this.lookerCountData();
-			// this.getBalance();
+			 this.getBalance();
 		},
 		watch: {
 			userInfo() {
@@ -122,11 +122,10 @@
 				this.xd_request_post(this.xdServerUrls.xd_inquireBalance,
 				{
 					token:uni.getStorageSync('token'),
-				
-				},
-				true
-					   ).then((res) => {
-						  this.rmb=res.obj.rmb;
+				},true).then((res) => {
+					if(typeof res.obj.rmb !== undefined){
+						this.rmb=res.obj.rmb/100;
+					}
 				})
 			},
 			onToOff() {
