@@ -70,7 +70,7 @@
 					<text class="lg text-gray cuIcon-triangledownfill"></text>
 				</view>
 				<view class="" v-if="indextime==5">
-					<input class="timeinput"   placeholder="输入天数" :focus="targetDayf" @input="targetDayinput" maxlength="50" step="1" min="1"></input>
+					<input type="number" class="timeinput"   placeholder="输入天数" :focus="targetDayf" @input="targetDayinput" maxlength="50" step="1" min="1"></input>
 				</view>
 			</view>
 			<view class="flex flex-wrap padding solid-top align-center">
