@@ -19,7 +19,7 @@
 					</view>
 				</view>				
 				<view class="text-contents margin-top-sm">
-					<view class="cu-tag bg-pink radius sm" >第{{pusCardLists.pushCardCount}}次打卡</view>
+					<view class="cu-tag bg-pink radius sm" >第{{dakacishu}}次打卡</view>
 					<text class="contentext" >{{showCardCommentlist.pushCard.content}}</text>			
 				</view>	
 				<view class="padding-lr" v-if="showCardCommentlist.pushCard.videos!=''&&showCardCommentlist.pushCard.videos!=undefined&&showCardCommentlist.pushCard.videos!=null">
@@ -138,8 +138,8 @@
 				conmmmenttext:'请输入评论内容',
 				showCardCommentlist:'',
 				guanzhu:'关注',
-				pushCardCreateTime:''
-				
+				pushCardCreateTime:'',
+				dakacishu:0
 			}
 		},
 		computed: {
@@ -157,7 +157,7 @@
 			that.setSaveShareInfo();
 				return {
 					
-					title: that.pusCardLists.userId==that.userId? '第'+that.pusCardLists.pushCardCishuCount+'次打卡:'+that.pusCardLists.pushCardList[0].content:'我为@'+that.pusCardLists.userName+'打Call：'+that.pusCardLists.pushCardList[0].content,
+					title: that.pusCardLists.userId==that.userId? '第'+that.dakacishu+'次打卡:'+that.pusCardLists.pushCardList[0].content:'我为@'+that.pusCardLists.userName+'打Call：'+that.pusCardLists.pushCardList[0].content,
 					path: '/pages/index/action/action?pushId='+ that.pusCardLists.id+'&share='+that.id+'&isopen='+that.pusCardLists.isopen,
 					imageUrl:that.showCardCommentlist.pushCard.pictures[0]?that.showCardCommentlist.pushCard.pictures[0]:'../../../static/images/icon/img/title1.png',
 				}			
@@ -376,6 +376,18 @@
 					if(data.userId == uni.getStorageSync('id')){
 						this.guanzhu =''
 					}
+					if(typeof data.pushCardList !== undefined){
+						data.pushCardList.forEach(item =>{
+							if(this.cardId == item.id){
+								this.dakacishu = item.cardIndex
+							}
+						});
+						if(this.dakacishu == 0){
+							//兼容之前的数据
+							this.dakacishu = this.pusCardLists.pushCardCishuCount
+						}
+					}
+					
 				})
 			},
 			getLookerList(){
