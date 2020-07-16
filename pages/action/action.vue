@@ -230,7 +230,8 @@ export default {
 							item.challengeRmb=Math.floor(item.challengeRmb/100);	
 						}
 						if(typeof item.pictures ==='undefined' || item.pictures == ''){
-							item.pictures = '../../static/images/icon/img/title1.png'
+							var num=Math.floor(Math.random()*8+1);
+							item.pictures = '../static/images/icon/img/title'+num+'.png'
 						}else{
 							if(item.pictures.indexOf(",")> -1){
 								item.pictures = item.pictures.split(",")[0]
