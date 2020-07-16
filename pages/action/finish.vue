@@ -135,7 +135,7 @@ export default {
 			//取消支付调用修改金额为0
 			var that=this;
 			that.xd_request_post(that.xdServerUrls.xd_updatePushDataByPushId,{
-				pushid:that.pushData.obj.id,
+				id:that.pushData.obj.id,
 				challengeRmb:0,
 			}
 			,true).then( res=>{
@@ -243,6 +243,7 @@ export default {
 							},
 							fail: function (err) {
 								// 支付失败的回调中 用户未付款
+								that.updataPushId();
 								uni.showModal({
 									content:'支付取消',
 									confirmText:'重新填写',
@@ -250,7 +251,6 @@ export default {
 									image:'/static/images/icon/clock.png',
 									success:function(ress) {
 										 if (ress.confirm) {
-											 that.updataPushId();
 											 uni.setStorageSync('pushData',that.pushData.obj );
 											
 											 uni.reLaunch({
