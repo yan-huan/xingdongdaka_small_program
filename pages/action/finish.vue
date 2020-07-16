@@ -132,10 +132,11 @@ export default {
 			}		
 		},
 		updataPushId(){
+			//取消支付调用修改金额为0
 			var that=this;
 			that.xd_request_post(that.xdServerUrls.xd_updatePushDataByPushId,{
 				pushid:that.pushData.obj.id,
-				challengeRmb:that.mony,
+				challengeRmb:0,
 			}
 			,true).then( res=>{
 				
@@ -249,6 +250,7 @@ export default {
 									image:'/static/images/icon/clock.png',
 									success:function(ress) {
 										 if (ress.confirm) {
+											 that.updataPushId();
 											 uni.setStorageSync('pushData',that.pushData.obj );
 											
 											 uni.reLaunch({
