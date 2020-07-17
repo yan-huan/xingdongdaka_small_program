@@ -22,11 +22,16 @@
 				<view class="bg-white"></view>
 				<view class="padding-left padding-bottom">
 					<view class="flex flex-direction">
+						<text >日期:{{xdUniUtils.xd_timestampToTime(item.createTime,false,true,false) }}</text>
 						<text >金额:￥{{item.rmb/100}}</text>
-						<text >支付方式:微信支付</text>
-						<text v-if="item.type==1">账单类型:充值</text>
-						<text v-if="item.type==2">账单类型:退款</text>
-						<text v-if="item.type==3">账单类型:围观分钱</text>
+						<text v-if="item.type==101">支付方式:余额支付</text>
+						<text v-if="item.type==102">支付方式:余额支付</text>
+						<text v-if="item.type==103">支付方式:余额支付</text>
+						<text v-if="item.type==104">支付方式:微信支付</text>
+						<text v-if="item.type==105">支付方式:余额支付</text>
+						<text v-if="item.type==106">支付方式:余额支付</text>
+						<text v-if="item.type==107">支付方式:余额支付</text>
+						<text v-if="item.type==000">支付方式:微信支付</text>
 						<text >说明:{{item.cause}}</text>
 					</view>
 				</view>
