@@ -79,9 +79,33 @@ export default {
 			}
 			,true).then( res=>{
 				if(res.resultCode==0){
-					 this.xdUniUtils.xd_showToast('提现成功','2000',"none",this.xdUniUtils.xd_showToast_success_navigateBack())
+					 this.xdUniUtils.xd_showToast('已成功提现到微信'+Number(that.rmb)+'元',2000,"none",function(){
+						 setTimeout(function(){
+							let pages = getCurrentPages(); // 当前页面
+							let beforePage = pages[pages.length - 2]; // 前一个页面
+							 console.log("beforePage");
+							 console.log(beforePage);
+							uni.navigateBack({
+								success: function() {
+									beforePage.onLoad(); // 执行前一个页面的onLoad方法
+								}
+							});
+						},2000)
+					 })
 				}else{
-					this.xdUniUtils.xd_showToast(res.obj,'5000',"none",this.xdUniUtils.xd_showToast_success_navigateBack())
+					this.xdUniUtils.xd_showToast(res.obj,5000,"none",function(){
+						setTimeout(function(){
+							 let pages = getCurrentPages(); // 当前页面
+							 let beforePage = pages[pages.length - 2]; // 前一个页面
+							  console.log("beforePage");
+							  console.log(beforePage);
+							 uni.navigateBack({
+								 success: function() {
+									 beforePage.onLoad(); // 执行前一个页面的onLoad方法
+								 }
+							 });
+						},2000)
+					})
 				}
 			})
 		},
