@@ -125,6 +125,7 @@
 		},
 		onPullDownRefresh() {
 			this.loadata();
+			uni.stopPullDownRefresh()
 		},
 	}
 </script>
