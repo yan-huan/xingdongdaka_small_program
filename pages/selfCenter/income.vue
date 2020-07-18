@@ -45,9 +45,11 @@
 	export default {
 		data(){
 			return {
-				page:0,
+				//page:0,
 				balanceList:[],
 				rmb:0.00,
+				nextPage:1,//当前页数
+				pageSize:10,//每页条数
 			};
 		},
 		onLoad() {
@@ -70,29 +72,60 @@
 				})
 			},
 			loadata(){
-				let pages=this.page++ 
+				//let pages=this.page++ 
 				this.xd_request_post(this.xdServerUrls.xd_balanceOrderQuery,
 				{
 					token:uni.getStorageSync('token'),
-					pageNum:pages,
-				
-				},
-				true
-					   ).then((res) => {
-						   if(res.obj.pages>=pages){
-							    this.balanceList=res.obj.list;
-						   }else{
-							   this.xdUniUtils.xd_showToast('没有更多了')
-						   }	   	   
+					pageNum:1,
+					pageSize:10,
+				},true).then((res) => {
+					this.nextPage=res.obj.nextPage;
+					this.balanceList=res.obj.list; 	   
 				})
 			},
 			gobalance(){
 				uni.navigateTo({
 					url:'balanDrawal'
 				})
+			},
+			getReachList(){
+				if(this.nextPage==0){
+					uni.showLoading(
+					{
+						title: '没有更多数据了'
+					})
+					setTimeout(function () {
+						uni.hideLoading();
+					}, 1000);
+					return false
+				}
+				uni.showLoading(
+				{
+					title: '加载中..',
+					mask:true
+				})
+				this.xd_request_post(this.xdServerUrls.xd_balanceOrderQuery,
+				{
+					token:uni.getStorageSync('token'),
+					pageNum:this.nextPage,
+					pageSize:this.pageSize,
+				},false).then(res=>{
+					this.nextPage=res.obj.nextPage;
+					this.balanceList=this.balanceList.concat(res.obj.list);
+					setTimeout(function () {
+						uni.hideLoading()
+					}, 1000);
+						
+				})	
 			}
 			
-		}
+		},
+		onReachBottom() {
+			this.getReachList()
+		},
+		onPullDownRefresh() {
+			this.loadata();
+		},
 	}
 </script>
 
