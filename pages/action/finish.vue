@@ -13,7 +13,7 @@
 				</view>
 			</view>
 			<view class="uni-form-item uni-content">
-				<text>{{xdCommon.gzsm_wxfk}}</text>
+				<text>{{gzsm_wxfk}}</text>
 			</view>
 			<!--  #ifdef  MP-WEIXIN -->
 			<view class="btn_bar">
@@ -37,7 +37,7 @@ export default {
 			pushData:'',
 			payNum:0,
 			mony:0,
-			
+			gzsm_wxfk: this.xdCommon.gzsm_wxfk
 				
 			
 		};
