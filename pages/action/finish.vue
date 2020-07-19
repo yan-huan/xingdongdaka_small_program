@@ -13,8 +13,7 @@
 				</view>
 			</view>
 			<view class="uni-form-item uni-content">
-				<text>说明：
-达成则原额退回。否则将全额扣除，分配给有效的围观者、分享等相关方，最终解释权属于平台。</text>
+				<text>{{gzsm_wxfk}}</text>
 			</view>
 			<!--  #ifdef  MP-WEIXIN -->
 			<view class="btn_bar">
@@ -38,7 +37,7 @@ export default {
 			pushData:'',
 			payNum:0,
 			mony:0,
-			
+			gzsm_wxfk: this.xdCommon.gzsm_wxfk
 				
 			
 		};

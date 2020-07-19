@@ -3,6 +3,7 @@ import App from './App';
 import store from './store';
 import xdServerUrls from '@/common/xdServerUrls.js'; // 服务 url
 import xdUniUtils from '@/common/xdUniUtils.js'; // 工具包
+import xdCommon from '@/common/xdCommon.js'; //公共规则说明
 
 const prePage = () => {
 	let pages = getCurrentPages();
@@ -19,7 +20,7 @@ Vue.prototype.xd_request = xdUniUtils.xd_request; // 网络请求
 Vue.prototype.xd_request_get = xdUniUtils.xd_request_get; // 网络请求 GET
 Vue.prototype.xd_request_post = xdUniUtils.xd_request_post; // 网络请求 POST
 Vue.prototype.xdUniUtils = xdUniUtils; //
-
+Vue.prototype.xdCommon = xdCommon; //
 
 Vue.prototype.$store=store;
 Vue.prototype.$api=prePage;

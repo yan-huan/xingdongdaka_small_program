@@ -270,7 +270,7 @@
 							   that.pushList.onlookerCount++;
 							  if(uni.getStorageSync(new Date().toLocaleDateString()+"dycwgKey") != 1){
 								   uni.showModal({
-										 content: '感谢你的围观鼓励帮助！如果TA未达成，你将瓜分保证金，鼓励帮助【评论量】越多、获得TA的【认可度】越高，分得越多。如果TA已达成，你的鼓励帮助有效，TA对你的认可度高，TA也愿意给你感谢金',
+										 content: that.xdCommon.gzsm_wgglts,
 										 showCancel: false,
 										 buttonText: '知道了',
 										 success: (res) => {
