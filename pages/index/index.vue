@@ -20,19 +20,25 @@
 			</view>
 			<!-- 推荐 -->
 			<view class="xd-list-info" :hidden="active == 0||active==2">
+				<view class="cu-bar search bg-white">
+					<view class="search-form round">
+						<text class="cuIcon-search"></text>
+						<input  @blur="search" :adjust-position="false" type="text" :value='searchValue' placeholder="输入搜索行动" confirm-type="search"></input>
+					</view>
+					<view class="action">
+						<button class="cu-btn shadow-blur round coletext">搜索</button>
+					</view>
+				</view>
 				<view class="swiper-banner">
-				  <swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-color="#aeaeae" indicator-active-color="#ffffff">
-					<swiper-item v-for="(item , index) in 3" :key="index">
-						<!-- <image v-if="index<bannerList.length" :src="bannerList[index].bannerImage" @tap="tonewurl(bannerList[index].bannerUrl)" ></image> -->
-						<view class="adclass "  >
+				  <swiper class="swiper"  autoplay="true" circular="true">
+					<swiper-item v-for="item  in num" :key="item">					
 							<ad
-							   :unit-id=adid[index]
-							  
+							   unit-id="adunit-333032749ac71266"
 							   :ad-intervals="adtime"
+							  
 							   @error='aderror'
 							   bindclose="adClose"
 							 ></ad>
-						</view>
 					</swiper-item>
 				  </swiper>
 				</view>
@@ -88,8 +94,9 @@
 			</view>
 			
 		</view>
+		<backTop :scrollTop="scrollTop"></backTop>
 		<!-- 开始行动-加号 -->
-		<view class="start-add" @tap="goPage('/pages/action/step1')">
+		<view class="start-add" @tap="goPage('/pages/action/step1')" v-if="scrollTop<3000">
 			<image src="../../static/images/icon/add.png" mode="widthFix"></image>
 		</view>
 	</view>
@@ -98,13 +105,18 @@
 <script>
 	import{ mapState,mapMutations} from 'vuex'
 	import indexList from "@/components/indexList.vue";
+	import backTop from "@/components/backTop.vue"
 	
 	export default {
+		components:{
+			indexList,
+			backTop
+		},
 		data() {
 			return {
 				// audioPlaySrc:'../static/images/icon/img/title1.png',
 				inimg:'',
-				adtime:30,
+				adtime:100,
 				active:1,
 				adid:['adunit-333032749ac71266','adunit-177916543bde0660','adunit-a4c464a26f8907dc'],
 				currentIndex:-1,
@@ -117,10 +129,17 @@
 				pageNum:1,//当前页数
 				pageSize:10,//每页条数
 				userId:uni.getStorageSync('id'),
-				searchValue:'请输入行动项·昵称',
+				searchValue:'',
 				adswiper:'',
+				num:3,
+				scrollTop:0,
 					
 			};
+		},
+		
+		onPageScroll(e) {
+			
+			this.scrollTop = e.scrollTop;
 		},
 		onShareAppMessage(res) {
 			let that = this;
@@ -172,11 +191,9 @@
 					 
 					   })
 			},
-			searchfocus(){
-				this.searchValue='';
-			},
-			search(e){
 			
+			search(e){
+				this.searchValue=e.detail.value;
 				this.xd_request_post(this.xdServerUrls.xd_searchPushData,
 				{
 					pushName:e.detail.value ,
@@ -184,8 +201,18 @@
 				},
 				true
 					   ).then((res) => {
-						   this.listsTab=this.timeStamp(res);
-						   this.pageNum=res.obj.nextPage==undefined? 1:res.obj.nextPage;
+						   if(res.resultCode==0){
+							 this.searchValue='';
+							   this.listsTab=this.timeStamp(res.obj);
+							   this.pageNum=res.obj.nextPage==undefined? 1:res.obj.nextPage;
+						   }else{
+							  this.searchValue='';
+							   uni.showToast({
+							   	title:res.obj,
+								icon:'none',
+							   })
+						   }
+						   
 					   }).catch(err => {											
 				                           });
 				
@@ -336,7 +363,7 @@
 				true
 					   ).then((res) => {
 						  
-						   this.listsTab=this.timeStamp(res);
+						   this.listsTab=this.timeStamp(res.obj.list);
 						    this.pageNum=res.obj.nextPage; 
 					   }).catch(err => {					
 				                           });
@@ -360,7 +387,7 @@
 				},
 				true
 					   ).then((res) => {
-						   this.listsTab=this.timeStamp(res);
+						   this.listsTab=this.timeStamp(res.obj.list);
 						   this.pageNum=res.obj.nextPage;
 					   }).catch(err => {											
 				                           });
@@ -375,10 +402,10 @@
 				
 			},
 			timeStamp(res){
-				let dataList=res.obj.list;
-				for(var i=0;i <res.obj.list.length;i++){
+				let dataList=res;
+				for(var i=0;i <res.length;i++){
 				   var imgs=[];
-				   var  time=this.xdUniUtils.xd_timestampToTime(res.obj.list[i].pushCardList[0].createTime,false,false,true);
+				   var  time=this.xdUniUtils.xd_timestampToTime(res[i].pushCardList[0].createTime,false,false,true);
 				    if(dataList[i].pushCardList[0].pictures){
 						imgs=dataList[i].pushCardList[0].pictures.split(",");
 						dataList[i].pushCardList[0].pictures=imgs;
@@ -430,7 +457,7 @@
 				},
 				true
 					   ).then((res) => {
-						   this.listsTab=this.timeStamp(res);
+						   this.listsTab=this.timeStamp(res.obj.list);
 						   this.pageNum=res.obj.nextPage==undefined? 1:res.obj.nextPage;
 					   }).catch(err => {											
 				                           });
@@ -485,7 +512,7 @@
 					true
 						   ).then(res=>{
 							 that.pageNum=res.obj.nextPage;
-							 data =that.timeStamp(res);
+							 data =that.timeStamp(res.obj.list);
 							that.listsTab = that.listsTab.concat(data);					
 							setTimeout(function () {
 							    uni.hideLoading()
@@ -503,7 +530,7 @@
 						   ).then(res=>{
 							   that.pageNum=res.obj.nextPage;
 									   
-								  data=that.timeStamp(res);
+								  data=that.timeStamp(res.obj.list);
 							that.listsTab = that.listsTab.concat(data);					
 							setTimeout(function () {
 							    uni.hideLoading()
@@ -545,7 +572,7 @@
 						   ).then(res=>{
 							   that.pageNum=res.obj.nextPage;
 									   
-								  data=that.timeStamp(res);
+								  data=that.timeStamp(res.obj.list);
 							that.listsTab = that.listsTab.concat(data);					
 							setTimeout(function () {
 							    uni.hideLoading()
@@ -613,12 +640,7 @@
 		// 上拉加载
 		onReachBottom() {
 			this.getReachList()
-		},
-		components:{
-			indexList
-		}
-		
-		
+		},	
 	}
 	
 </script>
@@ -637,16 +659,17 @@
 		}
 		view.active{
 			border-color:#fd5107; font-weight:bold; color:#fd5107;
+			
 		}
 	}
 	
 	.swiper-banner{
-		width: 100%;
+		width: 100%;min-height: 208upx;max-height:270upx;
 		
 		.swiper{
-			width: 100%; height: 208upx;
+			width: 100%; min-height: 208upx;max-height: 270upx;
 			swiper-item image{
-				width: 100%; height: 208upx;
+				width: 100%; 
 				border-radius: 10upx;
 			}
 		}
@@ -748,5 +771,8 @@
 		width: 90%;
 		height: 208upx;
 		margin: 0 5.5%;
+	}
+	.coletext{
+		background: #ffe66f;
 	}
 </style>

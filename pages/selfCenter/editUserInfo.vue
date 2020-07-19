@@ -31,7 +31,7 @@
 						<view class="uni-input">{{ date }}</view>
 					</picker>
 				</view> -->
-				<view class="f-list"><input class="uni-input" name="userMobile" placeholder="请输入手机号" maxlength="80" v-model="userMobile"/></view>
+				<view class="f-list"><input class="uni-input" type="number" name="userMobile" placeholder="请输入手机号" maxlength="80" v-model="userMobile"/></view>
 				<view class="f-list"><input class="uni-input" name="schoolName" placeholder="请输入学校名称" maxlength="80" v-model="schoolName"/></view>
 				<view class="f-btns"><button class="f-btn f-btn-b" form-type="submit">保存</button></view>
 			</view>

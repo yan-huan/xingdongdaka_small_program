@@ -15,8 +15,14 @@
 						</view>
 					</view>
 					<view class="flex flex-wrap padding justify-between">
-						<view class=" " >
-							<view class="cu-tag bg-grey radio">{{pushList.label}}</view>
+						<view class="widthtext " >
+							<view class="flex flex-wrap justify-between">
+								<view class="cu-tag bg-grey radio">{{pushList.label}}</view>
+								<view class="text-xl" v-if="pushList.isopen==1">
+									<text class="lg text-orange cuIcon-lock" ></text>
+								</view>
+							</view>
+							
 							<view class="text-gray text-sm ">
 								阶段期限：{{pushList.createTime}}--{{pushList.endTime}}
 							</view>
@@ -57,8 +63,9 @@
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(pushList,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{pushList.onlookerCount}}</text>
 					</view>
-					<view class="text-xxl" @click="goSteps"  v-if="userId==pushList.userId&&pushList.pushCardCount<pushList.targetDay">
-						<button class="cu-btn line-green sm round  " @click="goSteps" >立即打卡</button>
+					<view class="text-xxl"  >
+						<button class="cu-btn line-green sm round  " @click="goSteps" v-if="userId==pushList.userId&&pushList.pushCardCount<pushList.targetDay" >立即打卡</button>
+						<button class="cu-btn line-green sm round  " @click="gostep" v-else>一起行动</button>
 					</view>
 				
 				</view>
@@ -200,6 +207,11 @@
 					return true
 				}
 				return this.xdUniUtils.xd_timestampToTime(d1.createTime,false,false,false) > this.xdUniUtils.xd_timestampToTime(d2.createTime,false,false,false)
+			},
+			gostep(){
+				uni.navigateTo({
+					url:'../../action/step1'
+				})
 			},
 			tabSelect(e){
 				this.TabCur=e.target.id;
@@ -536,6 +548,9 @@
 	.videos{
 		width: 500upx;
 		height: 325upx;
+	}
+	.widthtext{
+		width: 100%;
 	}
 
 </style>
