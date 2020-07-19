@@ -92,6 +92,7 @@
 				};
 
 			}
+			this.getBalance();
 		},
 
 		onLoad() {
@@ -105,7 +106,6 @@
 			
 			this.onToOff();
 			this.lookerCountData();
-			 this.getBalance();
 		},
 		watch: {
 			userInfo() {
