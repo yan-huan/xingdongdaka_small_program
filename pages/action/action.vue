@@ -6,7 +6,8 @@
 					<text>行动 ({{total}})</text>
 				</view>
 				<view class="tab" :class="tab===1?'active':''" @click="tabs(1)">
-					<text>我围观行动({{looktotal}})</text>
+					<text v-if="looktotal != ''">我围观行动({{looktotal}})</text>
+					<text v-if="looktotal == ''">我围观行动</text>
 				</view>
 			</view>
 			<view class="actionTabList">
@@ -62,7 +63,7 @@ export default {
 		// this.inDada();
 	},
 	onLoad() {
-		this.inDada();
+		this.inDada(this.tab);
 	},
 	computed: {
 	           ...mapState(['hasLogin'])  
@@ -89,9 +90,9 @@ export default {
 		tabs(e){
 			this.tab=e
 			if(e==0){
-				this.inDada();
+				this.inDada(0);
 			}else if(e==1){
-				this.inDada();
+				this.inDada(1);
 			}
 		},
 		setSaveShareInfo(res){
@@ -183,7 +184,7 @@ export default {
 			});
 		},
 		
-		inDada(){		
+		inDada(tab){		
 			let token='';
 			let id='';
 			if(!this.hasLogin){
@@ -199,49 +200,52 @@ export default {
 			}catch(e){
 				//TODO handle the exception
 			}
-			   this.xd_request_post(this.xdServerUrls.xd_pushByUserIdList,
-			   {
-			   token:token,
-			   userId:id,
-			   pageNum:1,
-			   pageSize:10,
-			   },
-			   true
-			   
-			       ).then(res=>{
-						 this.cardList=this.dataPaly(res);
-						 this.nextPage=res.obj.nextPage;
-						 this.total=res.obj.total;
-			   	}).catch(Error=>{
-			   		console.log(Error)
-			   	})
-				this.xd_request_post(this.xdServerUrls.xd_lookerPushListByUserId,
-				{
-					userId:uni.getStorageSync("id"),
-					pageNum:1,
-					pageSize:10,
-				},
-				true).then(res=>{
-					this.lookerList=res.obj.list;
-					this.nextPageTwo=res.obj.nextPage;
-					this.looktotal=res.obj.total;
-					this.lookerList.forEach(function (item) {
-						if(typeof item.challengeRmb !='undefined' && item.challengeRmb != '' && item.challengeRmb != '0'){
-							item.challengeRmb=Math.floor(item.challengeRmb/100);	
-						}
-						if(typeof item.pictures ==='undefined' || item.pictures == ''){
-							var num=Math.floor(Math.random()*8+1);
-							item.pictures = '../static/images/icon/img/title'+num+'.png'
-						}else{
-							if(item.pictures.indexOf(",")> -1){
-								item.pictures = item.pictures.split(",")[0]
+			if(tab ==0){
+				   this.xd_request_post(this.xdServerUrls.xd_pushByUserIdList,
+				   {
+				   token:token,
+				   userId:id,
+				   pageNum:1,
+				   pageSize:10,
+				   },
+				   true
+				   
+					   ).then(res=>{
+							 this.cardList=this.dataPaly(res);
+							 this.nextPage=res.obj.nextPage;
+							 this.total=res.obj.total;
+					}).catch(Error=>{
+						console.log(Error)
+					})
+			 }else{
+					this.xd_request_post(this.xdServerUrls.xd_lookerPushListByUserId,
+					{
+						userId:uni.getStorageSync("id"),
+						pageNum:1,
+						pageSize:10,
+					},
+					true).then(res=>{
+						this.lookerList=res.obj.list;
+						this.nextPageTwo=res.obj.nextPage;
+						this.looktotal=res.obj.total;
+						this.lookerList.forEach(function (item) {
+							if(typeof item.challengeRmb !='undefined' && item.challengeRmb != '' && item.challengeRmb != '0'){
+								item.challengeRmb=Math.floor(item.challengeRmb/100);	
 							}
-						}
-					})			  
-					
-				}).catch(Error=>{
-					console.log(Error)
-				})
+							if(typeof item.pictures ==='undefined' || item.pictures == ''){
+								var num=Math.floor(Math.random()*8+1);
+								item.pictures = '../static/images/icon/img/title'+num+'.png'
+							}else{
+								if(item.pictures.indexOf(",")> -1){
+									item.pictures = item.pictures.split(",")[0]
+								}
+							}
+						})			  
+						
+					}).catch(Error=>{
+						console.log(Error)
+					})
+				}
 			},
 			getReachList(){
 				if(this.tab==0){
@@ -294,20 +298,35 @@ export default {
 					 	title: '加载中..',
 					 	mask:true
 					 })
-					 this.xd_request_post(this.xdServerUrls.xd_getLookerByUserId,
+					 this.xd_request_post(this.xdServerUrls.xd_lookerPushListByUserId,
 					 {
 					 	userId:uni.getStorageSync("id"),
 					 	pageNum:this.nextPageTwo,
 					 	pageSize:10,
 					 },
-					 false
-					 	   ).then(res=>{
-					 		   this.nextPageTwo=res.obj.nextPage;
-					 		this.lookerList = this.lookerList.concat(res.obj.list);					
-					 		setTimeout(function () {
-					 			uni.hideLoading()
-					 		}, 1000);	
-					 	})	
+					 true).then(res=>{
+					 	var data=res.obj.list;
+					 	this.nextPageTwo=res.obj.nextPage;
+					 	data.forEach(function (item) {
+					 		if(typeof item.challengeRmb !='undefined' && item.challengeRmb != '' && item.challengeRmb != '0'){
+					 			item.challengeRmb=Math.floor(item.challengeRmb/100);	
+					 		}
+					 		if(typeof item.pictures ==='undefined' || item.pictures == ''){
+					 			var num=Math.floor(Math.random()*8+1);
+					 			item.pictures = '../static/images/icon/img/title'+num+'.png'
+					 		}else{
+					 			if(item.pictures.indexOf(",")> -1){
+					 				item.pictures = item.pictures.split(",")[0]
+					 			}
+					 		}
+					 	})			  
+					 	this.lookerList = this.lookerList.concat(data);
+					 	setTimeout(function () {
+					 		uni.hideLoading()
+					 	}, 1000);	
+					 }).catch(Error=>{
+					 	console.log(Error)
+					 })
 				 }
 				},
 				dataPaly(res){
@@ -343,7 +362,7 @@ export default {
 		this.getReachList()
 	},
 	onPullDownRefresh() {
-		this.inDada();
+		this.inDada(this.tab);
 	},
 	components:{
 		actionlist
