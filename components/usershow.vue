@@ -42,6 +42,9 @@
 		},
 		methods: {
 			tags(e){
+				if(this.currentguanzhu=="已关注"){
+					return
+				}
 				this.xd_request_post(this.xdServerUrls.xd_saveAttention,{
 					userId:uni.getStorageSync('id'),
 					attentionUserId:e.id,		
