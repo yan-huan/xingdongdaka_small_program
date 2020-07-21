@@ -172,7 +172,6 @@
 			}
 			this.getshowCardComment();
 			this.getpushList();
-			this.getLookerList();
 		},
 		methods: {
 			//围观
@@ -375,6 +374,19 @@
 					this.pushCardCreateTime=this.xdUniUtils.xd_timestampToTime(this.pusCardLists.pushCardList[0].createTime,false,true,false)
 					if(data.userId == uni.getStorageSync('id')){
 						this.guanzhu =''
+					}else{
+						this.xd_request_post(this.xdServerUrls.xd_iSAttention,{
+							userId:uni.getStorageSync('id'),
+							attentionUserId:data.userId,
+						},true)
+						.then(res=>{
+							if(res.obj){
+								this.guanzhu ='已关注'
+							}else{
+								this.guanzhu ='关注'
+							}
+							
+						})
 					}
 					if(typeof data.pushCardList !== undefined){
 						data.pushCardList.forEach(item =>{
@@ -387,19 +399,6 @@
 							this.dakacishu = this.pusCardLists.pushCardCishuCount
 						}
 					}
-					
-				})
-			},
-			getLookerList(){
-				this.xd_request_post(this.xdServerUrls.xd_getLookerByPushId,{
-					pushId:this.pushId,
-				},true)
-				.then(res=>{
-					res.obj.list.forEach(item =>{
-						if(item.lookUserId == uni.getStorageSync('id')){
-							this.guanzhu ='已关注'
-						}
-					})
 					
 				})
 			},

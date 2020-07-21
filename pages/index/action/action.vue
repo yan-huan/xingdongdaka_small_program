@@ -386,6 +386,19 @@
 						this.pushList=data;
 						if(this.pushList.userId == uni.getStorageSync('id')){
 							this.guanzhu =''
+						}else{
+							this.xd_request_post(this.xdServerUrls.xd_iSAttention,{
+								userId:uni.getStorageSync('id'),
+								attentionUserId:this.pushList.userId,
+							},true)
+							.then(res=>{
+								if(res.obj){
+									this.guanzhu ='已关注'
+								}else{
+									this.guanzhu ='关注'
+								}
+								
+							})
 						}
 					}else{
 						uni.showToast({

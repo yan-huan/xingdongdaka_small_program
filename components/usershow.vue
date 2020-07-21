@@ -14,19 +14,19 @@
 					</view>
 				</view>
 				<view >
-					<view class="cu-tag line-orange radius"  @tap="tags(list)" >
-						关注
+					<view class="cu-tag line-orange radius" v-if="guanzhu.length > 0"  @tap="tags(list)" >
+						{{guanzhu}}
 					</view>
 				</view>
 			</view>
-			<view class=" flex flex-wrap justify-around padding-sm">
+			<!-- <view class=" flex flex-wrap justify-around padding-sm">
 				<view class="">
 					关注
 				</view>
 				<view class="">
 					粉丝
 				</view>
-			</view>
+			</view> -->
 		</view>
 	
 </template>
@@ -34,7 +34,7 @@
 <script>
 	export default {
 		name:"usershow",
-		props:['list','looktotals'],
+		props:['list','looktotals','guanzhu'],
 		data() {
 			return {
 				
@@ -53,7 +53,7 @@
 					  title: res.msg,
 					})
 				})
-			},
+			}
 		}
 	}
 </script>

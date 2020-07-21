@@ -1,6 +1,6 @@
 <template>
 	<view class="selfCenter">
-		<usershow  :list="userInfo" :looktotals="looktotals"></usershow>
+		<usershow  :list="userInfo" :looktotals="looktotals" :guanzhu="guanzhu"></usershow>
 		<view class="actionInfo">
 			<view class="tabbar bg-white">
 				<view class="tab " :class="tab===0?'active':''" @click="tab=0" >
@@ -43,6 +43,7 @@
 				pushId:'',
 				lookTotal:0,
 				looktotals:'',
+				guanzhu:'关注'
 			}
 		},
 		onShareAppMessage(res) {
@@ -73,6 +74,7 @@
 			this.getCardList();
 			this.getLookerList();
 			this.getUserInfo();
+			this.getIsAttention();
 		},
 		methods: {
 			goPush(e){
@@ -115,6 +117,25 @@
 						   
 					
 				})
+			},
+			getIsAttention(){
+				if(this.userId == uni.getStorageSync('id')){
+					this.guanzhu =''
+				}else{
+					this.xd_request_post(this.xdServerUrls.xd_iSAttention,{
+						userId:uni.getStorageSync('id'),
+						attentionUserId:this.userId,
+					},true)
+					.then(res=>{
+						var data =res.obj;
+						if(data){
+							this.guanzhu ='已关注'
+						}else{
+							this.guanzhu ='关注'
+						}
+						
+					})
+				}
 			},
 			getShowFollow(){
 				this.xd_request_post(this.xdServerUrls.xd_getLookerCountByUserId,

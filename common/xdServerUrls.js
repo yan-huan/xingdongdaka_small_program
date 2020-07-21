@@ -20,6 +20,7 @@ const serverUrls = { //根据接口具体配置
 	xd_showUserCardCommentAndReplayCommtent: serverBaseUrl + '/cardComment/showUserCardCommentAndReplayCommtent' ,//通过用户id查询所有打卡详情、评论及评论回复
 	
 	xd_saveGiveLikeByPush: serverBaseUrl + '/giveLike/saveGiveLikeByPush' ,//给行动项或打卡记录点赞
+	xd_iSAttention: serverBaseUrl + '/attention/iSAttention' ,//判断该用户是否已经关注了
 	xd_getAttentionList: serverBaseUrl + '/attention/getAttentionList' ,//获取关注列表
 	xd_getFansList: serverBaseUrl + '/attention/getFansList' ,//获取粉丝列表
 	xd_saveAttention: serverBaseUrl + '/attention/saveAttention' ,//保存关注
