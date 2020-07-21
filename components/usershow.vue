@@ -14,8 +14,8 @@
 					</view>
 				</view>
 				<view >
-					<view class="cu-tag line-orange radius" v-if="currentguanzhu.length > 0"  @tap="tags(list)" >
-						{{currentguanzhu}}
+					<view class="cu-tag line-orange radius" v-if="guanzhu.length > 0"  @tap="tags(list)" >
+						{{guanzhu}}
 					</view>
 				</view>
 			</view>
@@ -37,12 +37,12 @@
 		props:['list','looktotals','guanzhu'],
 		data() {
 			return {
-				currentguanzhu: this.guanzhu
+				
 			}
 		},
 		methods: {
 			tags(e){
-				if(this.currentguanzhu=="已关注"){
+				if(this.guanzhu=="已关注"){
 					return
 				}
 				this.xd_request_post(this.xdServerUrls.xd_saveAttention,{
@@ -51,7 +51,7 @@
 					
 				},false).then(res=>{
 					if(res.resultCode == 0){
-						 this.currentguanzhu="已关注"
+						 this.guanzhu="已关注"
 					}
 					uni.showToast({
 						icon:'none',
