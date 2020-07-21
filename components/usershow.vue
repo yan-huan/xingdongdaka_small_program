@@ -47,7 +47,9 @@
 					attentionUserId:e.id,		
 					
 				},false).then(res=>{
-					
+					if(res.resultCode == 0){
+						guanzhu="已关注"
+					}
 					uni.showToast({
 						icon:'none',
 					  title: res.msg,
