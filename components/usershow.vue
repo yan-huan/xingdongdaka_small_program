@@ -14,8 +14,8 @@
 					</view>
 				</view>
 				<view >
-					<view class="cu-tag line-orange radius" v-if="guanzhu.length > 0"  @tap="tags(list)" >
-						{{guanzhu}}
+					<view class="cu-tag line-orange radius" v-if="currentguanzhu.length > 0"  @tap="tags(list)" >
+						{{currentguanzhu}}
 					</view>
 				</view>
 			</view>
@@ -37,7 +37,7 @@
 		props:['list','looktotals','guanzhu'],
 		data() {
 			return {
-				
+				currentguanzhu: this.guanzhu
 			}
 		},
 		methods: {
@@ -48,7 +48,7 @@
 					
 				},false).then(res=>{
 					if(res.resultCode == 0){
-						guanzhu="已关注"
+						 this.currentguanzhu="已关注"
 					}
 					uni.showToast({
 						icon:'none',
