@@ -1,6 +1,6 @@
 <template>
 	<view class="selfCenter">
-		<usershow  :list="userInfo" :looktotals="looktotals" :guanzhu="guanzhu"  v-on:clidtags='clidtags'></usershow>
+		<usershow  :list="userInfo" :looktotals="looktotals" :guanzhu="guanzhu" :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags'></usershow>
 		<view class="actionInfo">
 			<view class="tabbar bg-white">
 				<view class="tab " :class="tab===0?'active':''" @click="tab=0" >
@@ -43,6 +43,8 @@
 				pushId:'',
 				lookTotal:0,
 				looktotals:'',
+				lookerCount: 0,
+				likeCount: 0,
 				guanzhu:'关注'
 			}
 		},
@@ -75,8 +77,20 @@
 			this.getLookerList();
 			this.getUserInfo();
 			this.getIsAttention();
+			this.lookerCountData();
 		},
 		methods: {
+			lookerCountData() {
+				var that = this;
+				that.xd_request_post(that.xdServerUrls.xd_getLookerCountByUserId, {
+					userId: that.userId
+				}, false).then(res => {
+					if (res.resultCode == 0) {
+						that.lookerCount = res.obj.lookerCount
+						that.likeCount = res.obj.likeCount
+					} 
+				})
+			},
 			clidtags(e){
 				if(this.guanzhu=="已关注"){
 					return

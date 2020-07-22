@@ -56,20 +56,17 @@
 			}
 		},
 		
-		onLoad() {
+		onLoad(options) {
+			this.userId = options.userId
 			try {
 				this.userInfo = uni.getStorageSync('userInfo')
 		
 			} catch (e) {
 				console.log(Error)
 			};
-			this.showFollow();
+			this.getShowFollow();
 		},
 		methods: {
-			showFollow: function() {
-				this.pageNum = 1;
-				this.getShowFollow();
-			},
 			goUser(e){
 				uni.navigateTo({
 					url:'selfView?userId='+e
@@ -77,7 +74,9 @@
 			},
 			getShowFollow() {
 				var that = this;
-				that.userId = uni.getStorageSync('id');
+				if(that.userId == ''){
+					that.userId = uni.getStorageSync('id');
+				}
 				this.xd_request_post(this.xdServerUrls.xd_getFansList, {
 						userId: that.userId,
 						pageNum: 1,

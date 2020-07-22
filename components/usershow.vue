@@ -19,14 +19,16 @@
 					</view>
 				</view>
 			</view>
-			<!-- <view class=" flex flex-wrap justify-around padding-sm">
-				<view class="">
-					关注
+			
+			<view class="moreInfoRow">
+			
+				<view class="moreInfoIn">
+					<text @click="clidgoPage('/pages/selfCenter/myattention?userId='+list.id)">关注 {{lookerCount}}</text>
+					<text class="moreInfoIn_text" @click="clidgoPage('/pages/selfCenter/myfans?userId='+list.id)">粉丝 {{likeCount}}</text>
 				</view>
-				<view class="">
-					粉丝
-				</view>
-			</view> -->
+			
+			</view>
+			
 		</view>
 	
 </template>
@@ -34,7 +36,7 @@
 <script>
 	export default {
 		name:"usershow",
-		props:['list','looktotals','guanzhu'],
+		props:['list','looktotals','guanzhu','likeCount','lookerCount'],
 		data() {
 			return {
 				
@@ -43,10 +45,53 @@
 		methods: {
 			clidtags(e){
 				this.$emit("clidtags",e);
+			},
+			clidgoPage(url) {
+				uni.navigateTo({
+					url
+				});
 			}
 		}
 	}
 </script>
 
 <style  lang="scss">
+	.moreInfoRow {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		margin: 0 0 14rpx 0;
+	
+		&.rowaction {
+			margin-top: 18rpx;
+		}
+	
+		.moreInfoIn {
+	
+			width: 100%;
+			overflow: hidden;
+	
+			margin: 0;
+	
+			&.flex1 {
+				flex: 1;
+			}
+	
+			padding: 0;
+			text-align: center;
+			height: 70rpx;
+			line-height: 70rpx;
+			background-color: rgb(235, 244, 255);
+			border-bottom: 1px solid #e7e7e7;
+			border-top: 1px solid #e7e7e7;
+		}
+	
+		.moreInfoIn_text {
+			margin-left: 300rpx;
+		}
+	
+		.moreInfoIn .thin {
+			padding: 0 16rpx;
+		}
+	}
 </style>
