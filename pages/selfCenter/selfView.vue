@@ -1,6 +1,6 @@
 <template>
 	<view class="selfCenter">
-		<usershow  :list="userInfo" :looktotals="looktotals" :guanzhu="guanzhu"></usershow>
+		<usershow  :list="userInfo" :looktotals="looktotals" :guanzhu="guanzhu"  v-on:clidtags='clidtags'></usershow>
 		<view class="actionInfo">
 			<view class="tabbar bg-white">
 				<view class="tab " :class="tab===0?'active':''" @click="tab=0" >
@@ -77,6 +77,29 @@
 			this.getIsAttention();
 		},
 		methods: {
+			clidtags(e){
+				if(this.guanzhu=="已关注"){
+					return
+				}
+				this.xd_request_post(this.xdServerUrls.xd_saveAttention,{
+					userId:uni.getStorageSync('id'),
+					attentionUserId:e.id,		
+					
+				},false).then(res=>{
+					if(res.resultCode == 0){
+						 this.guanzhu="已关注"
+						 uni.showToast({
+						 	icon:'none',
+						   title: '关注成功',
+						 })
+					}else{
+						uni.showToast({
+							icon:'none',
+						  title: res.msg,
+						})
+					}
+				})
+			},
 			goPush(e){
 				uni.navigateTo({
 					url: '../index/action/action?pushId='+e

@@ -14,7 +14,7 @@
 					</view>
 				</view>
 				<view >
-					<view class="cu-tag line-orange radius" v-if="guanzhu.length > 0"  @tap="tags(list)" >
+					<view class="cu-tag line-orange radius" v-if="guanzhu.length > 0"  @tap="clidtags(list)" >
 						{{guanzhu}}
 					</view>
 				</view>
@@ -41,23 +41,8 @@
 			}
 		},
 		methods: {
-			tags(e){
-				if(this.guanzhu=="已关注"){
-					return
-				}
-				this.xd_request_post(this.xdServerUrls.xd_saveAttention,{
-					userId:uni.getStorageSync('id'),
-					attentionUserId:e.id,		
-					
-				},false).then(res=>{
-					if(res.resultCode == 0){
-						 this.guanzhu="已关注"
-					}
-					uni.showToast({
-						icon:'none',
-					  title: res.msg,
-					})
-				})
+			clidtags(e){
+				this.$emit("clidtags",e);
 			}
 		}
 	}
