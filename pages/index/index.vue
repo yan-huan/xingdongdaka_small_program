@@ -29,7 +29,7 @@
 						<button class="cu-btn shadow-blur round coletext">搜索</button>
 					</view>
 				</view>
-				<view class="swiper-banner">
+				<view class="swiper-banner" v-if="active == 1 || active ==3">
 				  <swiper class="swiper"  autoplay="true" circular="true">
 					<swiper-item v-for="item  in num" :key="item">					
 							<ad
@@ -136,7 +136,6 @@
 					
 			};
 		},
-		
 		onPageScroll(e) {
 			
 			this.scrollTop = e.scrollTop;
@@ -194,6 +193,7 @@
 			
 			search(e){
 				this.searchValue=e.detail.value;
+				this.currentIndex=-2;
 				this.xd_request_post(this.xdServerUrls.xd_searchPushData,
 				{
 					pushName:e.detail.value ,

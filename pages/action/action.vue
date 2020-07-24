@@ -395,15 +395,14 @@ export default {
 .btn_bar{
 	position: fixed;
 	bottom: 0;
-	left:0;
-	width: 100%;
+	left:25%;
+	width: 50%;
 	.btns {
 		height: 100rpx;
 		
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0 200rpx;
 		font-size: 28rpx;
 		.btn {
 			flex: 1;
