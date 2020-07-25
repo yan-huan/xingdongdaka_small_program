@@ -2,6 +2,7 @@
 	<view class="selfCenter">
 		<usershow  :list="userInfo" :looktotals="looktotals"></usershow>
 		<view class="actionInfo">
+			-----
 			<view class="tabbar bg-white">
 				<view class="tab " :class="tab===0?'active':''" @click="tab=0" >
 					<text>行动 ({{total}})</text>
