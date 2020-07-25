@@ -127,8 +127,19 @@
 				"navigationBarTitleText": "提现"
 			}
 		}
-
-	],
+        ,{
+            "path" : "pages/sponsor/form",
+            "style" : {
+				"navigationBarTitleText": "赞助"
+			}
+        },
+		{
+            "path" : "pages/sponsor/index",
+            "style" : {
+				"navigationBarTitleText": "赞助"
+			}
+        }
+    ],
 
 	"tabBar": {
 		"color": "#b8b9bb",
@@ -145,6 +156,12 @@
 			"iconPath": "static/images/icon/tabbar/tabbar2.png",
 			"selectedIconPath": "static/images/icon/tabbar/tabbar2-on.png",
 			"text": "行动"
+		}, 
+		{
+			"pagePath": "pages/sponsor/index",
+			"iconPath": "static/images/icon/tabbar/tabbarMsg.png",
+			"selectedIconPath": "static/images/icon/tabbar/tabbarMsg-on.png",
+			"text": "赞助"
 		}, 
 		// {
 		// 	"pagePath": "pages/msg/msg",

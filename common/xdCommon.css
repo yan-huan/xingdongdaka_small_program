@@ -15,6 +15,7 @@
 .xd-flex-v-center{align-items:center;}
 .xd-flex-v-bottom{align-items:flex-end;}
 .xd-flex1{flex:1;}
+.xd-pd-tb-10{padding:10upx 0 ;}
 
 /* 宫格布局 */
 .xd-grids{padding:0; display:flex; flex-wrap:wrap;}
@@ -43,7 +44,9 @@
 .xd-border-b-black{border-bottom:1px solid #d9d9d9;}
 .xd-border-t-color{border-top:1px solid #ff9800;}
 .xd-border-b-color{border-bottom:1px solid #ff9800;}
+.xd-border-color{border:1px solid #ff9800;}
 .xd-no-border{border:none !important;}
+.xd-bg{background-color:#ff9800;}
 
 /* 边框阴影 */
 .xd-box-shadow{box-shadow:6upx 4upx 4upx 2upx #ff9800;}
@@ -106,4 +109,12 @@
 }
 .xd-search{
 	border-radius:66upx;  padding:6upx 10upx;  
+}
+
+/* 赞助 */
+.xd-img-sponsor{
+	background-repeat: no-repeat;
+	border-bottom: 1upx solid  #ff9800;
+	border-right: 1upx solid  #ff9800;
+	border-radius: 5upx;
 }
