@@ -28,8 +28,8 @@
 			<view class="moreInfoRow">
 
 				<view class="moreInfoIn">
-					<text @click="goPage('/pages/selfCenter/myattention')">关注 {{lookerCount}}</text>
-					<text class="moreInfoIn_text" @click="goPage('/pages/selfCenter/myfans')">粉丝 {{likeCount}}</text>
+					<text @click="goPage('/pages/selfCenter/myattention?userId='+userId)">关注 {{lookerCount}}</text>
+					<text class="moreInfoIn_text" @click="goPage('/pages/selfCenter/myfans?userId='+userId)">粉丝 {{likeCount}}</text>
 				</view>
 
 			</view>
@@ -78,6 +78,7 @@
 				onOff: true,
 				env:uni.getStorageSync('env'),
 				rmb:0.00,
+				userId:'',
 			}
 		},
 		computed: {
