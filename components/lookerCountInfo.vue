@@ -32,6 +32,22 @@
 			showBanner:function(lookUserId,pushId){
 				this.bannerShow=false;
 				console.log(lookUserId+"----------"+pushId)
+				this.xd_request_post(this.xdServerUrls.xd_getLookerCountInfoByPushIdAndUserId,{
+					pushId:pushId,
+					userId:lookUserId
+				},true).then(res=>{	
+					if(res.resultCode==0){
+						var data=res.obj;
+						console.log(data)
+					}else{
+						uni.showToast({
+							title:res.msg,
+							icon:'none',
+						})
+					}
+									
+				})
+				
 			}
 		}
  
