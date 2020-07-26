@@ -40,7 +40,7 @@
 						var data=res.obj;
 						console.log(data)
 						uni.showToast({
-							title: '评论数量：'+data.commitCount+'\r\n打Call次数：'+data.shareCount+'\r\n打Call点击人次：'+data.shareClickCount,
+							title: '评论数量：'+data.commitCount+'，打Call次数：'+data.shareCount+'，打Call点击人次：'+data.shareClickCount,
 							duration: 3000,
 							icon:'none'
 						})
