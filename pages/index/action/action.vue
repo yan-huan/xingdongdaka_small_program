@@ -1,5 +1,6 @@
 <template>
 	<view >
+		<lookerCountInfo ref="lookerCountInfo"></lookerCountInfo>
 		<view class="cu-card dynamic " :class="pushList.pictures!=''?'no-card':''">
 			<view class="cu-item shadow">
 				<view class="cu-list menu-avatar">
@@ -72,7 +73,7 @@
 			</view>
 			<scroll-view scroll-x class="bg-white nav">
 				<view class="flex text-center">
-					<view class="cu-item flex-sub" :class="index==TabCur?'text-orange cur':''" v-for="(items,index) in ['打卡内容','围观的人']" :key="index" @tap="tabSelect" :id="index" >
+					<view class="cu-item flex-sub" :class="index==TabCur?'text-orange cur':''" v-for="(items,index) in ['打卡内容','围观排行']" :key="index" @tap="tabSelect" :id="index" >
 						{{items}}
 					</view>
 				</view>
@@ -103,12 +104,12 @@
 				</view>
 			</block>
 			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1">
-				<view class="actionLi" @tap="goUser(attention.lookUserId)">
+				<view class="actionLi">
 					<view class="ali-main">
-						<view class="ali-main-img">
+						<view class="ali-main-img" @tap="goUser(attention.lookUserId)">
 							<image class='xd-mag xd-box-shadow' :src="attention.userHead"></image>
 						</view>
-						<view class="lli-main-content xd-list-body ">
+						<view class="lli-main-content xd-list-body" @tap="goUser(attention.lookUserId)">
 							<view class="xd-list-title-text">
 								<text>{{attention.userName}}</text>
 								<text v-if="attention.sex==1" class="boy">♂</text>
@@ -120,7 +121,9 @@
 								<text class="province">{{attention.province}}.{{attention.city}}</text>
 							</view>
 						</view>
-						
+						<view class="ali-main-list" @tap="showBanner(attention.lookUserId,attention.pushId)">
+							<view>{{attention.lookerCount}}</view>
+						</view>
 					</view>
 				</view>
 			</block>
@@ -129,8 +132,12 @@
 </template>
 
 <script>
+	import lookerCountInfo from "@/components/lookerCountInfo.vue"
 	import{ mapState,mapMutations} from 'vuex'
 	export default {
+		components:{
+			lookerCountInfo
+		},
 		data() {
 			return {
 				TabCur: 0,
@@ -198,7 +205,10 @@
 			
 					
 		},
-		methods:{　
+		methods:{
+		    showBanner(lookUserId,pushId){
+				this.$refs.lookerCountInfo.showBanner(lookUserId,pushId);
+			},
 			compareDate (d1, d2) {
 				if(typeof d1 == 'undefined'){
 					return true
@@ -510,11 +520,16 @@
 	.commentCount{
 		right: 0;
 	}
+	
 	.ali-main{
 		display: flex;
 		padding: 20rpx;
 		border-bottom: 3px solid #fff;
-
+		
+		.ali-main-list{
+			line-height: 130rpx;
+			width: 140rpx;
+		}
 		.ali-main-img .xd-mag{
 			border-radius: 100%;
 			height: 125rpx;
