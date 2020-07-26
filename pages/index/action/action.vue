@@ -141,7 +141,7 @@
 				addrAnimation:'',
 				audioPlaySrc:'../../../static/images/icon/img/titl.png',
 				userId:uni.getStorageSync('id'),
-				share:'',
+				
 				lookerList:[],
 				looktotal:'',
 				lookNextPageTwo:'',
@@ -155,16 +155,26 @@
 		           ...mapState(['hasLogin'])  
 		       },  
 		onLoad(option) {
+			//#ifdef MP-WEIXIN
+			wx.showShareMenu({
+			  menus: ['shareAppMessage', 'shareTimeline']
+			})
+			//#endif
 			if(option.pushList==undefined){
 				this.pushId=option.pushId;
+				this.isShare=option.isopen;
 				if(option.share!=undefined){
-					this.share=option.share;
-					this.isShare=option.isopen;
+					try{												
+					 uni.setStorageSync('share',option.share);
+					}catch(e){
+						console.log(Error)
+					};
 				}
 				this.getpushList();
 				this.getLookerList();
 				this.getPushCardList();
 			}
+			
 		},
 		watch: {
 			hasLogin() {
@@ -177,26 +187,27 @@
 	
 		onShareAppMessage(res) {
 			let that = this;
-			
-			if(that.pusCardList.length>0){
-				that.setSaveShareInfo();
-				return {
-					title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'打Call：'+that.pusCardList[0].content,
-					path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
-					imageUrl:that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'../../../static/images/icon/img/title1.png',
-				}
-				
+			if(res.from=="menu"){
+			return	that.xdUniUtils.xd_onShare();
 			}else{
-				that.setSaveShareInfo();
-				return {
-					title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pushList.content:'我为@'+that.pushList.userName+'打Call：'+that.pushList.content,
-					path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
-					imageUrl:that.pushList.pictures?that.pushList.pictures:'../../../static/images/icon/img/title1.png',
-				}
-				
-			}
-			
+				if(that.pusCardList.length>0){
+					that.setSaveShareInfo();
+					return {
+						title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'打Call：'+that.pusCardList[0].content,
+						path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
+						imageUrl:that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+					}
 					
+				}else{
+					that.setSaveShareInfo();
+					return {
+						title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pushList.content:'我为@'+that.pushList.userName+'打Call：'+that.pushList.content,
+						path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
+						imageUrl:that.pushList.pictures?that.pushList.pictures:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+					}
+					
+				}
+			}		
 		},
 		methods:{　
 			compareDate (d1, d2) {
@@ -226,10 +237,10 @@
 					   })
 			},
 			clickSaveShareInfo(){
-				if(this.share!=''){
+				if(uni.getStorageSync('share')!=''){
 					this.xd_request_post(this.xdServerUrls.xd_saveShareInfo,{
 						pushId:this.pushId,
-						shareUserId:this.share,
+						shareUserId:uni.getStorageSync('share'),
 						clickUserId:uni.getStorageSync('id'),
 					},true
 					   ).then(res => {
@@ -305,17 +316,12 @@
 					url: '../../selfCenter/clockIn?pushId='+this.pushList.id
 				});
 			},
-			goPageImg(e){
-				uni.navigateTo({	
-					url:'../../img/img?url='+encodeURIComponent(JSON.stringify(e))
-				})
+			goPageImg(e,index){
+				this.xdUniUtils.xd_showImg(e,index);
 			},
 			error: function() {
-				var num=Math.floor(Math.random()*8+1);
-				
-				this.audioPlaySrc='../../../static/images/icon/img/title'+num+'.png'
-				
-			            }  ,
+				this.audioPlaySrc=this.xdUniUtils.xd_randomImg();
+			       }  ,
 						
 			gocardComentList(e,index){
 				if(!uni.getStorageSync('token')){

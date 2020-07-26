@@ -304,10 +304,19 @@ export default {
 			e.detail.value.holidayDay=this.holidayDay;
 			e.detail.value.pictures= this.param.pictures;
 			this.xdUniUtils.xd_request_text({content:e.detail.value}).then(res=>{
-				if(res.obj.errcode==0)
-				uni.navigateTo({
-					url: '/pages/action/finish?data='+encodeURIComponent(JSON.stringify(e.detail.value))
-				});
+				if(res.obj.errcode==0){
+					uni.navigateTo({
+						url: '/pages/action/finish?data='+encodeURIComponent(JSON.stringify(e.detail.value))
+					});
+				}else{
+					uni.showToast({
+					    title: '内容包含敏感内容',
+						mask:true,
+					    duration: 2000,
+						
+					});
+					return false
+				}
 			})
 				
 		},
@@ -331,9 +340,17 @@ export default {
 							           success: (uploadFileRes) => {
 																
 																 that.param.pictures=JSON.parse(uploadFileRes.data).obj[0];
-																
+																console.log(that.param.pictures)
 							           }
 							       });
+						}else{
+							uni.showToast({
+							    title: '内容包含敏感内容',
+								mask:true,
+							    duration: 2000,
+								
+							});
+							return false
 						}
 					});
 					

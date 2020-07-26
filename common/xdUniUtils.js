@@ -295,6 +295,53 @@ function xd_isValidPhone(str) {
     return true;
   }
 }
+//大图浏览
+function xd_showImg(list,num) {
+	var ig=[];
+	if(Array.isArray(list)){
+		ig=list;
+	}else{
+		ig=list.split(",");
+	}
+	
+  uni.previewImage({
+  	current:num?num:0,
+	urls:ig,
+  })
+}
+//随机图片
+function xd_randomImg() {
+	var ig=["https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png",
+	"https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733487746.png",
+	"https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733529495.png",
+	"https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733539676.png",
+	"https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733559484.png",
+	"https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733565500.png",
+	"https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733578216.png",
+	"https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733591005.png",
+	];
+	var num=Math.floor(Math.random()*7+1);
+	return ig[num]
+}
+//分享
+function xd_onShare(title, path, imageUrl) {
+  //设置一个默认分享背景图片
+  let defaultImageUrl = 'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png';
+  let defaultTitle="行动打卡目标达成工具";
+  let defaultPath="/pages/index/index";
+ 
+  return {
+    title: title ?title: defaultTitle,
+    path: path ? path: defaultPath,
+    imageUrl: imageUrl ?imageUrl: defaultImageUrl,
+    success(res) { 
+      console.log("转发成功！");
+    },
+    fail: function (res) {
+      console.log("转发失败！");
+    }
+  };
+}
 
 export default {
 	xd_setStorage,
@@ -318,5 +365,8 @@ export default {
 	xd_timestampToTime,
 	xd_daysAddSub,
 	xd_request_img,
-	xd_request_text
+	xd_request_text,
+	xd_showImg,
+	xd_randomImg,
+	xd_onShare
 }

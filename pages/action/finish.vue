@@ -30,7 +30,7 @@ export default {
 	data() {
 		return {
 			rmb:{
-				challengeRmb:'',
+				challengeRmb:5,
 			},
 			formData:{},
 			saveData:{},

@@ -27,8 +27,12 @@
 				</view>
 				<view class="grid flex-sub padding-lr" :class="showCardCommentlist.pushCard.pictures.length>1?'col-3 grid-square':'col-1'" >
 					<view class="bg-img" :class="showCardCommentlist.pushCard.pictures.length>1?'':'only-img'" :style="{backgroundImage:'url('+item+')'}"
-					 v-for="(item,index) in showCardCommentlist.pushCard.pictures" :key="index" @tap="goPageImg(showCardCommentlist.pushCard.pictures)" >
+					 v-for="(item,index) in showCardCommentlist.pushCard.pictures" :key="index" @tap="goPageImg(showCardCommentlist.pushCard.pictures,index)" >
 					</view>
+					<!-- <view class="">	
+					    <imt-audio continue :src="showCardCommentlist.pushCard.extendContent" :duration="3000" @prev="next"
+		 @next="next"></imt-audio>
+		              </view> -->
 					<image class="bg-img imgheit "  :src="showCardCommentlist.pushCard.pictures" v-if="showCardCommentlist.pushCard.pictures.length==0" mode="aspectFill"
 					 @tap="goPageImg(showCardCommentlist.pushCard.pictures)"  >
 					</image>
@@ -117,7 +121,12 @@
 
 <script>
 	import{ mapState,mapMutations} from 'vuex'
+	import imtAudio from 'components/imt-audio/imt-audio'
 	export default {
+		components:{
+			imtAudio
+			
+		},
 		data() {
 			return {
 				audioPlaySrc:'../../../static/images/icon/img/ti.png',
@@ -145,7 +154,7 @@
 		computed: {
 		           ...mapState(['hasLogin'])  
 		       },  
-		onShareAppMessage() {
+		onShareAppMessage(res) {
 			
 			let that = this;
 			if(!that.hasLogin){
@@ -154,17 +163,23 @@
 				});
 				return false;
 			}
-			that.setSaveShareInfo();
-				return {
-					
-					title: that.pusCardLists.userId==that.userId? '第'+that.dakacishu+'次打卡:'+that.pusCardLists.pushCardList[0].content:'我为@'+that.pusCardLists.userName+'打Call：'+that.pusCardLists.pushCardList[0].content,
-					path: '/pages/index/action/action?pushId='+ that.pusCardLists.id+'&share='+that.id+'&isopen='+that.pusCardLists.isopen,
-					imageUrl:that.showCardCommentlist.pushCard.pictures[0]?that.showCardCommentlist.pushCard.pictures[0]:'../../../static/images/icon/img/title1.png',
-				}			
+			
+			if(res.from=="menu"){
+			return	that.xdUniUtils.xd_onShare();
+			}else{
+				that.setSaveShareInfo();
+				let text=that.pusCardLists.userId==that.userId? '第'+that.dakacishu+'次打卡:'+that.pusCardLists.pushCardList[0].content:'我为@'+that.pusCardLists.userName+'打Call：'+that.pusCardLists.pushCardList[0].content;
+				let pathText='/pages/index/action/action?pushId='+ that.pusCardLists.id+'&share='+that.id+'&isopen='+that.pusCardLists.isopen;
+				let  img=that.showCardCommentlist.pushCard.pictures[0]?that.showCardCommentlist.pushCard.pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png';
+			return	that.xdUniUtils.xd_onShare(text,pathText,img);
+			}
 		},
-		onLoad(option) {
-			
-			
+		onLoad(option) {		
+			//#ifdef MP-WEIXIN
+			wx.showShareMenu({
+			  menus: ['shareAppMessage', 'shareTimeline']
+			})
+			//#endif
 			this.pushId=option.pushId;
 			this.cardId=option.cardId;
 			if(option.show==1){
@@ -257,16 +272,11 @@
 					url: '../../selfCenter/clockIn?pushId='+this.pusCardLists.id
 				});
 			},
-			 goPageImg(e){
-				uni.navigateTo({
-					url:'../../img/img?url='+encodeURIComponent(JSON.stringify(e))
-				})
+			 goPageImg(e,index){
+				this.xdUniUtils.xd_showImg(e,index);
 			},
 			error: function() {
-				var num=Math.floor(Math.random()*8+1);
-				
-				this.audioPlaySrc='../../../static/images/icon/img/title'+num+'.png'
-				
+				this.audioPlaySrc=this.xdUniUtils.xd_randomImg();
 			            }  ,
 			
 			getshowCardComment(){
@@ -304,44 +314,64 @@
 				this.conmmmenttext='回复：'+e.userName
 			},
 			inputComent(e){			
-				if(this.inputType==1){	
-						this.xd_request_post(this.xdServerUrls.xd_saveCardReplayComment,{
-							replayUserId:this.userId,
-							commentId:this.commentId,
-							cardId:this.dataCardId,
-							userId:this.id,
+				if(this.inputType==1){
+					this.xdUniUtils.xd_request_text({content:this.value}).then(res=>{
+						if(res.obj.errcode==0){
+							this.xd_request_post(this.xdServerUrls.xd_saveCardReplayComment,{
+								replayUserId:this.userId,
+								commentId:this.commentId,
+								cardId:this.dataCardId,
+								userId:this.id,
+								
+								content:this.value,
+							},true).then(res=>{
 							
-							content:this.value,
-						},true).then(res=>{
+								this.showInput=false;
+								this.value='';
+								if (res.resultCode == 0) {
+									var data=res.obj;
+									this.showCardCommentlist=data
+								}
+							})
+						}else{
+							uni.showToast({
+							    title: '内容包含敏感内容',
+								mask:true,
+							    duration: 2000,
+								
+							});
+							return false
+						}})
+				}else if(this.inputType==2){
+					this.xdUniUtils.xd_request_text({content:this.value}).then(res=>{
+						if(res.obj.errcode==0){
+							this.xd_request_post(this.xdServerUrls.xd_saveCardComment,{
+								cardId:this.dataCardId?this.dataCardId:this.cardId,
+								userId:this.id,
+								content:this.value,
+							},true).then(res=>{
+								
+								this.showInput=false;
+								this.value='';
+								/* uni.redirectTo({
+									url:'../cardDetails/cardDetails?pushId='+this.pushId+'&cardId='+this.cardId+'&show=0'
+								}) */
+								 if (res.resultCode == 0) {
+									var data=res.obj;
+									this.showCardCommentlist=data
+								} 
+								
+							})
+						}else{
+							uni.showToast({
+							    title: '内容包含敏感内容',
+								mask:true,
+							    duration: 2000,
+								
+							});
+							return false
+						}})
 						
-							this.showInput=false;
-							this.value='';
-							/* uni.redirectTo({
-								url:'../cardDetails/cardDetails?pushId='+this.pushId+'&cardId='+this.cardId+'&show=0'
-							}) */
-							if (res.resultCode == 0) {
-								var data=res.obj;
-								this.showCardCommentlist=data
-							}
-						})
-				}else if(this.inputType==2){	
-						this.xd_request_post(this.xdServerUrls.xd_saveCardComment,{
-							cardId:this.dataCardId?this.dataCardId:this.cardId,
-							userId:this.id,
-							content:this.value,
-						},true).then(res=>{
-							
-							this.showInput=false;
-							this.value='';
-							/* uni.redirectTo({
-								url:'../cardDetails/cardDetails?pushId='+this.pushId+'&cardId='+this.cardId+'&show=0'
-							}) */
-							 if (res.resultCode == 0) {
-								var data=res.obj;
-								this.showCardCommentlist=data
-							} 
-							
-						})
 					
 				}
 	
