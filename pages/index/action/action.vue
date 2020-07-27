@@ -169,7 +169,7 @@
 			//#endif
 			if(option.pushList==undefined){
 				this.pushId=option.pushId;
-				this.isShare=option.isopen;
+				this.isShare=option.isopen?option.isopen:0;
 				if(option.share!=undefined){
 					try{												
 					 uni.setStorageSync('share',option.share);

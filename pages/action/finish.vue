@@ -78,13 +78,13 @@ export default {
 			}catch(e){
 				//TODO handle the exception
 			}
-			if(that.rmb.challengeRmb!=''){
-				that.saveData=Object.assign(that.formData,that.rmb,userData);	
-			}else{
+			if(that.rmb.challengeRmb==5 ){
 				that.saveData=Object.assign(that.formData,e.detail.value,userData);
-				
-			};
-			if(that.rmb.challengeRmb==''){
+			}else{
+				that.saveData=Object.assign(that.formData,that.rmb,userData);	
+			}
+			console.log(that.saveData.challengeRmb);
+			if(that.saveData.challengeRmb==0 ||that.saveData.challengeRmb=='' ){
 				if(e.detail.value.challengeRmb==''||e.detail.value.challengeRmb<=0){
 					that.saveData.challengeRmb=0;
 					that.xd_request_post(that.xdServerUrls.xd_savePush,that.saveData,true).then( res=>{

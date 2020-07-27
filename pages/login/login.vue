@@ -83,6 +83,7 @@ export default {
 					   encryptedData:_this.encryptedData,
 					   iv:_this.iv,
 					   code:loginRes.code,
+					   shareUserId:uni.getStorageSync('share')?uni.getStorageSync('share'):'',
 					   },
 					   {'content-type': 'application/x-www-form-urlencoded'} 
 					   
@@ -101,6 +102,11 @@ export default {
 											_this.userInfo.gender=res.obj.sex?res.obj.sex:'2';
 											_this.userInfo.schoolName=res.obj.schoolName?res.obj.schoolName:'';
 											_this.userInfo.userMobile=res.obj.userMobile;
+											_this.userInfo.openId=res.obj.openId;
+											_this.userInfo.id=res.obj.id;
+											_this.userInfo.unionId=res.obj.unionId;
+											
+											
 											 _this.logIn(_this.userInfo);
 											 let pages = getCurrentPages()
 											 if(pages.length<=1){
