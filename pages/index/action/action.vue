@@ -103,7 +103,7 @@
 					</view>
 				</view>
 			</block>
-			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1">
+			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1" @click="getLookerList()">
 				<view class="actionLi">
 					<view class="ali-main">
 						<view class="ali-main-img" @tap="goUser(attention.lookUserId)">
@@ -178,7 +178,6 @@
 					};
 				}
 				this.getpushList();
-				this.getLookerList();
 				this.getPushCardList();
 			}
 			
@@ -481,12 +480,19 @@
 					userId:uni.getStorageSync('id'),
 					attentionUserId:this.pushList.userId,		
 					
-				},false).then(res=>{
-					
-					uni.showToast({
-						icon:'none',
-					  title: res.msg,
-					})
+				},true).then(res=>{
+					if(res.resultCode == 0){
+						 this.guanzhu="已关注"
+						 uni.showToast({
+						 	icon:'none',
+						   title: '关注成功',
+						 })
+					}else{
+						uni.showToast({
+							icon:'none',
+						  title: res.msg,
+						})
+					}
 				})
 			},
 			getLookerList(){

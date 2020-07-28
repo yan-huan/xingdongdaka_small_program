@@ -91,7 +91,7 @@
 				var that = this;
 				that.xd_request_post(that.xdServerUrls.xd_getLookerCountByUserId, {
 					userId: that.userId
-				}, false).then(res => {
+				}, true).then(res => {
 					if (res.resultCode == 0) {
 						that.lookerCount = res.obj.lookerCount
 						that.likeCount = res.obj.likeCount
@@ -106,7 +106,7 @@
 					userId:uni.getStorageSync('id'),
 					attentionUserId:e.id,		
 					
-				},false).then(res=>{
+				},true).then(res=>{
 					if(res.resultCode == 0){
 						 this.guanzhu="已关注"
 						 uni.showToast({
