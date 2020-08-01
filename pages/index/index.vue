@@ -173,6 +173,7 @@
 			})
 			//#endif
 		    this.indexData();
+			this.xdUniUtils.updateNumber(2);
 			
 			
 		},

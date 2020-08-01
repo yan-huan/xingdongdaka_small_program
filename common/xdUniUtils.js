@@ -342,8 +342,34 @@ function xd_onShare(title, path, imageUrl) {
     }
   };
 }
+/**
+ * 
+ *Tab红点提示
+ */
+const updateNumber = function(gnumber) {
+	if (gnumber < 1) {
+		uni.removeTabBarBadge({
+			index: 2
+		})
+	} else if (gnumber > 999) {
+		uni.setTabBarBadge({
+			index: 2,
+			text: "999+"
+		});
+	} else {
+		uni.setTabBarBadge({
+			index: 2,
+			text: gnumber + ""
+		});
+	}
+	// uni.setStorage({
+	// 	key: "gnumber",
+	// 	data: gnumber
+	// })
+};
 
 export default {
+	updateNumber,
 	xd_setStorage,
 	xd_setStorageSync,
 	xd_getStorageSync,

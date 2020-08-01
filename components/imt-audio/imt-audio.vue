@@ -35,14 +35,13 @@
 				type:Boolean,
 				default:true
 			}, //是否需要上一曲/下一曲按钮
-			continue:Boolean,//播放完成后是否继续播放下一首，需定义@next事件
+			continue:false,//播放完成后是否继续播放下一首，需定义@next事件
 			color: {
 				type:String,
 				default:'#169af3'
 			} //主色调
 		},
 		methods: {
-			
 			//返回prev事件
 			prev() {
 				this.$emit('prev')
@@ -73,16 +72,11 @@
 		created() {
 			audio.src = this.src
 			this.current = 0
-			// this.durationTime = this.format(this.duration)
-			audio.obeyMuteSwitch = false;
-			audio.autoplay = false;
-			audio.onCanplay(() => {
-			      audio.duration //类似初始化-必须触发-不触发此函数延时也获取不到
-			      setTimeout(function () {
-			       //在这里就可以获取到大家梦寐以求的时长了
-			        console.log(audio.duration);//延时获取长度 单位：秒
-			      }, 1000)  //这里设置延时1秒获取
-			    })
+			this.durationTime = this.format(this.duration)
+			var time= audio.duration;
+			console.log(time);
+			audio.obeyMuteSwitch = false
+			audio.autoplay = this.autoplay
 			//音频进度更新事件
 			audio.onTimeUpdate(() => {
 				if (!this.seek) {
@@ -101,7 +95,7 @@
 			//音频结束事件
 			audio.onEnded(() => {
 				if (this.continue) {
-					this.next()
+					// this.next()
 				} else {
 					this.paused = true
 					this.current = 0
@@ -111,24 +105,12 @@
 			audio.onSeeked(() => {
 				this.seek = false
 			})
-			
 		},
 		watch: {
 			//监听音频地址更改
 			src(e) {
 				audio.src = e
-				// audio.src = this.src
 				this.current = 0
-				// audio.play()
-				
-				audio.onCanplay(() => {
-					
-				      audio.duration //类似初始化-必须触发-不触发此函数延时也获取不到
-				      setTimeout(function () {
-				       //在这里就可以获取到大家梦寐以求的时长了
-				        console.log(audio.duration);//延时获取长度 单位：秒
-				      }, 1000)  //这里设置延时1秒获取
-				    })
 				// this.loading = true
 			},
 			//监听总时长改变

@@ -29,10 +29,10 @@
 					<view class="bg-img" :class="showCardCommentlist.pushCard.pictures.length>1?'':'only-img'" :style="{backgroundImage:'url('+item+')'}"
 					 v-for="(item,index) in showCardCommentlist.pushCard.pictures" :key="index" @tap="goPageImg(showCardCommentlist.pushCard.pictures,index)" >
 					</view>
-					<!-- <view class="">	
-					    <imt-audio continue :src="showCardCommentlist.pushCard.extendContent" :duration="3000" @prev="next"
+					<view class="" v-if="showCardCommentlist.pushCard.extendContent">	
+					    <imt-audio continue :src="showCardCommentlist.pushCard.extendContent" :duration="8" @prev="next"
 		 @next="next"></imt-audio>
-		              </view> -->
+		              </view>
 					<image class="bg-img imgheit "  :src="showCardCommentlist.pushCard.pictures" v-if="showCardCommentlist.pushCard.pictures.length==0" mode="aspectFill"
 					 @tap="goPageImg(showCardCommentlist.pushCard.pictures)"  >
 					</image>
@@ -122,6 +122,7 @@
 <script>
 	import{ mapState,mapMutations} from 'vuex'
 	import imtAudio from 'components/imt-audio/imt-audio'
+	const audio = uni.createInnerAudioContext(); //创建音频
 	export default {
 		components:{
 			imtAudio
@@ -187,9 +188,11 @@
 			}
 			this.getshowCardComment();
 			this.getpushList();
+			
 		},
 		methods: {
 			//围观
+			
 			lookerClick:function(list){
 				var that=this ;
 				if(!that.hasLogin){

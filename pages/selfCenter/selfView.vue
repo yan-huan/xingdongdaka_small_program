@@ -1,6 +1,6 @@
 <template>
 	<view class="selfCenter">
-		<usershow  :list="userInfo" :looktotals="looktotals" :guanzhu="guanzhu" :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags'></usershow>
+		<usershow  :list="userInfo" :looktotals="looktotals" :guanzhu="guanzhu" :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags' ></usershow>
 		<view class="actionInfo">
 			<view class="tabbar bg-white">
 				<view class="tab " :class="tab===0?'active':''" @click="tab=0" >
@@ -26,6 +26,10 @@
 <script>
 	import actionlist from "@/components/actionlist.vue"
 	import usershow from "@/components/usershow.vue"
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		components:{
 			usershow,
@@ -35,10 +39,10 @@
 			return {
 				tab:0,//行动，围观，收藏
 				list:[],
-				userInfo:'',
 				userId:'',
 				user:uni.getStorageSync('id'),
 				total:'',
+				userInfo:uni.getStorageSync('userInfo'),
 				lookerList:[],
 				pushId:'',
 				lookTotal:0,
@@ -47,6 +51,9 @@
 				likeCount: 0,
 				guanzhu:'关注'
 			}
+		},
+		computed: {
+			...mapState(['hasLogin'])
 		},
 		onShareAppMessage(res) {
 			let that = this;
@@ -82,7 +89,7 @@
 			this.userId = option.userId;
 			this.getCardList();
 			this.getLookerList();
-			this.getUserInfo();
+			// this.getUserInfo();
 			this.getIsAttention();
 			this.lookerCountData();
 		},
@@ -195,14 +202,14 @@
 				
 				
 			},
-			getUserInfo(){
-				this.xd_request_post(this.xdServerUrls.xd_getUserInfoByUserId,{
-					userId:this.userId,
-				},true)
-				.then(res=>{
-					this.userInfo=res.obj;
-				})
-			},
+			// getUserInfo(){
+			// 	this.xd_request_post(this.xdServerUrls.xd_getUserInfoByUserId,{
+			// 		userId:this.userId,
+			// 	},true)
+			// 	.then(res=>{
+			// 		this.userInfo=res.obj;
+			// 	})
+			// },
 			getCardList(){
 				this.xd_request_post(this.xdServerUrls.xd_pushByUserIdList,{
 					token:uni.getStorageSync('token'),

@@ -11,13 +11,15 @@
 					</view>
 				</view>
 				<view class="f-list"><input class="uni-input" name="userName" placeholder="请输入您的昵称" maxlength="12" v-model="userName"/></view>
-				<!-- <view class="f-list"><input class="uni-input" name="name" placeholder="签名" maxlength="12" /></view> -->
+				
 				<view class="f-list">
-					<input class="uni-input" name="province" placeholder="请输入省份" maxlength="200"  v-model="province" />
+					<picker  mode="region" @change="bindPickerChange" :value="region" :custom-item="customItem">
+					        <view class="uni-input" v-if="region.length>0">城市：{{region[1]}}，{{region[2]}}</view>
+							<view class="uni-input" v-else>点击选择城市</view>
+					 </picker>
+					
 				</view>
-				<view class="f-list">
-					<input class="uni-input" name="city" placeholder="请输入城市" maxlength="200"  v-model="city" />
-				</view>
+				
 				<view class="f-list left">
 					<text class="f-list-lb">性别：</text>
 					<radio-group name='sex'>
@@ -26,11 +28,7 @@
 						</label>
 					</radio-group>
 				</view>
-				<!-- <view class="f-list">
-					<picker mode="date" :value="date" @change="bindDateChange" class="pickdate">
-						<view class="uni-input">{{ date }}</view>
-					</picker>
-				</view> -->
+				
 				<view class="f-list"><input class="uni-input" type="number" name="userMobile" placeholder="请输入手机号" maxlength="80" v-model="userMobile"/></view>
 				<view class="f-list"><input class="uni-input" name="schoolName" placeholder="请输入学校名称" maxlength="80" v-model="schoolName"/></view>
 				<view class="f-btns"><button class="f-btn f-btn-b" form-type="submit">保存</button></view>
@@ -66,14 +64,16 @@ export default {
 			img:'',
 			openId:'',
 			unionId:'',
+			customItem: '全部',
+			region: [],
 			
 		};
 	},
 	onLoad() {
 		let userInfo=uni.getStorageSync('userInfo');
 		this.userName=userInfo.nickName;
-		this.province=userInfo.province;
-		this.city=userInfo.city;
+		// this.province=userInfo.province;
+		// this.city=userInfo.city;
 		this.current=userInfo.gender;
 		this.img=userInfo.avatarUrl;
 		this.openId=userInfo.openId;
@@ -87,9 +87,11 @@ export default {
 			this.pickerText = e.label; //JSON.stringify(e);
 			
 		},
-		// bindDateChange: function(e) {
-		// 	this.date = e.target.value;
-		// },
+		
+		 bindPickerChange: function (e) {
+			this.region=e.detail.value
+		    
+		  },
 		popUpImg(){
 			const that = this;
 			uni.chooseImage({
@@ -124,6 +126,7 @@ export default {
 				token:'',
 				id:'',
 			};
+			 
 			try{
 				userData.token=uni.getStorageSync('token');
 				userData.id=uni.getStorageSync('id');
@@ -138,8 +141,8 @@ export default {
 						userMobile:e.detail.value.userMobile,
 						schoolName:e.detail.value.schoolName,
 						userName:e.detail.value.userName,
-						province:e.detail.value.province,
-						city:e.detail.value.city,
+						province:this.region[1],
+						city:this.region[2],
 						token:userData.token,
 						sex:e.detail.value.sex, 
 						id:userData.id,
@@ -171,6 +174,7 @@ export default {
 									userInfo.gender=res.obj.sex?res.obj.sex:'2';
 									userInfo.schoolName=res.obj.schoolName?res.obj.schoolName:'无';
 									userInfo.userMobile=res.obj.userMobile;
+									
 									this.uPuserInfo(userInfo);
 									uni.showToast({
 									    title: '保存成功',
