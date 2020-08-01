@@ -453,12 +453,19 @@
 					userId:uni.getStorageSync('id'),
 					attentionUserId:this.pusCardLists.userId,		
 					
-				},false).then(res=>{
-					
-					uni.showToast({
-						icon:'none',
-					  title: res.msg,
-					})
+				},true).then(res=>{
+					if(res.resultCode == 0){
+						 this.guanzhu="已关注"
+						 uni.showToast({
+						 	icon:'none',
+						   title: '关注成功',
+						 })
+					}else{
+						uni.showToast({
+							icon:'none',
+						  title: res.msg,
+						})
+					}
 				})
 			},
 			

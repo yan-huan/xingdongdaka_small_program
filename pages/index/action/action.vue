@@ -60,7 +60,7 @@
 					<view>
 						<button class="cu-btn bg-light-blue sm round" v-if="pushList.userId==userId"  :id="index" open-type="share">分享邀请</button>
 						<button class="cu-btn bg-orange sm round" v-else-if="pushList.onlooker"  :id="index" open-type="share">为TA打Call</button>
-						<button class="cu-btn bg-green sm round  " v-else-if="pushList.userId!=userId && !pushList.onlooker&&pushList.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
+						<button class="cu-btn bg-green sm round  " v-else-if="pushList.userId!=userId && !pushList.onlooker&&pushList.challengeRmb<=0"  @tap="lookerClick(pushList,index)">围观</button>
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(pushList,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{pushList.onlookerCount}}</text>
 					</view>
@@ -103,7 +103,7 @@
 					</view>
 				</view>
 			</block>
-			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1">
+			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1" @click="getLookerList()">
 				<view class="actionLi">
 					<view class="ali-main">
 						<view class="ali-main-img" @tap="goUser(attention.lookUserId)">
@@ -178,7 +178,6 @@
 					};
 				}
 				this.getpushList();
-				this.getLookerList();
 				this.getPushCardList();
 			}
 			
@@ -481,12 +480,19 @@
 					userId:uni.getStorageSync('id'),
 					attentionUserId:this.pushList.userId,		
 					
-				},false).then(res=>{
-					
-					uni.showToast({
-						icon:'none',
-					  title: res.msg,
-					})
+				},true).then(res=>{
+					if(res.resultCode == 0){
+						 this.guanzhu="已关注"
+						 uni.showToast({
+						 	icon:'none',
+						   title: '关注成功',
+						 })
+					}else{
+						uni.showToast({
+							icon:'none',
+						  title: res.msg,
+						})
+					}
 				})
 			},
 			getLookerList(){
