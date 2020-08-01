@@ -46,14 +46,16 @@
 }
 .swiper-banner.data-v-57280228 {
   width: 100%;
+  min-height: 208rpx;
+  max-height: 270rpx;
 }
 .swiper-banner .swiper.data-v-57280228 {
   width: 100%;
-  height: 208rpx;
+  min-height: 208rpx;
+  max-height: 270rpx;
 }
 .swiper-banner .swiper swiper-item image.data-v-57280228 {
   width: 100%;
-  height: 208rpx;
   border-radius: 10rpx;
 }
 .xd-info-main.data-v-57280228 {
@@ -175,5 +177,8 @@
   width: 90%;
   height: 208rpx;
   margin: 0 5.5%;
+}
+.coletext.data-v-57280228 {
+  background: #ffe66f;
 }
 

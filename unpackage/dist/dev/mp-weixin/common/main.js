@@ -11,7 +11,8 @@
 var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ 9));
 var _store = _interopRequireDefault(__webpack_require__(/*! ./store */ 17));
 var _xdServerUrls = _interopRequireDefault(__webpack_require__(/*! @/common/xdServerUrls.js */ 13));
-var _xdUniUtils = _interopRequireDefault(__webpack_require__(/*! @/common/xdUniUtils.js */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} // 工具包
+var _xdUniUtils = _interopRequireDefault(__webpack_require__(/*! @/common/xdUniUtils.js */ 21));
+var _xdCommon = _interopRequireDefault(__webpack_require__(/*! @/common/xdCommon.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //公共规则说明
 
 var prePage = function prePage() {
   var pages = getCurrentPages();
@@ -28,7 +29,7 @@ _vue.default.prototype.xd_request = _xdUniUtils.default.xd_request; // 网络请
 _vue.default.prototype.xd_request_get = _xdUniUtils.default.xd_request_get; // 网络请求 GET
 _vue.default.prototype.xd_request_post = _xdUniUtils.default.xd_request_post; // 网络请求 POST
 _vue.default.prototype.xdUniUtils = _xdUniUtils.default; //
-
+_vue.default.prototype.xdCommon = _xdCommon.default; //
 
 _vue.default.prototype.$store = _store.default;
 _vue.default.prototype.$api = prePage;

@@ -27,15 +27,8 @@
       "list": []
     },
     "miniprogram": {
-      "current": 0,
-      "list": [
-        {
-          "id": 0,
-          "name": "pages/sponsor/index",
-          "pathName": "pages/sponsor/index",
-          "query": ""
-        }
-      ]
+      "current": -1,
+      "list": []
     }
   }
 }

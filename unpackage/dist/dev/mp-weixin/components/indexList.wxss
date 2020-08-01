@@ -29,9 +29,6 @@
   height: 320rpx;
   width: 100%;
 }
-.contentext {
-  margin-left: 50rpx;
-}
 .bg-light-blue {
   background-color: #007AFF;
 }

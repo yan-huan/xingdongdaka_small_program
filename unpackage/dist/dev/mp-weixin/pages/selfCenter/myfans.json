@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "我的粉丝",
+  "navigationBarTitleText": "粉丝",
   "usingComponents": {
     "index-list": "/components/indexList"
   }

@@ -85,4 +85,7 @@ page.data-v-455ed5c9 {
   width: 500rpx;
   height: 325rpx;
 }
+.widthtext.data-v-455ed5c9 {
+  width: 100%;
+}
 
