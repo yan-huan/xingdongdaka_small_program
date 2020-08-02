@@ -103,7 +103,7 @@
 					</view>
 				</view>
 			</block>
-			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1" @click="getLookerList()">
+			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1">
 				<view class="actionLi">
 					<view class="ali-main">
 						<view class="ali-main-img" @tap="goUser(attention.lookUserId)">
@@ -179,17 +179,18 @@
 				}
 				this.getpushList();
 				this.getPushCardList();
+				this.clickSaveShareInfo();
 			}
 			
 		},
-		watch: {
+		/* watch: {
 			hasLogin() {
 				setTimeout(() => {
 					this.clickSaveShareInfo();
 
 				}, 100);
 			},
-		},
+		}, */
 	
 		onShareAppMessage(res) {
 			let that = this;
@@ -235,6 +236,9 @@
 			},
 			tabSelect(e){
 				this.TabCur=e.target.id;
+				if(this.TabCur ==1){
+					this.getLookerList()
+				}
 			},
 			setSaveShareInfo(){
 				this.xd_request_post(this.xdServerUrls.xd_saveShareInfo,{
@@ -246,11 +250,11 @@
 					   })
 			},
 			clickSaveShareInfo(){
-				if(uni.getStorageSync('share')!=''){
+				if(uni.getStorageSync('share') != '' && this.userId != undefined){
 					this.xd_request_post(this.xdServerUrls.xd_saveShareInfo,{
 						pushId:this.pushId,
 						shareUserId:uni.getStorageSync('share'),
-						clickUserId:uni.getStorageSync('id'),
+						clickUserId:this.userId,
 					},true
 					   ).then(res => {
 						  this.getpushList();
