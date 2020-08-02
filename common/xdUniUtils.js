@@ -347,6 +347,7 @@ function xd_onShare(title, path, imageUrl) {
  *Tab红点提示
  */
 const updateNumber = function(gnumber) {
+
 	if (gnumber < 1) {
 		uni.removeTabBarBadge({
 			index: 2

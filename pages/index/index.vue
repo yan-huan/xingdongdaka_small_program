@@ -173,8 +173,7 @@
 			})
 			//#endif
 		    this.indexData();
-			this.xdUniUtils.updateNumber(2);
-			
+			this.burieInit();
 			
 		},
 		 computed: {  
@@ -631,7 +630,19 @@
 					url: '../web/webShow?url=' + url
 				});
 			},      
-			
+			burieInit(){
+				this.xd_request_post(this.xdServerUrls.xd_selectBurieStatistics,
+				{
+				},true).then((res) => {
+					if (res.resultCode == 0) {
+						let gz_num = res.obj.gzCount;
+						let wg_num = res.obj.wgCount;
+						let num = gz_num+wg_num;
+						this.xdUniUtils.updateNumber(num);
+					}
+				})
+				
+			},
 		},
 		// onShow() {
 		// 	this.currentIndex=-1;

@@ -26,9 +26,9 @@
 			<view class="moreInfoRow">
 			
 				<view class="moreInfoIn flex flex-wrap justify-center">
-					<text @click="clidgoPage('/pages/selfCenter/myattention?userId='+list.id)">关注 {{lookerCount}}</text>
+					<text @click="clidgoPage('/pages/selfCenter/myattention?userId='+userId)">关注 {{lookerCount}}</text>
 					<view class="flex flex-wrap">
-						<text class="moreInfoIn_text" @click="clidgoPage('/pages/selfCenter/myfans?userId='+list.id)">粉丝 {{likeCount}}</text>
+						<text class="moreInfoIn_text" @click="clidgoPage('/pages/selfCenter/myfans?userId='+userId)">粉丝 {{likeCount}}</text>
 						<view class="cu-tag  tag-text bg-red" v-if="num>0&&num<100">{{num}}</view>
 						<view class="cu-tag  tag-text bg-red" v-if="num>=100">99+</view>
 					</view>
@@ -44,7 +44,7 @@
 <script>
 	export default {
 		name:"usershow",
-		props:['list','looktotals','guanzhu','likeCount','lookerCount','num'],
+		props:['userId','list','looktotals','guanzhu','likeCount','lookerCount','num'],
 		data() {
 			return {
 				env:uni.getStorageSync('env'),

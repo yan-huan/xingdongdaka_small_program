@@ -65,6 +65,7 @@
 				console.log(Error)
 			};
 			this.getShowFollow();
+			this.burieUpdate();//查看埋点数据后删除
 		},
 		methods: {
 			goUser(e){
@@ -87,6 +88,16 @@
 					this.attentionList = res.obj.list;
 					this.pageNum = res.obj.nextPage;
 				}).catch(err => {});
+				
+			},
+			burieUpdate(){
+				this.xd_request_post(this.xdServerUrls.xd_updateBurieStatistics,
+				{
+					type: 1
+				},true).then((res) => {
+					
+				})
+				
 			},
 			getReachList(){
 				var data={};

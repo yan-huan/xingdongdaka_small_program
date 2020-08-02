@@ -1,6 +1,6 @@
 <template>
 	<view class="selfCenter ">	
-		<usershow  :list="userInfos" :looktotals="looktotals"  :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags' :num="num" v-on:clickMe="clickMe"></usershow>
+		<usershow  :list="userInfos" :userId="userId" :looktotals="looktotals"  :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags' :num="num" v-on:clickMe="clickMe"></usershow>
 		<view class="moreInfo">
 			<view class="moreInfoRow2">
 				<view class="user_column_item">
@@ -8,6 +8,8 @@
 					      <text class="lg text-gray cuIcon-moneybag"></text>
 					      <text class='thin'>钱包</text>
 						  <text class="lg text-orange cuIcon-pay margin-left-lg">{{rmb}}元</text>
+						  <view class="cu-tag  tag-text1 bg-red" v-if="wg_num>0&&wg_num<100">{{wg_num}}</view>
+						  <view class="cu-tag  tag-text1 bg-red" v-if="wg_num>=100">99+</view>
 				     </button>
 				</view>
 				<view class="user_column_item">
@@ -48,7 +50,8 @@
 				userInfos:'',
 				lookerCount: 0,
 				likeCount: 0,
-				num:100,
+				num:0, //关注新增数量
+				wg_num:0, //围观分钱新增数量
 				// onOff: true,
 				// env:uni.getStorageSync('env'),
 				rmb:0.00,
@@ -68,6 +71,8 @@
 
 			}
 			this.getBalance();
+			this.lookerCountData();
+			this.burieInit();
 		},
 
 		onLoad() {
@@ -77,9 +82,8 @@
 				});
 				return false;
 			};
-			this.userInfos=this.xdUniUtils.xd_getStorageSync('userInfo');
 			this.onToOff();
-			this.lookerCountData();
+			
 		},
 		watch: {
 			userInfo() {
@@ -100,6 +104,21 @@
 						this.rmb=res.obj.rmb/100;
 					}
 				})
+			},
+			burieInit(){
+				this.xd_request_post(this.xdServerUrls.xd_selectBurieStatistics,
+				{
+				},true).then((res) => {
+					if (res.resultCode == 0) {
+						let gz_num = res.obj.gzCount;
+						let wg_num = res.obj.wgCount;
+						this.num = gz_num;
+						this.wg_num = wg_num;
+						let num = gz_num+wg_num;
+						this.xdUniUtils.updateNumber(num);
+					}
+				})
+				
 			},
 			onToOff() {
 				const accountInfo = wx.getAccountInfoSync();
@@ -246,7 +265,14 @@
 		.user_column_item .thin {
 			padding: 0 16rpx;
 		}
-
+		.tag-text1{
+			border-radius: 200rpx;
+			font-size: 20rpx;
+			padding: 0rpx 10rpx;
+			height: 28rpx;
+			color: #ffffff;
+			margin-bottom: 14rpx;
+		}
 	}
 
 	.actionInfo {
