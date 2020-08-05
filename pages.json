@@ -3,13 +3,13 @@
 		
 
 		
-		// {
-		// 	"path": "pages/index/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "圈子",
-		// 		"enablePullDownRefresh": true
-		// 	}
-		// }, 
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "圈子",
+				"enablePullDownRefresh": true
+			}
+		}, 
 		// {
 		// 	"path": "pages/msg/msg",
 		// 	"style": {
@@ -28,26 +28,26 @@
 				"navigationBarTitleText": "打卡"
 			}
 		},
-		// {
-		// 	"path": "pages/selfCenter/selfCenter",
-		// 	"style": {
-		// 		"navigationBarTitleText": "我的"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/selfCenter/selfView",
-		// 	"style": {
-		// 		"navigationBarTitleText": "查看信息"
-		// 	}
-		// },
+		{
+			"path": "pages/selfCenter/selfCenter",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/selfCenter/selfView",
+			"style": {
+				"navigationBarTitleText": "查看信息"
+			}
+		},
 		
-		// {
-		// 	"path": "pages/selfCenter/income",
-		// 	"style": {
-		// 		"navigationBarTitleText": "账单",
-		// 		"enablePullDownRefresh": true
-		// 	}
-		// },
+		{
+			"path": "pages/selfCenter/income",
+			"style": {
+				"navigationBarTitleText": "账单",
+				"enablePullDownRefresh": true
+			}
+		},
 		
 		{
 			"path": "pages/action/action",
@@ -63,76 +63,72 @@
 			}
 		}, 
 		
-		// {
-		// 	"path": "pages/action/finish",
-		// 	"style": {
-		// 		"navigationBarTitleText": "保证金"
-		// 	}
-		// }, {
-		// 	"path": "pages/index/cardDetails/cardDetails",
-		// 	"style": {
-		// 		"navigationBarTitleText": "打卡详情" //打卡详情
-		// 	}
-		// }, {
-		//     "path" : "pages/index/action/action",
-		//     "style" : {
-		// 		 "navigationBarTitleText": "行动详情" //行动项
-		// 	 }
-		// },
-		// {
-		// 	"path": "pages/selfCenter/editUserInfo",
-		// 	"style": {
-		// 		"navigationBarTitleText": "编辑信息"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/selfCenter/feedback",
-		// 	"style": {
-		// 		"navigationBarTitleText": "意见反馈"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/selfCenter/myattention",
-		// 	"style": {
-		// 		"navigationBarTitleText": "关注"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/selfCenter/myfans",
-		// 	"style": {
-		// 		"navigationBarTitleText": "粉丝"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/login/login",
-		// 	"style": {
-		// 		"navigationBarTitleText": "微信授权登录"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/web/webShow",
-		// 	"style": {
-		// 		"navigationBarTitleText": "网页"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/img/img",
-		// 	"style": {
-		// 		"navigationBarTitleText": "图片"
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/selfCenter/balanDrawal",
-		// 	"style": {
-		// 		"navigationBarTitleText": "提现"
-		// 	}
-		// },
-        {
-            "path" : "pages/sponsor/form",
-            "style" : {
+		{
+			"path": "pages/action/finish",
+			"style": {
+				"navigationBarTitleText": "保证金"
+			}
+		}, {
+			"path": "pages/index/cardDetails/cardDetails",
+			"style": {
+				"navigationBarTitleText": "打卡详情" //打卡详情
+			}
+		}, {
+		    "path" : "pages/index/action/action",
+		    "style" : {
+				 "navigationBarTitleText": "行动详情" //行动项
+			 }
+		},
+		{
+			"path": "pages/selfCenter/editUserInfo",
+			"style": {
+				"navigationBarTitleText": "编辑信息"
+			}
+		},
+		{
+			"path": "pages/selfCenter/feedback",
+			"style": {
+				"navigationBarTitleText": "意见反馈"
+			}
+		},
+		{
+			"path": "pages/selfCenter/myattention",
+			"style": {
+				"navigationBarTitleText": "关注"
+			}
+		},
+		{
+			"path": "pages/selfCenter/myfans",
+			"style": {
+				"navigationBarTitleText": "粉丝"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "微信授权登录"
+			}
+		},
+		{
+			"path": "pages/web/webShow",
+			"style": {
+				"navigationBarTitleText": "网页"
+			}
+		},
+		
+		{
+			"path": "pages/selfCenter/balanDrawal",
+			"style": {
+				"navigationBarTitleText": "提现"
+			}
+		},
+		//添加赞助
+		{
+		    "path" : "pages/sponsor/form",
+		    "style" : {
 				"navigationBarTitleText": "赞助"
 			}
-        },
+		},
 		{
 		    "path" : "pages/sponsor/card",
 		    "style" : {
@@ -140,12 +136,13 @@
 			}
 		},
 		{
-            "path" : "pages/sponsor/index",
-            "style" : {
+		    "path" : "pages/sponsor/index",
+		    "style" : {
 				"navigationBarTitleText": "赞助"
 			}
-        }
-    ],
+		}
+
+	],
 
 	"tabBar": {
 		"color": "#b8b9bb",
@@ -163,18 +160,18 @@
 			"selectedIconPath": "static/images/icon/tabbar/tabbar2-on.png",
 			"text": "行动"
 		}, 
-		{
-			"pagePath": "pages/sponsor/index",
-			"iconPath": "static/images/icon/tabbar/tabbarMsg.png",
-			"selectedIconPath": "static/images/icon/tabbar/tabbarMsg-on.png",
-			"text": "赞助"
-		}, 
 		// {
 		// 	"pagePath": "pages/msg/msg",
 		// 	"iconPath": "static/images/icon/tabbar/tabbarMsg.png",
 		// 	"selectedIconPath": "static/images/icon/tabbar/tabbarMsg-on.png",
 		// 	"text": "消息"
 		// }, 
+		{
+			"pagePath": "pages/sponsor/index",
+			"iconPath": "static/images/icon/tabbar/tabbarMsg.png",
+			"selectedIconPath": "static/images/icon/tabbar/tabbarMsg-on.png",
+			"text": "赞助"
+		},
 		{
 			"pagePath": "pages/selfCenter/selfCenter",
 			"iconPath": "static/images/icon/tabbar/tabbar3.png",

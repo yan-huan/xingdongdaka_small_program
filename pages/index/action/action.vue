@@ -1,5 +1,6 @@
 <template>
 	<view >
+		<lookerCountInfo ref="lookerCountInfo"></lookerCountInfo>
 		<view class="cu-card dynamic " :class="pushList.pictures!=''?'no-card':''">
 			<view class="cu-item shadow">
 				<view class="cu-list menu-avatar">
@@ -59,7 +60,7 @@
 					<view>
 						<button class="cu-btn bg-light-blue sm round" v-if="pushList.userId==userId"  :id="index" open-type="share">分享邀请</button>
 						<button class="cu-btn bg-orange sm round" v-else-if="pushList.onlooker"  :id="index" open-type="share">为TA打Call</button>
-						<button class="cu-btn bg-green sm round  " v-else-if="pushList.userId!=userId && !pushList.onlooker&&pushList.challengeRmb<=0"  @tap="lookerClick(list,index)">围观</button>
+						<button class="cu-btn bg-green sm round  " v-else-if="pushList.userId!=userId && !pushList.onlooker&&pushList.challengeRmb<=0"  @tap="lookerClick(pushList,index)">围观</button>
 						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(pushList,index)">围观分钱</button>
 						<text class="text-gray text-df ">{{pushList.onlookerCount}}</text>
 					</view>
@@ -72,7 +73,7 @@
 			</view>
 			<scroll-view scroll-x class="bg-white nav">
 				<view class="flex text-center">
-					<view class="cu-item flex-sub" :class="index==TabCur?'text-orange cur':''" v-for="(items,index) in ['打卡内容','围观的人']" :key="index" @tap="tabSelect" :id="index" >
+					<view class="cu-item flex-sub" :class="index==TabCur?'text-orange cur':''" v-for="(items,index) in ['打卡内容','围观排行']" :key="index" @tap="tabSelect" :id="index" >
 						{{items}}
 					</view>
 				</view>
@@ -103,12 +104,12 @@
 				</view>
 			</block>
 			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1">
-				<view class="actionLi" @tap="goUser(attention.lookUserId)">
+				<view class="actionLi">
 					<view class="ali-main">
-						<view class="ali-main-img">
+						<view class="ali-main-img" @tap="goUser(attention.lookUserId)">
 							<image class='xd-mag xd-box-shadow' :src="attention.userHead"></image>
 						</view>
-						<view class="lli-main-content xd-list-body ">
+						<view class="lli-main-content xd-list-body" @tap="goUser(attention.lookUserId)">
 							<view class="xd-list-title-text">
 								<text>{{attention.userName}}</text>
 								<text v-if="attention.sex==1" class="boy">♂</text>
@@ -120,7 +121,9 @@
 								<text class="province">{{attention.province}}.{{attention.city}}</text>
 							</view>
 						</view>
-						
+						<view class="ali-main-list" @tap="showBanner(attention.lookUserId,attention.pushId)">
+							<view>{{attention.lookerCount}}</view>
+						</view>
 					</view>
 				</view>
 			</block>
@@ -129,8 +132,12 @@
 </template>
 
 <script>
+	import lookerCountInfo from "@/components/lookerCountInfo.vue"
 	import{ mapState,mapMutations} from 'vuex'
 	export default {
+		components:{
+			lookerCountInfo
+		},
 		data() {
 			return {
 				TabCur: 0,
@@ -141,7 +148,7 @@
 				addrAnimation:'',
 				audioPlaySrc:'../../../static/images/icon/img/titl.png',
 				userId:uni.getStorageSync('id'),
-				share:'',
+				
 				lookerList:[],
 				looktotal:'',
 				lookNextPageTwo:'',
@@ -155,50 +162,64 @@
 		           ...mapState(['hasLogin'])  
 		       },  
 		onLoad(option) {
+			//#ifdef MP-WEIXIN
+			wx.showShareMenu({
+			  menus: ['shareAppMessage', 'shareTimeline']
+			})
+			//#endif
 			if(option.pushList==undefined){
 				this.pushId=option.pushId;
+				this.isShare=option.isopen?option.isopen:0;
 				if(option.share!=undefined){
-					this.share=option.share;
-					this.isShare=option.isopen;
+					try{												
+					 uni.setStorageSync('share',option.share);
+					}catch(e){
+						console.log(Error)
+					};
 				}
 				this.getpushList();
-				this.getLookerList();
 				this.getPushCardList();
+				this.clickSaveShareInfo();
 			}
+			
 		},
-		watch: {
+		/* watch: {
 			hasLogin() {
 				setTimeout(() => {
 					this.clickSaveShareInfo();
 
 				}, 100);
 			},
-		},
+		}, */
 	
 		onShareAppMessage(res) {
 			let that = this;
-			
-			if(that.pusCardList.length>0){
-				that.setSaveShareInfo();
-				return {
-					title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'打Call：'+that.pusCardList[0].content,
-					path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
-					imageUrl:that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'../../../static/images/icon/img/title1.png',
-				}
-				
+			if(res.from=="menu"){
+			return	that.xdUniUtils.xd_onShare();
 			}else{
-				that.setSaveShareInfo();
-				return {
-					title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pushList.content:'我为@'+that.pushList.userName+'打Call：'+that.pushList.content,
-					path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
-					imageUrl:that.pushList.pictures?that.pushList.pictures:'../../../static/images/icon/img/title1.png',
-				}
-				
-			}
-			
+				if(that.pusCardList.length>0){
+					that.setSaveShareInfo();
+					return {
+						title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'打Call：'+that.pusCardList[0].content,
+						path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
+						imageUrl:that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+					}
 					
+				}else{
+					that.setSaveShareInfo();
+					return {
+						title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pushList.content:'我为@'+that.pushList.userName+'打Call：'+that.pushList.content,
+						path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
+						imageUrl:that.pushList.pictures?that.pushList.pictures:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+					}
+					
+				}
+			}		
 		},
-		methods:{　
+		methods:{
+		    showBanner(lookUserId,pushId){
+				this.$refs.lookerCountInfo.showBanner(lookUserId,pushId);
+			},
 			compareDate (d1, d2) {
 				if(typeof d1 == 'undefined'){
 					return true
@@ -215,6 +236,9 @@
 			},
 			tabSelect(e){
 				this.TabCur=e.target.id;
+				if(this.TabCur ==1){
+					this.getLookerList()
+				}
 			},
 			setSaveShareInfo(){
 				this.xd_request_post(this.xdServerUrls.xd_saveShareInfo,{
@@ -226,11 +250,11 @@
 					   })
 			},
 			clickSaveShareInfo(){
-				if(this.share!=''){
+				if(uni.getStorageSync('share') != '' && this.userId != undefined){
 					this.xd_request_post(this.xdServerUrls.xd_saveShareInfo,{
 						pushId:this.pushId,
-						shareUserId:this.share,
-						clickUserId:uni.getStorageSync('id'),
+						shareUserId:uni.getStorageSync('share'),
+						clickUserId:this.userId,
 					},true
 					   ).then(res => {
 						  this.getpushList();
@@ -305,17 +329,12 @@
 					url: '../../selfCenter/clockIn?pushId='+this.pushList.id
 				});
 			},
-			goPageImg(e){
-				uni.navigateTo({	
-					url:'../../img/img?url='+encodeURIComponent(JSON.stringify(e))
-				})
+			goPageImg(e,index){
+				this.xdUniUtils.xd_showImg(e,index);
 			},
 			error: function() {
-				var num=Math.floor(Math.random()*8+1);
-				
-				this.audioPlaySrc='../../../static/images/icon/img/title'+num+'.png'
-				
-			            }  ,
+				this.audioPlaySrc=this.xdUniUtils.xd_randomImg();
+			       }  ,
 						
 			gocardComentList(e,index){
 				if(!uni.getStorageSync('token')){
@@ -465,12 +484,19 @@
 					userId:uni.getStorageSync('id'),
 					attentionUserId:this.pushList.userId,		
 					
-				},false).then(res=>{
-					
-					uni.showToast({
-						icon:'none',
-					  title: res.msg,
-					})
+				},true).then(res=>{
+					if(res.resultCode == 0){
+						 this.guanzhu="已关注"
+						 uni.showToast({
+						 	icon:'none',
+						   title: '关注成功',
+						 })
+					}else{
+						uni.showToast({
+							icon:'none',
+						  title: res.msg,
+						})
+					}
 				})
 			},
 			getLookerList(){
@@ -510,11 +536,16 @@
 	.commentCount{
 		right: 0;
 	}
+	
 	.ali-main{
 		display: flex;
 		padding: 20rpx;
 		border-bottom: 3px solid #fff;
-
+		
+		.ali-main-list{
+			line-height: 130rpx;
+			width: 140rpx;
+		}
 		.ali-main-img .xd-mag{
 			border-radius: 100%;
 			height: 125rpx;

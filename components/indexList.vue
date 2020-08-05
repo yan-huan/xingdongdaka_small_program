@@ -1,10 +1,10 @@
 <template name='indexList'>
 	<view >
-		<view class="cu-card dynamic " :class="list.pushCardList[0].pictures.length>1?'no-card':''">
+		<view id="dynamic" class="cu-card dynamic " :class="list.pushCardList[0].pictures.length>1?'no-card':''">
 			<view class="cu-item shadow">
 				<view class="cu-list menu-avatar">
 					<view class="cu-item">
-						<view class="cu-avatar round lg" :style="{backgroundImage: 'url(' +list.userHead + ')'}" @tap="goPage(list)"></view>
+						<view class="cu-avatar round lg" :style="{backgroundImage: 'url(' +list.userHead + ')'}" @tap="goPageImg(list.userHead)"></view>
 						<view class="content flex-sub" @tap="goPage(list)">
 							<view>{{list.userName}}</view>
 							<view class="text-gray text-sm flex justify-between">
@@ -29,11 +29,11 @@
 				</view>
 				
 				<view class="grid flex-sub padding-lr " :class="list.pushCardList[0].videos!=''?'col-3 grid-square':'col-1'" v-if="list.pushCardList[0].videos!=undefined && list.pushCardList[0].videos!=null && list.pushCardList[0].videos!=''">
-					<video  class="videowhind" :src="list.pushCardList[0].videos" controls></video>
+					<video  id="videowhind" class="videowhind" :src="list.pushCardList[0].videos" controls></video>
 				</view>
 				<view class="grid flex-sub padding-lr" :class="list.pushCardList[0].pictures.length>1?'col-3 grid-square':'col-1'" v-else-if="list.pushCardCount>0">
 					<view class="bg-img" :class="list.pushCardList[0].pictures.length>1?'':'only-img'" :style="{backgroundImage:'url('+item+')'}"
-					 v-for="(item,index) in list.pushCardList[0].pictures" :key="index" @tap="goPageImg(list.pushCardList[0].pictures)" v-if="list.pushCardList[0].pictures.length>0">
+					 v-for="(item,index) in list.pushCardList[0].pictures" :key="index" @tap="goPageImg(list.pushCardList[0].pictures,index)" v-if="list.pushCardList[0].pictures.length>0">
 					</view>
 					<image class="bg-img imgheit "  :src="audioPlaySrc" v-if="list.pushCardList[0].pictures.length==0" mode="aspectFill"
 					 @tap="goPageImg(audioPlaySrc)"  @error="error">
@@ -78,9 +78,7 @@
 		},
 		methods:{
 			error: function() {
-				
-				var num=Math.floor(Math.random()*8+1);
-				this.audioPlaySrc='../static/images/icon/img/title'+num+'.png'
+				this.audioPlaySrc=this.xdUniUtils.xd_randomImg();
 			            }  ,
 			lookerClick(list,index){
 				
@@ -121,11 +119,10 @@
 					url:'../index/action/action?pushId='+e.id
 				})
 			},
-			goPageImg(e){
-				uni.navigateTo({
-					url:'../img/img?url='+encodeURIComponent(JSON.stringify(e))
-				})
-			}
+			goPageImg(e,index){
+				this.xdUniUtils.xd_showImg(e,index)
+			},
+			
 		}
 	}
 </script>

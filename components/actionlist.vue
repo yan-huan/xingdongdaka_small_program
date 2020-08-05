@@ -44,7 +44,7 @@
 			</view>
 			<view class="grid flex-sub padding-lr"  >
 				<image class="bg-img imgheit"  :src="item.pictures" mode="aspectFill"
-				 @tap="goPageImg(item.pictures)" v-if="item.pictures!=''">
+				 @tap="goPageImg(item.pictures)" v-if="item.pictures!=''" >
 				</image>
 				<image class="bg-img imgheit"  :src="audioPlaySrc" mode="aspectFill"
 				 @tap="goPageImg(audioPlaySrc)" v-else @error="error">
@@ -54,8 +54,8 @@
 				<view>
 					<button class="cu-btn bg-light-blue sm round" v-if="item.userId==userId "  :id="index" open-type="share">分享邀请</button>
 					<button class="cu-btn bg-orange sm round  " v-else-if="item.onlooker" :id="index" open-type="share">为TA打Call</button>
-					<button class="cu-btn bg-green sm round  " v-else-if="item.userId!=userId && !item.onlooker&&item.challengeRmb<=0" :id="index"  @tap="lookerClick(item,index)">围观</button>
-					<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(item,index)">围观分钱</button>
+					<button class="cu-btn bg-green sm round  " v-else-if="item.userId!=userId && !item.onlooker&&item.challengeRmb<=0" :id="index"  @tap="lookerClick(item,indexs)">围观</button>
+					<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(item,indexs)">围观分钱</button>
 					<text class="text-gray text-df ">{{item.onlookerCount}}</text>
 				</view>
 				<view class="text-xxl" @click="goPage(item.id)" v-if="userId==item.userId&&item.pushCardCount<item.targetDay" >
@@ -74,15 +74,13 @@
 		
 		data(){
 			return {
-				audioPlaySrc:'../static/images/icon/img/title.png',
+				audioPlaySrc:"1"
 			}
 		},
 		methods:{
-			error: function(index) {
-				
-				var num=Math.floor(Math.random()*8+1);
-				this.audioPlaySrc='../static/images/icon/img/title'+num+'.png'
-			            }  ,
+			error: function() {
+				this.audioPlaySrc=this.xdUniUtils.xd_randomImg();	
+			            } ,
 			goPage(item){
 				
 				uni.navigateTo({
@@ -92,7 +90,7 @@
 			goPageCard(e){
 				
 				uni.navigateTo({
-					url:'../index/action/action?pushId='+e.id
+					url:'../index/action/action?pushId='+e.id+'&isopen='+e.isopen
 				})
 			},
 			goUser(e){
@@ -101,17 +99,14 @@
 				})
 			},
 			goPageImg(e){
-				
-				uni.navigateTo({
-					url:'../img/img?url='+encodeURIComponent(JSON.stringify(e))
-				})
+				this.xdUniUtils.xd_showImg(e)
 			},
-			lookerClick(list,index){
+			lookerClick(list,indexs){
 				
-				this.$emit('lookerClick',list,index);
+				this.$emit('lookerClick',list,indexs);
 			},
-			toggleMask(e,index){
-				this.$emit('toggleMask',e,index);
+			toggleMask(e,indexs){
+				this.$emit('toggleMask',e,indexs);
 			}
 		}
 	}

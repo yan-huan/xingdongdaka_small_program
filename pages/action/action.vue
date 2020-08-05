@@ -64,27 +64,36 @@ export default {
 	},
 	onLoad() {
 		this.inDada(this.tab);
+		//#ifdef MP-WEIXIN
+		wx.showShareMenu({
+		  menus: ['shareAppMessage', 'shareTimeline']
+		})
+		//#endif
 	},
 	computed: {
 	           ...mapState(['hasLogin'])  
 	       },  
 	onShareAppMessage(res) {
-		let that = this;
-		if(that.tab==0){
-			return {
-				title:'第'+that.cardList[res.target.id].pushCardCishuCount+'次打卡:'+that.cardList[res.target.id].content,
-				path: '/pages/index/action/action?pushId='+ that.cardList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.cardList[res.target.id].isopen,
-				imageUrl:that.cardList[res.target.id].pictures?that.cardList[res.target.id].pictures:'../../static/images/icon/img/title1.png',
-			}
-		}else if(that.tab==1){
-			return {
-				title: '我为@'+that.lookerList[res.target.id].userName+'打Call：'+that.lookerList[res.target.id].content,
-				path: '/pages/index/action/action?pushId='+ that.lookerList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.lookerList[res.target.id].isopen,
-				imageUrl:that.lookerList[res.target.id].pictures?that.lookerList[res.target.id].pictures:'../../static/images/icon/img/title1.png',
-			}
-		}
 		
-				
+		let that = this;
+		if(res.from=="menu"){
+		return	that.xdUniUtils.xd_onShare();
+		}else{
+			if(that.tab==0){
+				return {
+					title:'第'+that.cardList[res.target.id].pushCardCishuCount+'次打卡:'+that.cardList[res.target.id].content,
+					path: '/pages/index/action/action?pushId='+ that.cardList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.cardList[res.target.id].isopen,
+					imageUrl:that.cardList[res.target.id].pictures?that.cardList[res.target.id].pictures:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+				}
+			}else if(that.tab==1){
+				return {
+					title: '我为@'+that.lookerList[res.target.id].userName+'打Call：'+that.lookerList[res.target.id].content,
+					path: '/pages/index/action/action?pushId='+ that.lookerList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.lookerList[res.target.id].isopen,
+					imageUrl:that.lookerList[res.target.id].pictures?that.lookerList[res.target.id].pictures:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+				}
+			}
+			
+		}		
 	},
 	methods: {
 		tabs(e){
@@ -187,7 +196,8 @@ export default {
 		inDada(tab){		
 			let token='';
 			let id='';
-			if(!this.hasLogin){
+			let that=this;
+			if(!that.hasLogin){
 				uni.redirectTo
 					({
 					url: '../login/login' 
@@ -201,7 +211,7 @@ export default {
 				//TODO handle the exception
 			}
 			if(tab ==0){
-				   this.xd_request_post(this.xdServerUrls.xd_pushByUserIdList,
+				   that.xd_request_post(that.xdServerUrls.xd_pushByUserIdList,
 				   {
 				   token:token,
 				   userId:id,
@@ -211,30 +221,29 @@ export default {
 				   true
 				   
 					   ).then(res=>{
-							 this.cardList=this.dataPaly(res);
-							 this.nextPage=res.obj.nextPage;
-							 this.total=res.obj.total;
+							 that.cardList=that.dataPaly(res);
+							 that.nextPage=res.obj.nextPage;
+							 that.total=res.obj.total;
 					}).catch(Error=>{
 						console.log(Error)
 					})
 			 }else{
-					this.xd_request_post(this.xdServerUrls.xd_lookerPushListByUserId,
+					that.xd_request_post(that.xdServerUrls.xd_lookerPushListByUserId,
 					{
 						userId:uni.getStorageSync("id"),
 						pageNum:1,
 						pageSize:10,
 					},
 					true).then(res=>{
-						this.lookerList=res.obj.list;
-						this.nextPageTwo=res.obj.nextPage;
-						this.looktotal=res.obj.total;
-						this.lookerList.forEach(function (item) {
+						that.lookerList=res.obj.list;
+						that.nextPageTwo=res.obj.nextPage;
+						that.looktotal=res.obj.total;
+						that.lookerList.forEach(function (item) {
 							if(typeof item.challengeRmb !='undefined' && item.challengeRmb != '' && item.challengeRmb != '0'){
 								item.challengeRmb=Math.floor(item.challengeRmb/100);	
 							}
 							if(typeof item.pictures ==='undefined' || item.pictures == ''){
-								var num=Math.floor(Math.random()*8+1);
-								item.pictures = '../static/images/icon/img/title'+num+'.png'
+								item.pictures = that.xdUniUtils.xd_randomImg();
 							}else{
 								if(item.pictures.indexOf(",")> -1){
 									item.pictures = item.pictures.split(",")[0]
@@ -248,8 +257,9 @@ export default {
 				}
 			},
 			getReachList(){
-				if(this.tab==0){
-					if(this.nextPage==0){
+				let that=this;
+				if(that.tab==0){
+					if(that.nextPage==0){
 						uni.showLoading(
 						{
 							title: '没有更多数据了'
@@ -264,26 +274,27 @@ export default {
 						title: '加载中..',
 						mask:true
 					})
-					this.xd_request_post(this.xdServerUrls.xd_pushByUserIdList,
+					that.xd_request_post(that.xdServerUrls.xd_pushByUserIdList,
 					{
 						token:uni.getStorageSync('token'),
 						userId:uni.getStorageSync('id'),
-						pageNum:this.nextPage,
-						pageSize:this.pageSize,
+						pageNum:that.nextPage,
+						pageSize:that.pageSize,
 					},
 					false
 						   ).then(res=>{
-							   this.nextPage=res.obj.nextPage;
-							 var data=this.dataPaly(res);		
-							this.cardList = this.cardList.concat(data);					
+							   that.nextPage=res.obj.nextPage;
+							 var data=that.dataPaly(res);		
+							that.cardList = that.cardList.concat(data);					
 							setTimeout(function () {
 								uni.hideLoading()
 							}, 1000);
 							// uni.hideNavigationBarLoading();//关闭加载动画
 							
 						})	
-				 }else if(this.tab==1){
-					 if(this.nextPageTwo==0){
+				 }else if(that.tab==1){
+					 
+					 if(that.nextPageTwo==0){
 					 	uni.showLoading(
 					 	{
 					 		title: '没有更多数据了'
@@ -298,29 +309,28 @@ export default {
 					 	title: '加载中..',
 					 	mask:true
 					 })
-					 this.xd_request_post(this.xdServerUrls.xd_lookerPushListByUserId,
+					 that.xd_request_post(that.xdServerUrls.xd_lookerPushListByUserId,
 					 {
 					 	userId:uni.getStorageSync("id"),
-					 	pageNum:this.nextPageTwo,
+					 	pageNum:that.nextPageTwo,
 					 	pageSize:10,
 					 },
 					 true).then(res=>{
 					 	var data=res.obj.list;
-					 	this.nextPageTwo=res.obj.nextPage;
+					 	that.nextPageTwo=res.obj.nextPage;
 					 	data.forEach(function (item) {
 					 		if(typeof item.challengeRmb !='undefined' && item.challengeRmb != '' && item.challengeRmb != '0'){
 					 			item.challengeRmb=Math.floor(item.challengeRmb/100);	
 					 		}
 					 		if(typeof item.pictures ==='undefined' || item.pictures == ''){
-					 			var num=Math.floor(Math.random()*8+1);
-					 			item.pictures = '../static/images/icon/img/title'+num+'.png'
+					 			item.pictures = that.xdUniUtils.xd_randomImg();
 					 		}else{
 					 			if(item.pictures.indexOf(",")> -1){
 					 				item.pictures = item.pictures.split(",")[0]
 					 			}
 					 		}
 					 	})			  
-					 	this.lookerList = this.lookerList.concat(data);
+					 	that.lookerList = that.lookerList.concat(data);
 					 	setTimeout(function () {
 					 		uni.hideLoading()
 					 	}, 1000);	
@@ -353,7 +363,6 @@ export default {
 						dataList[i].challengeRmb=Math.floor(dataList[i].challengeRmb/100);		
 						
 					}
-					
 					return dataList;
 				}
 				

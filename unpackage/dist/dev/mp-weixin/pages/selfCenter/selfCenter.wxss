@@ -26,107 +26,11 @@
 /* 文章场景相关 */
 /*公共样式*/
 .selfCenter {
-  /* padding:10rpx 30rpx 30rpx; */
-}
-.viewself {
-  font-size: 26rpx;
-  margin-right: 24rpx;
-}
-.link {
-  color: #ffa700;
-}
-.personContent {
-  /* padding:12rpx 0; */
-  padding: 10rpx 30rpx 30rpx;
-  background-color: #ebf4ff;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-          justify-content: flex-start;
-}
-.personContent .personHead {
-  padding: 6rpx;
-}
-.personContent .personHead .imgHead {
-  height: 104rpx;
-  width: 104rpx;
-  display: inline-block;
-  border-radius: 100%;
-}
-.personContent .personInfo {
-  margin: 0 20rpx;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-}
-.personContent .personInfo .subInfo {
-  font-size: 24rpx;
-  color: #888;
-}
-.personContent .personOpt {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-          justify-content: flex-end;
-  padding: 0;
-}
-.personContent .personOpt .pay {
-  display: block;
-  font-size: 26rpx;
-  height: 66rpx;
-  background: #ffa700;
-  width: 200rpx;
-  margin: 0;
-}
-.moreInfoIn .address {
-  width: 30rpx;
-  height: 30rpx;
-}
-.moreInfoIn .province {
-  font-size: 28rpx;
-  margin-left: 6rpx;
+  padding: 10rpx 20rpx 20rpx;
 }
 .moreInfo {
   padding: 6rpx 0;
-  /* border-bottom: 1px solid #d9d9d9;
-border-top: 1px solid #d9d9d9; */
   font-size: 26rpx;
-}
-.moreInfo .user_column_item_image {
-  width: 30rpx;
-  height: 30rpx;
-}
-.moreInfo .gender {
-  background: #fd5107;
-  color: #fff;
-  display: inline-block;
-  padding: 0 6rpx;
-  border-radius: 100%;
-  font-size: 22rpx;
-  margin-right: 2rpx;
-}
-.moreInfo .boy {
-  background: #66CCFF;
-  color: #fff;
-  display: inline-block;
-  padding: 0 6rpx;
-  border-radius: 100%;
-  font-size: 22rpx;
-  margin: 0 14rpx;
 }
 .moreInfo .user_column_item {
   background-color: #e2e2e2;
@@ -142,46 +46,13 @@ border-top: 1px solid #d9d9d9; */
 .moreInfo .user_column_item .thin {
   padding: 0 16rpx;
 }
-.moreInfo .user_column_item .user_column_item_image {
-  background-color: #ff6200;
-  vertical-align: middle;
-}
-.moreInfo .moreInfoRow {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
-  -webkit-flex-wrap: wrap;
-          flex-wrap: wrap;
-  margin: 0 0 14rpx 0;
-}
-.moreInfo .moreInfoRow.rowaction {
-  margin-top: 18rpx;
-}
-.moreInfo .moreInfoRow .moreInfoIn {
-  width: 100%;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  height: 70rpx;
-  line-height: 70rpx;
-  background-color: #ebf4ff;
-  border-bottom: 1px solid #e7e7e7;
-  border-top: 1px solid #e7e7e7;
-}
-.moreInfo .moreInfoRow .moreInfoIn.flex1 {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
-}
-.moreInfo .moreInfoRow .moreInfoIn_text {
-  margin-left: 300rpx;
-}
-.moreInfo .moreInfoRow .moreInfoIn .thin {
-  padding: 0 16rpx;
+.moreInfo .tag-text1 {
+  border-radius: 200rpx;
+  font-size: 20rpx;
+  padding: 0rpx 10rpx;
+  height: 28rpx;
+  color: #ffffff;
+  margin-bottom: 14rpx;
 }
 .actionInfo {
   margin: 24rpx 0;

@@ -104,9 +104,9 @@
 					<view class="">
 						<button type="default"  @tap="popUpVideo">上传视频</button>
 					</view>
-					<!-- <view class="">
+					<view class="">
 						<button type="default"  @tap="showmp">录音上传</button>
-					</view> -->
+					</view>
 		 		</view>
 		 	</view>
 		 </view>

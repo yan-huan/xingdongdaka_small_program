@@ -56,19 +56,10 @@ export default {
 									 _this.encryptedData=encodeURIComponent(infoRes.encryptedData);
 									 wx.getSetting({
 									        success(res) {
-												_this.xd_request_post(_this.xdServerUrls.xd_decodeUserInfo,
-												{
-												code:_this.code,
-												encryptedData:_this.encryptedData,
-												iv:_this.iv,							
-												}, false ).then(res=>{
-													_this.userInfo=res.userInfo;
-												})
-									 		   if(res.authSetting["scope.userInfo"]){
-									 				_this.Login();
-									 			
-									 		   }else{
-									 			   _this.isLogin();
+											if(res.authSetting["scope.userInfo"]){
+												
+											_this.isLogin();
+													
 									 		   }
 									        },
 									        fail() {
@@ -89,44 +80,45 @@ export default {
 				   success: function(loginRes) {
 					   _this.xd_request(_this.xdServerUrls.xd_weiXinLogin,"POST",
 					   {
-					   userName: _this.userInfo.nickName,
-					   userHead: _this.userInfo.avatarUrl,
-					   city:_this.userInfo.city,
-					   province:_this.userInfo.province,
-						sex:_this.userInfo.gender,
 					   encryptedData:_this.encryptedData,
 					   iv:_this.iv,
 					   code:loginRes.code,
+					   shareUserId:uni.getStorageSync('share')?uni.getStorageSync('share'):'',
 					   },
 					   {'content-type': 'application/x-www-form-urlencoded'} 
 					   
 						   ).then(res=>{
-											   if(res.resultCode == 0){
-												   try{
-														 uni.setStorageSync('token',res.obj.token);
-														 uni.setStorageSync('id',res.obj.id);
-												   }catch(e){
-																				   console.log(Error)
-												   };
-													_this.userInfo.nickName=res.obj.userName;
-													_this.userInfo.avatarUrl=res.obj.userHead;
-													_this.userInfo.province=res.obj.province;
-													_this.userInfo.city=res.obj.city;
-													_this.userInfo.gender=res.obj.sex?res.obj.sex:'2';
-													_this.userInfo.schoolName=res.obj.schoolName?res.obj.schoolName:'无';
-													_this.userInfo.userMobile=res.obj.userMobile;
-													 _this.logIn(_this.userInfo);
-													 let pages = getCurrentPages()
-													 if(pages.length<=1){
-													 						  uni.switchTab({
-													 						  	url:'../index/index'
-													 						  })
-													  }else{
-													 						   uni.navigateBack({
-													 						   	delta:1
-													 						   })
-													  }
-											   }
+									   if(res.resultCode == 0){
+										   try{
+												 uni.setStorageSync('token',res.obj.token);
+												 uni.setStorageSync('id',res.obj.id);
+										   }catch(e){
+												console.log(Error)
+										   };
+											_this.userInfo.nickName=res.obj.userName;
+											_this.userInfo.avatarUrl=res.obj.userHead;
+											_this.userInfo.province=res.obj.province;
+											_this.userInfo.city=res.obj.city;
+											_this.userInfo.gender=res.obj.sex?res.obj.sex:'2';
+											_this.userInfo.schoolName=res.obj.schoolName?res.obj.schoolName:'';
+											_this.userInfo.userMobile=res.obj.userMobile;
+											_this.userInfo.openId=res.obj.openId;
+											_this.userInfo.id=res.obj.id;
+											_this.userInfo.unionId=res.obj.unionId;
+											
+											
+											 _this.logIn(_this.userInfo);
+											 let pages = getCurrentPages()
+											 if(pages.length<=1){
+												  uni.switchTab({
+														url:'../index/index'
+													 })
+											  }else{
+												  uni.navigateBack({
+														delta:1
+													 })
+											  }
+									   }
 										 
 						}).catch(Error=>{
 							console.log(Error)
@@ -134,75 +126,7 @@ export default {
 						}
 						}) 
 				    
-				},
-			Login(){
-				let _this = this;
-
-				uni.login({
-				   provider: 'weixin',
-				   success: function(loginRes) {
-				   
-							_this.xd_request(_this.xdServerUrls.xd_weiXinLogin,"POST",
-							{
-							encryptedData:_this.encryptedData,
-							iv:_this.iv,
-							code:loginRes.code
-							},
-							{'content-type': 'application/x-www-form-urlencoded'} 
-							
-							    ).then(res=>{
-										   if(res.resultCode == 0){
-											   try{
-													 uni.setStorageSync('token',res.obj.token);
-													 uni.setStorageSync('id',res.obj.id);
-											   }catch(e){
-													 console.log(Error)
-											   };
-											   _this.userInfo.nickName=res.obj.userName;
-											   _this.userInfo.avatarUrl=res.obj.userHead;
-											   _this.userInfo.province=res.obj.province;
-											   _this.userInfo.city=res.obj.city;
-											   _this.userInfo.gender=res.obj.sex?res.obj.sex:'2';
-											   _this.userInfo.schoolName=res.obj.schoolName?res.obj.schoolName:'无';
-											   _this.userInfo.userMobile=res.obj.userMobile;
-											    _this.logIn(_this.userInfo);
-												 let pages = getCurrentPages()
-												 if(pages.length<=1){
-												 						  uni.switchTab({
-												 						  	url:'../index/index'
-												 						  })
-												  }else{
-												 						   uni.navigateBack({
-												 						   	delta:1
-												 						   })
-												  }
-										   }
-												 
-								}).catch(Error=>{
-									console.log(Error)
-								})
-				}
-				})
-				   
-				},
-				//获取用户信息
-				getuserInfodata(){
-					let _this = this;
-					_this.xd_request_post(_this.xdServerUrls.xd_getUserInfoByUserId,
-					{
-					userId:	_this.userid	
-					}, true ).then(res=>{
-						_this.userInfo.nickName=res.obj.userName;
-						_this.userInfo.avatarUrl=res.obj.userHead;
-						_this.userInfo.province=res.obj.province;
-						_this.userInfo.city=res.obj.city;
-						_this.userInfo.gender=res.obj.sex?res.obj.sex:'2';
-						_this.userInfo.schoolName=res.obj.schoolName?res.obj.schoolName:'无';
-						_this.userInfo.userMobile=res.obj.userMobile;
-						 _this.logIn(_this.userInfo);
-					   })
-				}
-			
+				},	
         }
       
     }

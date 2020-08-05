@@ -2,7 +2,7 @@
 	<view class="talk">
 		<view class="talkLis">
 			<view class="talkli talkU">
-				<view class="talkHead"><img src="../../static/images/icon/love-on.png" alt="" class="xd-list-head-img " /></view>
+				<view class="talkHead"><img src="" alt="" class="xd-list-head-img " /></view>
 				<view class="talkInfo">
 					<text>来一场强者的修行 成为更好的自己 人人都是小太阳 你的能量超出想象 践行动、有追求、爱生活来一场强者的修行 成为更好的自己 人人都是小太阳 你的能量超出想象 践行动、有追求、爱生活来一场强者的修行 成为更好的自己 人人都是小太阳 你的能量超出想象 践行动、有追求、爱生活</text>
 					<img src="../../static/images/icon/left.png" class="arrow left" alt="">
@@ -13,7 +13,7 @@
 					<text>来一场强者的修行 成为更好的自己 人人都是小太阳 你的能量超出想象 践行动、有追求、爱生活来一场强者的修行 成为更好的自己 人人都是小太阳 你的能量超出想象 践行动、有追求、爱生活来一场强者的修行 成为更好的自己 人人都是小太阳 你的能量超出想象 践行动、有追求、爱生活</text>
 					<img src="../../static/images/icon/right.png" class="arrow right" alt="">
 					</view>
-				<view class="talkHead"><img src="../../static/images/icon/love-on.png" alt="" class="xd-list-head-img " /></view>
+				<view class="talkHead"><img src="" alt="" class="xd-list-head-img " /></view>
 			</view>
 		</view>
 		<view class="talkInput">

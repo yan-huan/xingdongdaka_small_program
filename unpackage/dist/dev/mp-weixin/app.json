@@ -1,10 +1,25 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/msg/talk",
     "pages/selfCenter/clockIn",
+    "pages/selfCenter/selfCenter",
+    "pages/selfCenter/selfView",
+    "pages/selfCenter/income",
     "pages/action/action",
     "pages/action/step1",
+    "pages/action/finish",
+    "pages/index/cardDetails/cardDetails",
+    "pages/index/action/action",
+    "pages/selfCenter/editUserInfo",
+    "pages/selfCenter/feedback",
+    "pages/selfCenter/myattention",
+    "pages/selfCenter/myfans",
+    "pages/login/login",
+    "pages/web/webShow",
+    "pages/selfCenter/balanDrawal",
     "pages/sponsor/form",
+    "pages/sponsor/card",
     "pages/sponsor/index"
   ],
   "subPackages": [],
@@ -53,5 +68,8 @@
   "uniStatistics": {
     "enable": true
   },
-  "usingComponents": {}
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom",
+    "sponsor": "/pages/sponsor/index"
+  }
 }

@@ -15,7 +15,7 @@
 			<!-- 最新 -->
 			<view class="xd-list-info" :hidden="active == 1||active==2|| active ==3">				
 				<block v-for="(list, index) in listsTab" :key="index" >								
-				  <indexList :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg'></indexList>
+				  <indexList  :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg'></indexList>
 				</block>
 			</view>
 			<!-- 推荐 -->
@@ -61,7 +61,7 @@
 					<view class="xd-line"></view>
 					<!-- 推荐项对应内容 -->					
 					<block v-for="(list, index) in listsTab" :key="index" >								
-					  <indexList :list="list" :index="index" v-on:loveclick='loveClick' v-on:lookerClick="lookerClick" :hasLogin="hasLogin" :userId='userId' :inimg='inimg' ></indexList>
+					  <indexList id="indexList" :list="list" :index="index" v-on:loveclick='loveClick' v-on:lookerClick="lookerClick" :hasLogin="hasLogin" :userId='userId' :inimg='inimg' ></indexList>
 					</block>
 				</view>
 			</view>
@@ -148,27 +148,49 @@
 			 	});
 			 	return false;
 			 }
-			that.setSaveShareInfo(res);
-			return {
-				title:that.listsTab[res.target.id].userId==that.userId? '第'+that.listsTab[res.target.id].pushCardCishuCount+'次打卡:'+ that.listsTab[res.target.id].pushCardList[0].content:'我为@'+that.listsTab[res.target.id].userName+'打Call：'+ that.listsTab[res.target.id].pushCardList[0].content,
-				path: '/pages/index/action/action?pushId='+that.listsTab[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.listsTab[res.target.id].isopen,
-				imageUrl:that.listsTab[res.target.id].pushCardList[0].pictures[0]?that.listsTab[res.target.id].pushCardList[0].pictures[0]:'../../static/images/icon/img/title1.png',
-			}
-					
+			
+			if(res.from=="menu"){
+			return	that.xdUniUtils.xd_onShare();
+			}else{
+				that.setSaveShareInfo(res);
+				return {
+					title:that.listsTab[res.target.id].userId==that.userId? '第'+that.listsTab[res.target.id].pushCardCishuCount+'次打卡:'+ that.listsTab[res.target.id].pushCardList[0].content:'我为@'+that.listsTab[res.target.id].userName+'打Call：'+ that.listsTab[res.target.id].pushCardList[0].content,
+					path: '/pages/index/action/action?pushId='+that.listsTab[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.listsTab[res.target.id].isopen,
+					imageUrl:that.listsTab[res.target.id].pushCardList[0].pictures[0]?that.listsTab[res.target.id].pushCardList[0].pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+				}
+			}		
 		},
 		onReady() {
+			// setTimeout(()=>{
+			// 	this.getLocationInfo(); 
+			// },2000)
+			 
 		},
 		onLoad() {
+			//#ifdef MP-WEIXIN
+			wx.showShareMenu({
+			  menus: ['shareAppMessage', 'shareTimeline']
+			})
+			//#endif
 		    this.indexData();
+			this.burieInit();
+			
 		},
 		 computed: {  
 		            ...mapState(['hasLogin'])  
 		        },  
 		methods:{
 			...mapMutations(['logIn','logOut','IndexlogIn'])  ,
-			aderror(e){
+			aderror(e){0
 				console.log(e)
 			},
+			getLocationInfo () {
+			    var query = uni.createSelectorQuery().in(this);
+				 query.selectAll('#indexList').boundingClientRect()
+				 query.exec(res => {
+				       console.log(res)
+					   })
+			  },
 			goUser(e){
 				if(!this.hasLogin){
 					uni.navigateTo({
@@ -353,6 +375,10 @@
 				this.pageNum=1;
 				this.listsTab=[];
 				this.getShowNew();
+				// setTimeout(()=>{
+				// 	this.getLocationInfo()
+				// },5000)
+				
 			},
 			getShowNew(){
 				this.xd_request_post(this.xdServerUrls.xd_pushByCreateTimeList,
@@ -604,7 +630,19 @@
 					url: '../web/webShow?url=' + url
 				});
 			},      
-			
+			burieInit(){
+				this.xd_request_post(this.xdServerUrls.xd_selectBurieStatistics,
+				{
+				},true).then((res) => {
+					if (res.resultCode == 0) {
+						let gz_num = res.obj.gzCount;
+						let wg_num = res.obj.wgCount;
+						let num = gz_num+wg_num;
+						this.xdUniUtils.updateNumber(num);
+					}
+				})
+				
+			},
 		},
 		// onShow() {
 		// 	this.currentIndex=-1;

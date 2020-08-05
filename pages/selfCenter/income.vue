@@ -55,11 +55,21 @@
 		onLoad() {
 			this.loadata();
 			this.getBalance();
+			this.burieUpdate();//查看埋点数据后删除
 		},
 		onReachBottom() {
 			this.loadata()
 		},
 		methods:{
+			burieUpdate(){
+				this.xd_request_post(this.xdServerUrls.xd_updateBurieStatistics,
+				{
+					type: 2
+				},true).then((res) => {
+					
+				})
+				
+			},
 			getBalance(){
 				this.xd_request_post(this.xdServerUrls.xd_inquireBalance,
 				{

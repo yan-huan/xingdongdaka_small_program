@@ -1,6 +1,6 @@
 <template>
 	<view class="selfCenter">
-		<usershow  :list="userInfo" :looktotals="looktotals" :guanzhu="guanzhu" :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags'></usershow>
+		<usershow  :list="userInfo" :looktotals="looktotals" :guanzhu="guanzhu" :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags' ></usershow>
 		<view class="actionInfo">
 			-----
 			<view class="tabbar bg-white">
@@ -27,6 +27,10 @@
 <script>
 	import actionlist from "@/components/actionlist.vue"
 	import usershow from "@/components/usershow.vue"
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		components:{
 			usershow,
@@ -36,10 +40,10 @@
 			return {
 				tab:0,//行动，围观，收藏
 				list:[],
-				userInfo:'',
 				userId:'',
 				user:uni.getStorageSync('id'),
 				total:'',
+				userInfo:uni.getStorageSync('userInfo'),
 				lookerList:[],
 				pushId:'',
 				lookTotal:0,
@@ -49,34 +53,44 @@
 				guanzhu:'关注'
 			}
 		},
+		computed: {
+			...mapState(['hasLogin'])
+		},
 		onShareAppMessage(res) {
 			let that = this;
-			if(that.tab==0){
-				return {
-					
-					title:that.list[res.target.id].userId==that.user? '第'+that.list[res.target.id].pushCardCishuCount+'次打卡:'+that.list[res.target.id].content:'我为@'+that.list[res.target.id].userName+'打Call：'+that.list[res.target.id].content,
-					path: '/pages/index/action/action?pushId='+ that.list[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.list[res.target.id].isopen,
-					imageUrl:that.list[res.target.id].pictures?that.list[res.target.id].pictures:'../../static/images/icon/img/title1.png',
+			if(res.from=="menu"){
+			return	that.xdUniUtils.xd_onShare();
+			}else{
+				if(that.tab==0){
+					return {
+						
+						title:that.list[res.target.id].userId==that.user? '第'+that.list[res.target.id].pushCardCishuCount+'次打卡:'+that.list[res.target.id].content:'我为@'+that.list[res.target.id].userName+'打Call：'+that.list[res.target.id].content,
+						path: '/pages/index/action/action?pushId='+ that.list[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.list[res.target.id].isopen,
+						imageUrl:that.list[res.target.id].pictures?that.list[res.target.id].pictures:'../../static/images/icon/img/title1.png',
+					}
+				}else if(that.tab==1){
+					return {
+						
+						title:that.lookerList[res.target.id].userId==that.user? '第'+that.lookerList[res.target.id].pushCardCishuCount+'次打卡:'+that.lookerList[res.target.id].content:'我为@'+that.lookerList[res.target.id].userName+'打Call：'+that.lookerList[res.target.id].content,
+						path: '/pages/index/action/action?pushId='+ that.lookerList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.lookerList[res.target.id].isopen,
+						imageUrl:that.lookerList[res.target.id].pictures?that.lookerList[res.target.id].pictures:'../../static/images/icon/img/title1.png',
+					}
 				}
-			}else if(that.tab==1){
-				return {
-					
-					title:that.lookerList[res.target.id].userId==that.user? '第'+that.lookerList[res.target.id].pushCardCishuCount+'次打卡:'+that.lookerList[res.target.id].content:'我为@'+that.lookerList[res.target.id].userName+'打Call：'+that.lookerList[res.target.id].content,
-					path: '/pages/index/action/action?pushId='+ that.lookerList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.lookerList[res.target.id].isopen,
-					imageUrl:that.lookerList[res.target.id].pictures?that.lookerList[res.target.id].pictures:'../../static/images/icon/img/title1.png',
-				}
-			}
-			
-					
+			}		
 		},
 		onShow() {
 			
 		},
 		onLoad(option) {
+			//#ifdef MP-WEIXIN
+			wx.showShareMenu({
+			  menus: ['shareAppMessage', 'shareTimeline']
+			})
+			//#endif
 			this.userId = option.userId;
 			this.getCardList();
 			this.getLookerList();
-			this.getUserInfo();
+			// this.getUserInfo();
 			this.getIsAttention();
 			this.lookerCountData();
 		},
@@ -85,7 +99,7 @@
 				var that = this;
 				that.xd_request_post(that.xdServerUrls.xd_getLookerCountByUserId, {
 					userId: that.userId
-				}, false).then(res => {
+				}, true).then(res => {
 					if (res.resultCode == 0) {
 						that.lookerCount = res.obj.lookerCount
 						that.likeCount = res.obj.likeCount
@@ -100,7 +114,7 @@
 					userId:uni.getStorageSync('id'),
 					attentionUserId:e.id,		
 					
-				},false).then(res=>{
+				},true).then(res=>{
 					if(res.resultCode == 0){
 						 this.guanzhu="已关注"
 						 uni.showToast({
@@ -189,14 +203,14 @@
 				
 				
 			},
-			getUserInfo(){
-				this.xd_request_post(this.xdServerUrls.xd_getUserInfoByUserId,{
-					userId:this.userId,
-				},true)
-				.then(res=>{
-					this.userInfo=res.obj;
-				})
-			},
+			// getUserInfo(){
+			// 	this.xd_request_post(this.xdServerUrls.xd_getUserInfoByUserId,{
+			// 		userId:this.userId,
+			// 	},true)
+			// 	.then(res=>{
+			// 		this.userInfo=res.obj;
+			// 	})
+			// },
 			getCardList(){
 				this.xd_request_post(this.xdServerUrls.xd_pushByUserIdList,{
 					token:uni.getStorageSync('token'),
