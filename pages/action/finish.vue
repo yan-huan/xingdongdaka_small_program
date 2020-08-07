@@ -4,7 +4,7 @@
 			<view class="uni-form-item uni-column">
 				<view class="form-item"><input :value="rmb.challengeRmb" type="number" class="digit" name="challengeRmb" placeholder="请输入保障金数额" maxlength="5" /></view>
 				<view class="pricelis">
-					<view class="priceli" @click="priceRmb(1)"><text>1元</text></view>
+					<view class="priceli" @click="priceRmb(1)"><text>2元</text></view>
 					<view class="priceli" @click="priceRmb(6)"><text>6元</text></view>
 					<view class="priceli" @click="priceRmb(18)"><text>18元</text></view>
 					<view class="priceli" @click="priceRmb(66)"><text>66元</text></view>

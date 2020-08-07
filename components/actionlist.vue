@@ -42,11 +42,11 @@
 			<view class="text-content padding-lr textcen">
 				<text class="contentext" @tap="goPageCard(item)" >{{item.content}}</text>
 			</view>
-			<view class="grid flex-sub padding-lr"  >
-				<image class="bg-img imgheit"  :src="item.pictures" mode="aspectFill"
+			<view class="grid flex-sub  padding-lr"  >
+				<image class="imgheit"  :src="item.pictures" mode="aspectFill"
 				 @tap="goPageImg(item.pictures)" v-if="item.pictures!=''" >
 				</image>
-				<image class="bg-img imgheit"  :src="audioPlaySrc" mode="aspectFill"
+				<image class="imgheit"  :src="audioPlaySrc" mode="aspectFill"
 				 @tap="goPageImg(audioPlaySrc)" v-else @error="error">
 				</image>
 			</view>
@@ -112,7 +112,7 @@
 	}
 </script>
 
-<style  lang="scss">
+<style lang="scss">
 
 	.imgheit{
 		height: 320upx;

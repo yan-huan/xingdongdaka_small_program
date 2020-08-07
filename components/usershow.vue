@@ -2,22 +2,26 @@
 	
 		<view class="cu-list  bg-blue ">
 			<view class="cu-item flex padding flex-wrap align-center solid-bottom">
-				<view class="cu-avatar round lg" :style="{backgroundImage: 'url(' +list.avatarUrl + ')'}" @click="clidgoPage('/pages/selfCenter/editUserInfo')">
-					<view v-if="list.gender==2" class="cu-tag badge cuIcon-female bg-pink"></view>
-					<view v-if="list.gender==1" class="cu-tag badge cuIcon-male bg-cyan"></view>
+				<view class="cu-avatar round lg" :style="{backgroundImage: 'url(' +newList.userHead + ')'}" @click="clidgoPage(1,'/pages/selfCenter/editUserInfo')">
+					<view v-if="newList.gender==2" class="cu-tag badge cuIcon-female bg-pink"></view>
+					<view v-if="newList.gender==1" class="cu-tag badge cuIcon-male bg-cyan"></view>
 				</view>
-				<view class="content flex-sub margin-left-sm" @click="clidgoPage('/pages/selfCenter/editUserInfo')">
-					<view>{{list.nickName}}</view>
+				<view class="content flex-sub margin-left-sm" @click="clidgoPage(1,'/pages/selfCenter/editUserInfo')">
+					<view>{{newList.userName}}</view>
 					<view class=" text-lg flex align-center">
 						<text class="lg text-orange cuIcon-location"></text>
-						<text class="text-gray text-sm ">{{list.province}}{{list.city}}</text>
+						<text class="text-gray text-sm ">{{newList.province}}{{newList.city}}</text>
+					</view>
+					<view class=" text-lg flex align-center" v-if="newList.schoolName">
+						<text class="lg text-orange cuIcon-home"></text>
+						<text class="text-gray text-sm ">{{newList.schoolName}}</text>
 					</view>
 				</view>
 				<view >
-					<view class="cu-tag line-orange radius" v-if="guanzhu.length > 0"  @tap="clidtags(list)" >
+					<view class="cu-tag line-orange radius" v-if="guanzhu.length > 0"  @tap="clidtags(newList)" >
 						{{guanzhu}}
 					</view>
-					<view class="personOpt" v-if="guanzhu.length== undefined">
+					<view class="personOpt" v-if="guanzhu.length== ''">
 						<button @click="clickMe" class="pay" v-if="env!='release'">支付</button>
 					</view>
 				</view>
@@ -25,8 +29,9 @@
 			
 			<view class="moreInfoRow">
 			
-				<view class="moreInfoIn flex flex-wrap justify-center">
+				<view class="moreInfoIn flex flex-wrap justify-around">
 					<text @click="clidgoPage('/pages/selfCenter/myattention?userId='+userId)">关注 {{lookerCount}}</text>
+					<text v-if="guanzhu.length== ''" class="moreInfoIn_text" @click="clidgoPage('/pages/selfCenter/myfans')">围观量 {{looktotals}}</text>
 					<view class="flex flex-wrap">
 						<text class="moreInfoIn_text" @click="clidgoPage('/pages/selfCenter/myfans?userId='+userId)">粉丝 {{likeCount}}</text>
 						<view class="cu-tag  tag-text bg-red" v-if="num>0&&num<100">{{num}}</view>
@@ -48,6 +53,13 @@
 		data() {
 			return {
 				env:uni.getStorageSync('env'),
+				newList:''
+			}
+		},
+		watch:{
+			list:function(){
+				console.log(this.list)
+				this.newList=this.list;
 			}
 		},
 		methods: {
@@ -57,10 +69,20 @@
 			clickMe(){
 				this.$emit("clickMe");
 			},
-			clidgoPage(url) {
-				uni.navigateTo({
-					url
-				});
+			clidgoPage(num,url) {
+				if(num==1&&this.guanzhu==''){
+					uni.navigateTo({
+						url
+					});
+				}else{
+					if(num!=1){
+						
+						uni.navigateTo({
+							url:num
+						});
+					}
+				}
+				
 			}
 		}
 	}
@@ -96,7 +118,7 @@
 			border-top: 1px solid #e7e7e7;
 		}
 		.moreInfoIn_text {
-			margin-left: 300rpx;
+			// margin-left: 300rpx;
 		}
 	
 		.moreInfoIn .thin {

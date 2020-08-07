@@ -77,7 +77,9 @@ export default {
 		
 		let that = this;
 		if(res.from=="menu"){
-		return	that.xdUniUtils.xd_onShare();
+		return	that.xdUniUtils.xd_onShare(
+		'','/pages/selfCenter/selfView?userId='+uni.getStorageSync('id'),''
+		);
 		}else{
 			if(that.tab==0){
 				return {
@@ -94,7 +96,16 @@ export default {
 			}
 			
 		}		
-	},
+	},//#ifdef MP-WEIXIN
+		onShareTimeline(){
+			let that = this;
+			return {			
+				query:'/pages/selfCenter/selfView?userId='+uni.getStorageSync('id'),
+			}
+				
+			
+		},
+		//#endif
 	methods: {
 		tabs(e){
 			this.tab=e

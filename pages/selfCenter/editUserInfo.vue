@@ -71,15 +71,16 @@ export default {
 	},
 	onLoad() {
 		let userInfo=uni.getStorageSync('userInfo');
-		this.userName=userInfo.nickName;
-		// this.province=userInfo.province;
-		// this.city=userInfo.city;
+		this.userName=userInfo.userName;
 		this.current=userInfo.gender;
-		this.img=userInfo.avatarUrl;
+		this.img=userInfo.userHead;
 		this.openId=userInfo.openId;
 		this.schoolName=userInfo.schoolName;
 		this.unionId=userInfo.unionId;
 		this.userMobile=userInfo.userMobile;
+		this.region.push('');
+		this.region.push(userInfo.province);
+		this.region.push(userInfo.city)
 	},
 	methods: {
 			...mapMutations(['uPuserInfo']),
@@ -158,8 +159,8 @@ export default {
 							}, true ).then(res=>{
 								if(res.resultCode==0){
 									let userInfo={
-										nickName:'',
-										avatarUrl:'',
+										userName:'',
+										userHead:'',
 										province:'',
 										city:'',
 										gender:'',
@@ -167,8 +168,8 @@ export default {
 										openId:this.openId,
 										unionId:this.unionId,
 									};
-									userInfo.nickName=res.obj.userName;
-									userInfo.avatarUrl=res.obj.userHead;
+									userInfo.userName=res.obj.userName;
+									userInfo.userHead=res.obj.userHead;
 									userInfo.province=res.obj.province;
 									userInfo.city=res.obj.city;
 									userInfo.gender=res.obj.sex?res.obj.sex:'2';

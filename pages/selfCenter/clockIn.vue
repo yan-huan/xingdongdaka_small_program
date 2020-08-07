@@ -104,9 +104,9 @@
 					<view class="">
 						<button type="default"  @tap="popUpVideo">上传视频</button>
 					</view>
-					<view class="">
+					<!-- <view class="">
 						<button type="default"  @tap="showmp">录音上传</button>
-					</view>
+					</view> -->
 		 		</view>
 		 	</view>
 		 </view>
@@ -133,9 +133,14 @@
 
 <script>
 	import{ mapState,mapMutations} from 'vuex'
+	import imtAudio from 'components/imt-audio/imt-audio'
 	const recorderManager = uni.getRecorderManager();
 	const innerAudioContext = uni.createInnerAudioContext();
 export default {
+	components:{
+		imtAudio
+		
+	},
 	data() {
 		return {
 			plays:true,
@@ -157,7 +162,7 @@ export default {
 			pushList:'',
 			voicePath:'',
 			
-			max: 600000, // 录音最大时长，单位毫秒
+			max:120000, // 录音最大时长，单位毫秒
 			frame: 50, // 执行绘画的频率，单位毫秒
 			maxTiming: false, // 最长录音时间的定时器
 			draw: undefined,
@@ -396,8 +401,7 @@ export default {
 						}, that.max);
 						let x=e.detail.x/2;
 						let y=e.detail.y/2;
-						console.log(x)
-						console.log(y)
+						
 						// 录音过程圆圈动画
 						let angle = -0.5;
 						var millisecond = 0; //毫秒
@@ -414,7 +418,7 @@ export default {
 							context.setLineWidth(3);
 							context.arc(30, 30, 25,  -0.5 * Math.PI, (angle += 2 / (that.max / that.frame)) * Math.PI, false);
 							context.stroke();
-							context.draw();
+							context.draw(false);
 						}, that.frame);
 		            },
 		endRecord(e) {
@@ -424,7 +428,6 @@ export default {
 			recorderManager.stop();
 	        recorderManager.onStop(function (res) {
 				const	voicePath = res.tempFilePath;
-				
 					const uploadTask =uni.uploadFile({
 						url:that.xdServerUrls.xd_uploadFile,
 						method:"POST",
@@ -437,7 +440,7 @@ export default {
 						filePath:voicePath,
 						name:'files',
 						success: (res) => {    
-							
+							that.timeminute=0;
 							that.MP3data = JSON.parse(res.data).obj[0] 
 						}
 					})
