@@ -6,8 +6,10 @@ const gzsm_wgglts="感谢你的围观鼓励帮助！如果TA未达成，你将�
 //微信付款页规则说明
 const gzsm_wxfk="说明：\r\n达成则原额退回。否则将全额扣除，分配给有效的围观者、分享等相关方，最终解释权属于平台。";
 
-
+//为完成行动打卡提示语
+const gzsm_clickCard="说明：行动项已完成或未完成无法在继续打卡，是否需要新建继续本行动项";
 export default {
 	gzsm_wgglts,
-	gzsm_wxfk
+	gzsm_wxfk,
+	gzsm_clickCard
 }

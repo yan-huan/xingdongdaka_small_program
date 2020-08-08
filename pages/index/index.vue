@@ -30,16 +30,15 @@
 					</view>
 				</view>
 				<view class="swiper-banner" v-if="active == 1 || active ==3">
-				  <swiper class="swiper"  autoplay="true" circular="true">
-					<swiper-item v-for="item  in num" :key="item">					
-							<ad
-							   unit-id="adunit-333032749ac71266"
-							   :ad-intervals="adtime"
-							  
-							   @error='aderror'
-							   bindclose="adClose"
-							 ></ad>
+				  <swiper class="swiper"  autoplay="true" circular="true" v-if="adOff">
+					<swiper-item v-for="item  in adid" :key="item">	
+							<ad-custom :unit-id="item" :ad-intervals="adtime" @load="bindload" @error="binderror"></ad-custom>
 					</swiper-item>
+				  </swiper>
+				  <swiper class="swiper"  autoplay="true" circular="true" v-else>
+				  		<swiper-item v-for="item  in bannerList" :key="item">	
+				  				<image class="swiper-item" :src="item.bannerImage"  v-model="aspectFit"></image>
+				  		</swiper-item>
 				  </swiper>
 				</view>
 				<!-- 推荐内容 -->
@@ -116,9 +115,9 @@
 			return {
 				// audioPlaySrc:'../static/images/icon/img/title1.png',
 				inimg:'',
-				adtime:100,
+				adtime:31,
 				active:1,
-				adid:['adunit-333032749ac71266','adunit-177916543bde0660','adunit-a4c464a26f8907dc'],
+				adid:['adunit-694551ca7bf1d034','adunit-ceaf57e168a329aa','adunit-a1ac7b29661ff452'],
 				currentIndex:-1,
 				labelId:1,
 				bannerList:[],
@@ -133,6 +132,7 @@
 				adswiper:'',
 				num:3,
 				scrollTop:0,
+				adOff:true,
 					
 			};
 		},
@@ -181,8 +181,12 @@
 		        },  
 		methods:{
 			...mapMutations(['logIn','logOut','IndexlogIn'])  ,
-			aderror(e){0
-				console.log(e)
+			bindload(){
+				
+			},
+			binderror(e){
+				console.log('2')
+				this.adOff=false;
 			},
 			getLocationInfo () {
 			    var query = uni.createSelectorQuery().in(this);
@@ -708,6 +712,7 @@
 			width: 100%; min-height: 208upx;max-height: 270upx;
 			swiper-item image{
 				width: 100%; 
+				height: 100%;
 				border-radius: 10upx;
 			}
 		}

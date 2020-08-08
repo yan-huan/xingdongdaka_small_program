@@ -102,6 +102,9 @@
 								</view>
 							</view>
 						</view>
+						<view class="">
+							<ad-custom unit-id="adunit-8354389cd1f86a3f" ad-intervals="31" ></ad-custom>
+						</view>
 					</view>
 				</view>
 			</view>

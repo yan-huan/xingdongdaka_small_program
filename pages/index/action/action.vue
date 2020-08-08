@@ -104,10 +104,18 @@
 				</view>
 			</block>
 			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1">
-				<view class="actionLi">
+				<view class="actionLi bg-white">
 					<view class="ali-main">
+						<view class="texticon" v-if="index==0">
+							<text class="lg cuIcon-crown"> </text>
+						</view>
+						<view class="textnum" v-if="index>0">
+							{{index+1}}
+						</view>
 						<view class="ali-main-img" @tap="goUser(attention.lookUserId)">
+							
 							<image class='xd-mag xd-box-shadow' :src="attention.userHead"></image>
+							
 						</view>
 						<view class="lli-main-content xd-list-body" @tap="goUser(attention.lookUserId)">
 							<view class="xd-list-title-text">
@@ -122,7 +130,7 @@
 							</view>
 						</view>
 						<view class="ali-main-list" @tap="showBanner(attention.lookUserId,attention.pushId)">
-							<view>{{attention.lookerCount}}</view>
+							<view class="ali-main-list-num">{{attention.lookerCount}}</view>
 						</view>
 					</view>
 				</view>
@@ -258,9 +266,17 @@
 				return this.xdUniUtils.xd_timestampToTime(d1.createTime,false,false,false) > this.xdUniUtils.xd_timestampToTime(d2.createTime,false,false,false)
 			},
 			gostep(){
-				uni.navigateTo({
-					url:'../../action/step1'
-				})
+				if(!uni.getStorageSync('token')){
+					uni.switchTab({
+						url:'../index'
+					})
+				}else{
+					uni.setStorageSync('pushData',this.pushList)
+					uni.navigateTo({
+						url:'../../action/step1'
+					})
+				}
+				
 			},
 			tabSelect(e){
 				this.TabCur=e.target.id;
@@ -564,15 +580,20 @@
 	.commentCount{
 		right: 0;
 	}
-	
+	.actionLi{
+		padding-bottom: 10upx;
+	}
 	.ali-main{
 		display: flex;
 		padding: 20rpx;
-		border-bottom: 3px solid #fff;
-		
 		.ali-main-list{
+			color: #f37b1d;
+			margin-left: 10%;
 			line-height: 130rpx;
 			width: 140rpx;
+			.ali-main-list-num{
+				margin-left: 40%;
+			}
 		}
 		.ali-main-img .xd-mag{
 			border-radius: 100%;
@@ -584,9 +605,10 @@
 				background:#66CCFF;
 				color:#fff;
 				display: inline-block;
-				padding:0 6rpx;
+				padding:0 12upx;
 				border-radius: 100%;
-				font-size: 22rpx;
+				font-size: 25rpx;
+				
 				margin-left: 14rpx;
 			}
 			.lli-main-content-text{
@@ -623,6 +645,27 @@
 	}
 	.widthtext{
 		width: 100%;
+	}
+	.texticon{
+		display: inline-flex;
+		position: absolute;
+		color: #f37b1d;
+		font-size: 35upx;
+		white-space: nowrap;
+		-webkit-transform:rotate(-50deg);
+		z-index: 10;
+
+	}
+	.textnum{
+		display: inline-flex;
+		position: absolute;
+		color: #FFFFFF;
+		background-color:#f37b1d;
+		white-space: nowrap;
+		z-index: 10;
+		border-radius: 200rpx;
+		padding: 0rpx 10rpx;
+		height: 28rpx;
 	}
 
 </style>

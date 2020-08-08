@@ -58,7 +58,7 @@
 					<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(item,indexs)">围观分钱</button>
 					<text class="text-gray text-df ">{{item.onlookerCount}}</text>
 				</view>
-				<view class="text-xxl" @click="goPage(item.id)" v-if="userId==item.userId&&item.pushCardCount<item.targetDay" >
+				<view class="text-xxl" @click="goPage(item)" v-if="userId==item.userId&&item.pushCardCount<item.targetDay" >
 					<button class="cu-btn line-green sm round  "  >立即打卡</button>
 				</view>
 			
@@ -82,10 +82,27 @@
 				this.audioPlaySrc=this.xdUniUtils.xd_randomImg();	
 			            } ,
 			goPage(item){
-				
-				uni.navigateTo({
-					url:'/pages/selfCenter/clockIn?pushId='+item
-				});
+				if(item.btn==1||item.btn==2){
+					uni.showModal({
+						 content: this.xdCommon.gzsm_clickCard,
+						 confirmText: '新建',
+						 success: (res) => {
+						   if (res.confirm) {
+							   uni.setStorageSync('pushData',item)
+							 uni.navigateTo({
+								 
+							 	url:'/pages/action/step1'
+							 });
+						   } else if (res.cancel) {
+							 
+						   }
+						 }
+					})
+				}else{
+					uni.navigateTo({
+						url:'/pages/selfCenter/clockIn?pushId='+item.id
+					});
+				}
 			},
 			goPageCard(e){
 				

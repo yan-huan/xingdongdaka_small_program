@@ -164,7 +164,6 @@ export default {
 		var data=uni.getStorageSync("pushData");
 		if(data){
 			this.content=data.content;
-			this.extendContent=data.extendContent;
 			this.punchCardWay=data.punchCardWay;
 			this.param.pictures=data.pictures;
 		}
