@@ -121,6 +121,9 @@
 	border-bottom: 1upx solid  #ff9800;
 	border-right: 1upx solid  #ff9800;
 	position: relative;
+	width: 300upx;
+	height: 200upx; 
+	background-size: cover;
 }
 .xd-br-30{
 	border-radius: 30upx;
@@ -174,3 +177,4 @@
 .cu-list.grid>.xd-btn-tips-three .xd-btn-money{
 	color: red; font-weight: 400; font-size: 36upx; position: relative; top:-6upx;
 }
+.xd-bg-white{background: #fff;}

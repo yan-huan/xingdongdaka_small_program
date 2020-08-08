@@ -4671,6 +4671,9 @@ scroll-view.cu-steps .cu-item {
 	border-bottom: 1rpx solid  #ff9800;
 	border-right: 1rpx solid  #ff9800;
 	position: relative;
+	width: 300rpx;
+	height: 200rpx; 
+	background-size: cover;
 }
 .xd-br-30{
 	border-radius: 30rpx;
@@ -4726,4 +4729,5 @@ scroll-view.cu-steps .cu-item {
 .cu-list.grid>.xd-btn-tips-three .xd-btn-money{
 	color: red; font-weight: 400; font-size: 36rpx; position: relative; top:-6rpx;
 }
+.xd-bg-white{background: #fff;}
 

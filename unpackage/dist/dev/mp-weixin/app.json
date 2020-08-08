@@ -71,6 +71,5 @@
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom",
     "sponsor": "/pages/sponsor/index"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }

@@ -81,6 +81,8 @@ const serverUrls = { //根据接口具体配置
 	xd_selectBurieStatistics: serverBaseUrl + '/burie/selectBurieStatistics' ,//获取埋点数据（新增关注数和新增围观分钱数）
 	xd_updateBurieStatistics: serverBaseUrl + '/burie/updateBurieStatistics' ,//查看埋点数据后删除
 	
+	xd_saveSponsor: serverBaseUrl + '/sponsor/save' ,//保存打卡记录
+	
 }
 export default {
 	serverUrls,
