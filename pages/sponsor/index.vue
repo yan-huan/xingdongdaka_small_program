@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<cu-custom bgColor="xd-bg nav text-center" :isBack="true"><block slot="backText">返回</block><block slot="content">赞助</block></cu-custom>
-		
+		<!-- <cu-custom bgColor="xd-bg nav text-center" :isBack="true"><block slot="backText">返回</block><block slot="content">赞助</block></cu-custom>
+		 -->
 		<view class="cu-card">
 			<view class="xd-grids  xd-sponsor-content">
 				<view class="xd-img-shadow xd-br-30">
