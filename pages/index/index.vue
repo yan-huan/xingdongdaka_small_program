@@ -15,7 +15,7 @@
 			<!-- 最新 -->
 			<view class="xd-list-info" :hidden="active == 1||active==2|| active ==3">				
 				<block v-for="(list, index) in listsTab" :key="index" >								
-				  <indexList  :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg'></indexList>
+				  <indexList  :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg' :Off="Off"></indexList>
 				</block>
 			</view>
 			<!-- 推荐 -->
@@ -131,6 +131,7 @@
 				searchValue:'',
 				adswiper:'',
 				num:3,
+				Off:'',
 				scrollTop:0,
 				adOff:true,
 					
@@ -185,7 +186,7 @@
 				
 			},
 			binderror(e){
-				
+				console.log('2')
 				this.adOff=false;
 			},
 			goUser(e){

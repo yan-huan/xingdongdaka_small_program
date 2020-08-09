@@ -355,24 +355,29 @@ export default {
 				},
 				dataPaly(res){
 					let dataList=res.obj.list;
-					var date=new Date();
-					date=date.getTime();
 					
+					var date=new Date();
+					
+					date=date.getTime();
 					for(var i=0;i <dataList.length;i++){
-						var num=dataList[i].targetDay-dataList[i].pushCardCount;
-						var num2=dataList[i].targetDay;
-						var num3=dataList[i].targetDay+dataList[i].holidayDay
-						var num4=dataList[i].pushCardCount;
-						let d = new Date(dataList[i].createTime);
-						let newD = new Date(d.setDate(d.getDate() + num3));
-						newD=newD.getTime()
-						let dd=Math.round((date-newD) / (1000 * 60 * 60 * 24));
-						if(num>0 && dd<=0 ){
-							dataList[i].btn=0//立即打卡
-						}else if(num2>num4 && dd>0){
-							dataList[i].btn=1}//未达成
-							else if(num==0&&num2==num4){
-								dataList[i].btn=2}	//已完成    
+						
+						// var num=dataList[i].targetDay-dataList[i].pushCardCount;
+						// var num2=dataList[i].targetDay;
+						// var num3=dataList[i].targetDay+dataList[i].holidayDay
+						// var num4=dataList[i].pushCardCount;
+						
+						// let d = new Date(dataList[i].createTime);
+						// let newD = new Date(d.setDate(d.getDate() + num3));
+						
+						// newD=newD.getTime()
+						
+						// let dd=Math.round((date-newD) / (1000 * 60 * 60 * 24));
+						// if(num>0 && dd<=0 ){
+						// 	dataList[i].btn=0//立即打卡
+						// }else if(num2>num4 && dd>0){
+						// 	dataList[i].btn=1}//未达成
+						// 	else if(num==0&&num2==num4){
+						// 		dataList[i].btn=2}	//已完成    
 						
 						dataList[i].challengeRmb=Math.floor(dataList[i].challengeRmb/100);		
 						
