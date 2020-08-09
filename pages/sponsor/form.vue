@@ -210,8 +210,8 @@
 					status: 1 ,           //   状态:0有效,1无效
 					pushId: uni.getStorageSync('pushId') ,       // 行动项id
 					cardId: uni.getStorageSync('cardId'),	     // 打卡id
-					createTime:''    , //	创建时间
-					updateTime : ''    //   更新时间
+					createTime: new Date()    , //	创建时间
+					updateTime : new Date()    //   更新时间
 				} 
 				
 				
