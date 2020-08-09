@@ -29,10 +29,10 @@
 							</view>
 							<view class="text-gray text-sm  flex flex-wrap">
 								<view class="">
-									坚持天数：{{pushList.pushCardCount}}/{{pushList.targetDay}}
+									已达成天数：{{pushList.pushCardCount}}/{{pushList.targetDay}}
 								</view>
 								<view class="margin-left-sm"> 
-								    休假天数：{{pushList.holidayDay}}天
+								    可休假天数：{{pushList.holidayDay}}天
 								</view>
 							</view>
 						</view>
@@ -65,7 +65,7 @@
 						<text class="text-gray text-df ">{{pushList.onlookerCount}}</text>
 					</view>
 					<view class="text-xxl"  >
-						<button class="cu-btn line-green sm round  " @click="goSteps" v-if="userId==pushList.userId&&pushList.pushCardCount<pushList.targetDay" >立即打卡</button>
+						<button class="cu-btn line-green sm round  " @click="goSteps" v-if="userId==pushList.userId" >立即打卡</button>
 						<button class="cu-btn line-green sm round  " @click="gostep" v-else>一起行动</button>
 					</view>
 				
@@ -271,9 +271,19 @@
 						url:'../index'
 					})
 				}else{
-					uni.setStorageSync('pushData',this.pushList)
-					uni.navigateTo({
-						url:'../../action/step1'
+					uni.showModal({
+						 content: '是否要创建相同行动项',
+						 // confirmText: '新建',
+						 success: (res) => {
+						   if (res.confirm) {
+							   uni.setStorageSync('pushData',this.pushList)
+							 uni.navigateTo({
+							 	url:'../../action/step1'
+							 });
+						   } else if (res.cancel) {
+							 
+						   }
+						 }
 					})
 				}
 				
@@ -368,10 +378,26 @@
 				})
 			},
 			goSteps(){
-				
-				uni.navigateTo({
-					url: '../../selfCenter/clockIn?pushId='+this.pushList.id
-				});
+				if(this.pushList.pushCardStatus==2||this.pushList.pushCardStatus==3){
+					uni.showModal({
+						 content: this.xdCommon.gzsm_clickCard,
+						 confirmText: '新建',
+						 success: (res) => {
+						   if (res.confirm) {
+							   uni.setStorageSync('pushData',item)
+							 uni.navigateTo({
+							 	url:'../../action/step1'
+							 });
+						   } else if (res.cancel) {
+							 
+						   }
+						 }
+					})
+				}else{
+					uni.navigateTo({
+						url: '../../selfCenter/clockIn?pushId='+this.pushList.id
+					});
+				}
 			},
 			goPageImg(e,index){
 				this.xdUniUtils.xd_showImg(e,index);
@@ -482,7 +508,6 @@
 					pushId:this.pushId,
 						token:uni.getStorageSync('token')
 				},false).then(res=>{
-					
 					
 					this.pushComentList=this.timeStamp(res);
 				})

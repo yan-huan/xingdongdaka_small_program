@@ -60,7 +60,7 @@
 			let title = '';
 			if(options.userId==undefined){
 				this.getInviteList();
-				 title = '围观量';
+				 title = '分享量';
 				uni.setNavigationBarTitle({
 					title:title
 					

@@ -60,7 +60,7 @@
 				<view class="text-xl">
 					<text class="lg text-gray cuIcon-calendar"></text>
 				</view>
-				<view class="title margin-left-xs">行动时间(打卡时间)</view>
+				<view class="title margin-left-xs">计划天数</view>
 				<view class="flex flex-wrap  bg-gray radius align-center card-time-left ">
 					<picker class="data-time-left-whint" @change="PickerChange"  :range="picker" >
 						<view class="picker">
@@ -74,7 +74,7 @@
 				</view>
 			</view>
 			<view class="flex flex-wrap padding solid-top align-center">
-				<view class="margin-left-lg ">休息天数</view>
+				<view class="margin-left-lg ">可休假天数</view>
 				<view class="flex flex-wrap  bg-gray radius align-center data-time-left">
 					<picker class="data-time-left-whint" @change="PickerChangeholiday" :value="holidayDay" :range="pickerdate">
 						<view class="picker">
@@ -284,8 +284,17 @@ export default {
 				uni.showToast({
 				    title: '请输入行动内容',
 					mask:true,
-				    duration: 1000,
-					image:'/static/images/icon/clock.png'
+				    duration: 2000,
+					icon:'none'
+				});
+				return false
+			};
+			if(this.holidayDay>this.targetDay){
+				uni.showToast({
+				    title: '休假天数不能大于计划天数',
+					mask:true,
+				    duration: 2000,
+					icon:'none'
 				});
 				return false
 			};
@@ -385,7 +394,7 @@ export default {
 	width: 390rpx;
 }
 .card-time-left{
-	margin-left: 15%;
+	margin-left: 38%;
 	width: 150upx;
 }
 .data-time-left{
