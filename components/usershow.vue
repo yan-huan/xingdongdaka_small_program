@@ -31,7 +31,7 @@
 			
 				<view class="moreInfoIn flex flex-wrap justify-around">
 					<text @click="clidgoPage('/pages/selfCenter/myattention?userId='+userId)">关注 {{lookerCount}}</text>
-					<text v-if="guanzhu.length== ''" class="moreInfoIn_text" @click="clidgoPage('/pages/selfCenter/myfans')">分享量 {{looktotals}}</text>
+					<text v-if="looktotals!=null &&guanzhu== ''" class="moreInfoIn_text" @click="clidgoPage('/pages/selfCenter/myfans')">分享量 {{looktotals}}</text>
 					<view class="flex flex-wrap">
 						<text class="moreInfoIn_text" @click="clidgoPage('/pages/selfCenter/myfans?userId='+userId)">粉丝 {{likeCount}}</text>
 						<view class="cu-tag  tag-text bg-red" v-if="num>0&&num<100">{{num}}</view>

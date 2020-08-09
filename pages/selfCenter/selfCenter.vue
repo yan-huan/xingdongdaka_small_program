@@ -1,6 +1,6 @@
 <template>
 	<view class="selfCenter ">	
-		<usershow  :list="userInfos" :userId="userId" :guanzhu="guanzhu" :looktotals="looktotals"  :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags' :num="num" v-on:clickMe="clickMe"></usershow>
+		<usershow  :list="userInfos" :userId="id" :guanzhu="guanzhu" :looktotals="looktotals"  :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags' :num="num" v-on:clickMe="clickMe"></usershow>
 		<view class="moreInfo">
 			<view class="moreInfoRow2">
 				<view class="user_column_item">
@@ -56,6 +56,7 @@
 				// onOff: true,
 				// env:uni.getStorageSync('env'),
 				rmb:0.00,
+				id:uni.getStorageSync('id'),
 				userId:'',
 				guanzhu:''
 			}

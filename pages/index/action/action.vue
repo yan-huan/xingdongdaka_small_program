@@ -384,7 +384,7 @@
 						 confirmText: '新建',
 						 success: (res) => {
 						   if (res.confirm) {
-							   uni.setStorageSync('pushData',item)
+							   uni.setStorageSync('pushData',this.pushList)
 							 uni.navigateTo({
 							 	url:'../../action/step1'
 							 });
