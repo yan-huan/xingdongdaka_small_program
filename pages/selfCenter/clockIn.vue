@@ -69,11 +69,12 @@
 			 					</view>
 			 				</view>
 			 				<view class="" v-if="videodata">
-			 					<view class="cu-form-group">
-			 						<view class="grid col-4 grid-square " >						
-			 								<video :src="videodata" controls></video>
+			 						<view class="flex flex-wrap " >	
+			 							<video :src="videodata" controls></video>
+										<view class="cu-tag bg-gray" @tap="Viewvideo">
+											<text class='cuIcon-close'></text>
+										</view>
 			 						</view>
-			 					</view>
 			 				</view>
 							<view class="" v-if="MP3data">
 								<view class="cu-form-group">	
@@ -197,13 +198,14 @@ export default {
 			this.showmp3=!this.showmp3;
 		},
 		ViewImage(e){
-			console.log(e)
+			
 			this.param.pictures.splice(e,1);
 		},
-		error: function() {
-			
-			var num=Math.floor(Math.random()*8+1);
-			this.audioPlaySrc='../../static/images/icon/img/title'+num+'.png'
+		Viewvideo(){
+			this.videodata='';
+		},
+		error: function() {	
+			this.audioPlaySrc=this.xdUniUtils.xd_randomImg();
 		            }  ,
 		getpushList(){
 						 if(!uni.getStorageSync('token')){
@@ -291,6 +293,14 @@ export default {
 		},
 		popUpImg(){
 			const that = this;
+			if(that.videodata!=''){
+				uni.showToast({
+				    title: '已上传视频无法上传图片',
+					icon:'none',
+				    duration: 2000
+				});
+				return false
+			}
 			that.popUp=false;
 			uni.chooseImage({
 			    count: 4, //默认9
@@ -341,6 +351,14 @@ export default {
 		popUpVideo(){
 			 // 上传视频
 			 const that = this;
+			 if(that.videodata!=''){
+			 	uni.showToast({
+			 	    title: '已上传视频',
+			 		icon:'none',
+			 	    duration: 2000
+			 	});
+			 	return false
+			 }
 			 that.popUp=false;
 				uni.chooseVideo({
 					maxDuration:60,

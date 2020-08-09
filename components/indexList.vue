@@ -76,6 +76,16 @@
 				audioPlaySrc:'../static/images/icon/img/title.png',
 			};
 		},
+		watch:{
+			list:function () {
+				 console.log('1')
+			    var query = uni.createSelectorQuery();
+				 query.selectAll('#videowhind').boundingClientRect()
+				 query.exec(res => {
+				       console.log(res)
+					   })
+			  },
+		},
 		methods:{
 			error: function() {
 				this.audioPlaySrc=this.xdUniUtils.xd_randomImg();

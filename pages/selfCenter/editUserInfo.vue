@@ -4,8 +4,8 @@
 			<view class="f-lists">
 				<view class="f-list f-headInfo">
 					<view class="h-userInfo">
-						<view class="h-headInfo-imgbar"><image class="h-headInfo-img" v-show="img" :src="img" @click="popUpImg"></image></view>				
-						<view class="h-headInfo-imgTxt">
+						<view class="h-headInfo-imgbar" @click="popUpImg"><image class="h-headInfo-img" v-show="img" :src="img" ></image></view>				
+						<view class="h-headInfo-imgTxt" @click="popUpImg">
 							<text>点击头像更换</text>
 						</view>
 					</view>
@@ -64,7 +64,7 @@ export default {
 			img:'',
 			openId:'',
 			unionId:'',
-			customItem: '全部',
+			// customItem: '全部',
 			region: [],
 			
 		};
@@ -127,7 +127,14 @@ export default {
 				token:'',
 				id:'',
 			};
-			 
+			 if(this.img==''){
+				 uni.showToast({
+				     title: '请上传头像',
+				 	icon:'none',
+				     duration: 2000
+				 });
+				 return false
+			 }
 			try{
 				userData.token=uni.getStorageSync('token');
 				userData.id=uni.getStorageSync('id');

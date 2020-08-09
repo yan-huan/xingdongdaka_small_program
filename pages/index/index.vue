@@ -185,16 +185,9 @@
 				
 			},
 			binderror(e){
-				console.log('2')
+				
 				this.adOff=false;
 			},
-			getLocationInfo () {
-			    var query = uni.createSelectorQuery().in(this);
-				 query.selectAll('#indexList').boundingClientRect()
-				 query.exec(res => {
-				       console.log(res)
-					   })
-			  },
 			goUser(e){
 				if(!this.hasLogin){
 					uni.navigateTo({

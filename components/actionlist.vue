@@ -19,8 +19,8 @@
 							<view class="cu-tag bg-grey radio">{{item.label}}</view>
 							<view class="margin-left-sm" v-if="tab==0||tab==1">
 								<text class="text-orange" v-if="item.btn==0">进行中...</text>
-								<text class="text-gray" v-else-if="item.btn==1">未完成</text>
-								<text class="text-green" v-else-if="item.btn==2">已完成</text>
+								<text class="text-gray" v-else-if="item.btn==1">未达成</text>
+								<text class="text-green" v-else-if="item.btn==2">已达成</text>
 							</view>
 						</view>
 						<view class="text-gray text-sm ">

@@ -19,8 +19,11 @@
 				</view>
 			</view>
 		</view>	
-		<view class="btn_bar">
+		<!-- <view class="btn_bar">
 			<view class="btns"><button class="btn" @click="goStep">制定新的行动项</button></view>
+		</view> -->
+		<view class="start-add" @click="goStep" >
+			<image src="../../static/images/icon/add.png" mode="widthFix"></image>
 		</view>
 		<view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">
 			<view class="mask-content" >
@@ -412,30 +415,30 @@ export default {
 		}
 	}
 }
-.btn_bar{
-	position: fixed;
-	bottom: 0;
-	left:25%;
-	width: 50%;
-	.btns {
-		height: 100rpx;
+// .btn_bar{
+// 	position: fixed;
+// 	bottom: 0;
+// 	left:25%;
+// 	width: 50%;
+// 	.btns {
+// 		height: 100rpx;
 		
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		font-size: 28rpx;
-		.btn {
-			flex: 1;
-			height: 64rpx;
-			line-height: 64rpx;
-			background: #ffa700;
-			// color: #fff;
-			font-size: 28rpx;
-			border-radius: 40rpx;
+// 		display: flex;
+// 		align-items: center;
+// 		justify-content: space-between;
+// 		font-size: 28rpx;
+// 		.btn {
+// 			flex: 1;
+// 			height: 64rpx;
+// 			line-height: 64rpx;
+// 			background: #ffa700;
+// 			// color: #fff;
+// 			font-size: 28rpx;
+// 			border-radius: 40rpx;
 
-		}
-	}
-	}
+// 		}
+// 	}
+// 	}
 	
 	.mask{
 		display: flex;
@@ -485,6 +488,17 @@ export default {
 		font-weight: bold;
 		line-height: 100upx;
 
+	}
+	.start-add{
+		width: 100upx; height:100upx;
+		display:flex; flex-direction:row; justify-content:center; align-items:center;
+		background: #ffe66f;
+		border: 2px solid #ffa700;
+		border-radius: 50%;
+		position: fixed; bottom: 100upx; right:30upx; z-index: 99;
+	}
+	.start-add image{
+		width: 48upx; height:48upx;
 	}
 	
 </style>
