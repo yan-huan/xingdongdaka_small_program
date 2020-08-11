@@ -97,6 +97,25 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var m0 = Number(_vm.pickedIndex)
+  var m1 = Number(_vm.pickedIndex)
+  var m2 = Number(_vm.pickedIndex)
+  var m3 = Number(_vm.pickedIndex)
+  var m4 = Number(_vm.pickedIndex)
+  var m5 = Number(_vm.pickedIndex)
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        m0: m0,
+        m1: m1,
+        m2: m2,
+        m3: m3,
+        m4: m4,
+        m5: m5
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -216,13 +235,46 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 16);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _vuex = __webpack_require__(/*! vuex */ 16);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 
 {
   data: function data() {
     return {
-      rmb: '',
+      pickerdate: [
+      "请选择",
+      "活动场地",
+      "代金券",
+      "折扣权",
+      "其他"],
+
+      pickedIndex: 0,
+      rmb: {
+        challengeRmb: 5 },
+
       sponsorCondition: '',
       location: '', //活动场地地址
       userInfo: uni.getStorageSync('userInfo'),
@@ -294,12 +346,47 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function ownKeys(object, enumera
     SwitchA: function SwitchA(e) {
       this.switchA = e.detail.value;
     },
+    PickerChangeItem: function PickerChangeItem(e) {
+      this.pickedIndex = e.detail.value;
+      console.log(e);
+      // this.indexholiday=0;
+      // this.holidayDay=1;
+    },
     ChooseImage: function ChooseImage() {var _this = this;
+      var that = this;
       uni.chooseImage({
         count: 4, //默认9
         sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album'], //从相册选择
         success: function success(res) {
+          var tempFilePaths = res.tempFilePaths;
+          that.xdUniUtils.xd_request_img(res.tempFilePaths[0]).then(function (res) {
+            if (res) {
+              uni.uploadFile({
+                url: that.xdServerUrls.xd_uploadFile,
+                filePath: tempFilePaths[0],
+                name: 'files',
+                formData: {
+                  'userId': uni.getStorageSync('id') },
+
+                success: function success(uploadFileRes) {
+
+                  that.param.pictures = JSON.parse(uploadFileRes.data).obj[0];
+                  console.log(that.param.pictures);
+                } });
+
+            } else {
+              uni.showToast({
+                title: '内容包含敏感内容',
+                mask: true,
+                duration: 2000 });
+
+
+              return false;
+            }
+          });
+
+
           if (_this.imgList.length != 0) {
             _this.imgList = _this.imgList.concat(res.tempFilePaths);
           } else {
@@ -327,12 +414,31 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function ownKeys(object, enumera
         } });
 
     },
-    onCommit: function onCommit() {
-      console.log(this.userInfo);
-      console.log(this.hasLogin);
+    onCommit: function onCommit() {var _this3 = this;
+      if (!this.hasLogin) {
+        uni.navigateTo({
+          url: '../login/login' });
+
+        return false;
+      }
+      var that = this;
+
+      var userData = {
+        token: '',
+        userId: '' };
+
+      try {
+        userData.token = uni.getStorageSync('token');
+        userData.userId = uni.getStorageSync('id');
+      } catch (e) {
+        //TODO handle the exception
+      }
+
+
+
       var arr = this.form;
       var parm = {
-        rmb: this.rmb, //赞助金
+        rmb: this.rmb.challengeRmb, //赞助金
         sponsorCondition: this.sponsorCondition,
         location: this.imgList.toString(), //活动地址
         discounts: this.discounts, //  抵扣券
@@ -346,10 +452,141 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function ownKeys(object, enumera
         updateTime: new Date() //   更新时间
       };
 
-
       this.xd_request_post(this.xdServerUrls.xd_saveSponsor, parm).then(function (res) {
-        console.log(res);
+        // that.xd_request_post(that.xdServerUrls.xd_savePush,that.saveData,true).then( res=>{
+        if (res.resultCode == 0) {
+          if (res.obj.payWay != 1) {
+            _this3.goPay();
+          } else {
+            uni.showToast({
+              title: '赞助成功',
+              icon: 'success',
+              duration: 2000,
+              success: function success() {
+                uni.setStorageSync('pushData', '');
+                uni.reLaunch({
+                  url: '../index/action/action?pushId=' + res.obj.id });
+
+              } });
+
+          }
+        } else {
+          uni.showToast({
+            title: res.obj,
+            icon: 'none',
+            duration: 3000,
+            success: function success() {
+              return false;
+            } });
+
+        }
       });
+
+
+
+
+    },
+
+    priceRmb: function priceRmb(e) {
+      this.rmb.challengeRmb = e;
+      console.log(this.rmb);
+      // this.formSubmit();
+    },
+
+
+    goPay: function goPay() {var _this4 = this;
+      var that = this;
+      var data = {
+        id: '',
+        userName: '',
+        // userMobile:''
+        token: '',
+        unionId: '',
+        openid: '',
+        city: '',
+        province: '',
+        payRmb: '',
+        pushId: '' };
+
+      var userInfo = {};
+      try {
+        userInfo = uni.getStorageSync('userInfo');
+
+      } catch (e) {
+        //TODO handle the exception
+      };
+      data.id = that.saveData.userId;
+      data.token = that.saveData.token;
+      data.city = userInfo.city;
+      data.userName = userInfo.nickName;
+      data.province = userInfo.province;
+      data.unionId = userInfo.unionId;
+      data.openid = userInfo.openId;
+      data.payRmb = that.mony;
+      data.pushId = that.pushData.obj.id;
+      wx.getSetting({
+        success: function success(res) {
+          if (res.authSetting['scope.userInfo']) {
+            that.xd_request_post(that.xdServerUrls.xd_pay, data, false).then(function (res) {
+              uni.requestPayment({
+                'appId': res.obj.appId,
+                'timeStamp': res.obj.timeStamp,
+                'nonceStr': res.obj.nonceStr,
+                'package': res.obj.packageAlias,
+                'signType': 'MD5',
+                'paySign': res.obj.paySign,
+                success: function success(re) {
+                  uni.showToast({
+                    title: '发布成功',
+                    icon: 'success',
+                    duration: 2000,
+                    success: function success() {
+                      //that.updataPushId();
+                      uni.setStorageSync('pushData', '');
+                      uni.reLaunch({
+                        url: '../index/action/action?pushId=' + that.pushData.obj.id });
+
+                    } });
+
+                },
+                fail: function fail(err) {
+                  // 支付失败的回调中 用户未付款
+                  that.updataPushId();
+                  uni.showModal({
+                    content: '支付取消',
+                    confirmText: '重新填写',
+                    cancelText: '回到首页',
+                    image: '/static/images/icon/clock.png',
+                    success: function success(ress) {
+                      if (ress.confirm) {
+                        uni.setStorageSync('pushData', that.pushData.obj);
+
+                        uni.reLaunch({
+                          url: 'step1' });
+
+                      } else if (ress.cancel) {
+
+                        uni.setStorageSync('pushData', that.pushData.obj);
+                        uni.reLaunch({
+                          url: '../index/index' });
+
+                      }
+                    } });
+
+
+                } });
+
+            });
+          } else {
+            _this4.logOut();
+            uni.navigateTo({
+              url: '../login/login' });
+
+          }
+
+        } });
+
+
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

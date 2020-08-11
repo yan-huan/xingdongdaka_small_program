@@ -183,6 +183,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 var _default =
 {
   name: "actionlist",
@@ -195,6 +197,9 @@ var _default =
   methods: {
     error: function error() {
       this.audioPlaySrc = this.xdUniUtils.xd_randomImg();
+    },
+    gotoSponsor: function gotoSponsor(list, index) {
+      this.$emit('gotoSponsor', list, index);
     },
     lookerClick: function lookerClick(list, index) {
 

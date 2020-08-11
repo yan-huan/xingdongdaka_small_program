@@ -298,6 +298,7 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _toConsumableArray(arr)
     // },2000)
 
   },
+
   onLoad: function onLoad() {
 
     wx.showShareMenu({
@@ -407,6 +408,20 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _toConsumableArray(arr)
       }).catch(function (err) {
       });
       this.getShowRecommend();
+
+    },
+    // 赞助
+    gotoSponsor: function gotoSponsor(list, index) {
+      console.log('gotoSponsor', index, list);
+
+      if (index === 0) {
+        uni.setStorageSync("pushId", list.id);
+        uni.setStorageSync("cardId", list.id);
+        uni.navigateTo({
+          url: 'form' });
+
+      }
+
 
     },
     //围观

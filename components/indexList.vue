@@ -52,8 +52,10 @@
 					<view class="text-xxl" @tap="goComent(list)">
 						<text class="text-gray cuIcon-comment "></text>
 						<text class="text-gray text-df"></text>
+						<button @tap="gotoSponsor(list,index)" class="cu-btn">赞助</button>
 					</view>
 					<view>
+						
 						<button class="cu-btn bg-light-blue sm round" v-if="list.userId==userId"  :id="index" open-type="share">分享邀请</button>
 						<button class="cu-btn bg-orange sm round  " v-else-if="list.onlooker"  :id="index"  open-type="share">为TA打Call</button>
 						<button class="cu-btn bg-green sm round  " v-else-if="list.userId!=userId && !list.onlooker&&list.challengeRmb<=0" :id="index"  @tap="lookerClick(list,index)">围观</button>
@@ -80,6 +82,9 @@
 			error: function() {
 				this.audioPlaySrc=this.xdUniUtils.xd_randomImg();
 			            }  ,
+			gotoSponsor(list,index){
+				this.$emit('gotoSponsor',list,index);
+			},			
 			lookerClick(list,index){
 				
 				this.$emit('lookerClick',list,index);

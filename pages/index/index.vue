@@ -15,7 +15,7 @@
 			<!-- 最新 -->
 			<view class="xd-list-info" :hidden="active == 1||active==2|| active ==3">				
 				<block v-for="(list, index) in listsTab" :key="index" >								
-				  <indexList  :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg'></indexList>
+				  <indexList  @gotoSponsor='gotoSponsor' :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg'></indexList>
 				</block>
 			</view>
 			<!-- 推荐 -->
@@ -61,7 +61,7 @@
 					<view class="xd-line"></view>
 					<!-- 推荐项对应内容 -->					
 					<block v-for="(list, index) in listsTab" :key="index" >								
-					  <indexList id="indexList" :list="list" :index="index" v-on:loveclick='loveClick' v-on:lookerClick="lookerClick" :hasLogin="hasLogin" :userId='userId' :inimg='inimg' ></indexList>
+					  <indexList id="indexList" :list="list" :index="index" @gotoSponsor='gotoSponsor' v-on:loveclick='loveClick' v-on:lookerClick="lookerClick" :hasLogin="hasLogin" :userId='userId' :inimg='inimg' ></indexList>
 					</block>
 				</view>
 			</view>
@@ -166,6 +166,7 @@
 			// },2000)
 			 
 		},
+		
 		onLoad() {
 			//#ifdef MP-WEIXIN
 			wx.showShareMenu({
@@ -275,6 +276,20 @@
 														   }).catch(err => {									
 													});
 													this.getShowRecommend();
+				
+			},
+			// 赞助
+			gotoSponsor(list,index){
+				console.log('gotoSponsor',index,list)
+				
+				if(index === 0){
+					uni.setStorageSync("pushId",list.id);
+					uni.setStorageSync("cardId",list.id);
+					uni.navigateTo({
+						url:'form'
+					})
+				}
+					
 				
 			},
 			//围观
