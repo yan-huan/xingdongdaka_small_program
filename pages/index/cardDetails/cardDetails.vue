@@ -161,12 +161,7 @@
 		onShareAppMessage(res) {
 			
 			let that = this;
-			if(!that.hasLogin){
-				uni.navigateTo({
-					url: '../../login/login' 
-				});
-				return false;
-			}
+			that.xdUniUtils.xd_login(that.hasLogin);
 			let text=that.pusCardLists.userId==that.userId? '第'+that.dakacishu+'次打卡:'+that.pusCardLists.pushCardList[0].content:'我为@'+that.pusCardLists.userName+'打Call：'+that.pusCardLists.pushCardList[0].content;
 			let pathText='/pages/index/action/action?pushId='+ that.pusCardLists.id+'&share='+that.id+'&isopen='+that.pusCardLists.isopen;
 			let  img=that.showCardCommentlist.pushCard.pictures[0]?that.showCardCommentlist.pushCard.pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png';
@@ -211,12 +206,7 @@
 			
 			lookerClick:function(list){
 				var that=this ;
-				if(!that.hasLogin){
-					uni.navigateTo({
-						url: '../login/login' 
-					});
-					return false;
-				}
+				that.xdUniUtils.xd_login(that.hasLogin);
 				that.userId=uni.getStorageSync('id');
 				that.xd_request_post(that.xdServerUrls.xd_saveLooker,{
 					
@@ -274,13 +264,7 @@
 					   })
 			},
 			goUser(e){
-				
-				if(!this.hasLogin){
-					uni.navigateTo({
-						url: '../../login/login' 
-					});
-					return false;
-				}
+				this.xdUniUtils.xd_login(this.hasLogin);
 				uni.navigateTo({
 					url:'../../selfCenter/selfView?userId='+e
 				})
@@ -400,12 +384,7 @@
 				this.value=e.detail.value;
 			},
 			showInputComent(){
-				if(!this.hasLogin){
-					uni.navigateTo({
-						url: '../../login/login' 
-					});
-					return false;
-				}
+				this.xdUniUtils.xd_login(this.hasLogin);
 				this.showInput=!this.showInput;
 				this.inputType=2;
 				this.conmmmenttext='请输入评论内容'

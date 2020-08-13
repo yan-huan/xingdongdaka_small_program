@@ -211,13 +211,7 @@ export default {
 			let token='';
 			let id='';
 			let that=this;
-			if(!that.hasLogin){
-				uni.redirectTo
-					({
-					url: '../login/login' 
-				});
-				return false;
-			}
+			that.xdUniUtils.xd_login(that.hasLogin);
 			try{
 				token=uni.getStorageSync('token');
 				id=uni.getStorageSync('id');
@@ -249,6 +243,7 @@ export default {
 						pageSize:10,
 					},
 					true).then(res=>{
+						
 						that.lookerList=res.obj.list;
 						that.nextPageTwo=res.obj.nextPage;
 						that.looktotal=res.obj.total;
@@ -391,6 +386,7 @@ export default {
 	},
 	onPullDownRefresh() {
 		this.inDada(this.tab);
+		uni.stopPullDownRefresh();
 	},
 	components:{
 		actionlist

@@ -80,12 +80,7 @@
 		},
 
 		onLoad() {
-			if (!this.hasLogin) {
-				uni.redirectTo({
-					url: '../login/login'
-				});
-				return false;
-			};
+			this.xdUniUtils.xd_login(this.hasLogin,true);
 			this.onToOff();
 			
 		},
@@ -159,12 +154,7 @@
 			},
 		   lookerCountData: function(list) {
 				var that = this;
-				if (!that.hasLogin) {
-					uni.navigateTo({
-						url: '../login/login'
-					});
-					return false;
-				}
+				that.xdUniUtils.xd_login(that.hasLogin);
 				that.userId = uni.getStorageSync('id');
 				that.xd_request_post(that.xdServerUrls.xd_getLookerCountByUserId, {
 					userId: that.userId

@@ -99,7 +99,7 @@
 				</view>
 				 
 			</view>
-			<view class=" flex flex-wrap padding solid-top align-center" v-if="switchB==1">
+			<view class=" flex flex-wrap padding solid-top align-center pading-time" v-if="switchB==1">
 				<view class="title margin-left-xs">选择提现时间</view>
 				<view class="flex flex-wrap  bg-gray radius align-center card-time-left ">
 					<picker mode="time" class="data-time-left-whint" @change="bindTimeChange"   >
@@ -298,6 +298,16 @@ export default {
 				});
 				return false
 			};
+			
+			if(this.targetDay==0||this.targetDay==''){
+				uni.showToast({
+				    title: '计划天数不能为0或不填',
+					mask:true,
+				    duration: 2000,
+					icon:'none'
+				});
+				return false
+			};
 			if(e.detail.value.label==''){
 				
 				e.detail.value.label=1;
@@ -309,7 +319,7 @@ export default {
 			e.detail.value.isopen=this.switchA;
 			e.detail.value.subscribeType=this.switchB;
 			e.detail.value.targetDay=this.targetDay;
-			e.detail.value.holidayDay=this.holidayDay;
+			e.detail.value.holidayDay=this.holidayDay==''?0:this.holidayDay;
 			e.detail.value.pictures= this.param.pictures;
 			this.xdUniUtils.xd_request_text({content:e.detail.value}).then(res=>{
 				if(res.obj.errcode==0){
@@ -405,7 +415,7 @@ export default {
 	width: 115upx;
 }
 .btn_bar{
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	width: 100%;
 	margin-bottom: 10upx;
@@ -415,5 +425,8 @@ export default {
 }
 .data-time-left-whint{
 	width: 115upx;
+}
+.pading-time{
+	margin-bottom: 20%;
 }
 </style>

@@ -208,12 +208,7 @@ export default {
 			this.audioPlaySrc=this.xdUniUtils.xd_randomImg();
 		            }  ,
 		getpushList(){
-						 if(!uni.getStorageSync('token')){
-						 	uni.navigateTo({
-						 		url: '../../login/login' 
-						 	});
-							return false
-						 }
+			this.xdUniUtils.xd_login(this.hasLogin);
 			this.xd_request_post(this.xdServerUrls.xd_pushDataByPushId,{
 				            pushId:this.pushId,
 							isShare:this.isShare,
@@ -236,12 +231,7 @@ export default {
 		},
 		submitFrom(e){
 			var end=undefined;
-			if(!this.hasLogin){
-				uni.navigateTo({
-					url: '../login/login' 
-				});
-				return false;
-			}
+			this.xdUniUtils.xd_login(this.hasLogin);
 			if(e.detail.value.content==''){
 				uni.showToast({
 				    title: '打卡不能为空',

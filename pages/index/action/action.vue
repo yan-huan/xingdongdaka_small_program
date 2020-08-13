@@ -32,7 +32,7 @@
 									已达成天数：{{pushList.pushCardCount}}/{{pushList.targetDay}}
 								</view>
 								<view class="margin-left-sm"> 
-								    可休假天数：{{pushList.holidayDay}}天
+								    可休假天数：{{pushList.kholidayDay}}/{{pushList.holidayDay}}
 								</view>
 							</view>
 						</view>
@@ -273,7 +273,7 @@
 				}else{
 					uni.showModal({
 						 content: '是否要创建相同行动项',
-						 // confirmText: '新建',
+						 confirmText: '新建',
 						 success: (res) => {
 						   if (res.confirm) {
 							   uni.setStorageSync('pushData',this.pushList)
