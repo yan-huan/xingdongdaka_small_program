@@ -282,13 +282,13 @@
 			gotoSponsor(list,index){
 				console.log('gotoSponsor',index,list)
 				
-				if(index === 0){
-					uni.setStorageSync("pushId",list.id);
-					uni.setStorageSync("cardId",list.id);
-					uni.navigateTo({
-						url:'form'
-					})
-				}
+				
+				uni.setStorageSync("pushId",list.id);
+				uni.setStorageSync("cardId",list.pushCardList[0].id);
+				uni.navigateTo({
+					url:'../sponsor/form'
+				})
+				
 					
 				
 			},

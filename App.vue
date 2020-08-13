@@ -1,8 +1,8 @@
 <!-- xiaofang:20191226 -->
 <script>
 	import Vue from 'vue'
-	// import xdConfig from '@/common/xdConfig.js'; // 系统配置
-	// import xdServerUrls from '@/common/xdServerUrls.js'; // 服务 url
+	import xdConfig from '@/common/xdConfig.js'; // 系统配置
+	import xdServerUrls from '@/common/xdServerUrls.js'; // 服务 url
 	export default {
 		
 		onLaunch: function() {

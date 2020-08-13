@@ -862,6 +862,11 @@ function initProperties(props) {var isBehavior = arguments.length > 1 && argumen
       type: String,
       value: '' };
 
+    // 用于字节跳动小程序模拟抽象节点
+    properties.generic = {
+      type: Object,
+      value: null };
+
     properties.vueSlots = { // 小程序不能直接定义 $slots 的 props，所以通过 vueSlots 转换到 $slots
       type: null,
       value: [],
@@ -1160,14 +1165,17 @@ function handleEvent(event) {var _this = this;
             }
             handler.once = true;
           }
-          ret.push(handler.apply(handlerCtx, processEventArgs(
+          var params = processEventArgs(
           _this.$vm,
           event,
           eventArray[1],
           eventArray[2],
           isCustom,
-          methodName)));
-
+          methodName) ||
+          [];
+          // 参数尾部增加原始事件对象用于复杂表达式内获取额外数据
+          // eslint-disable-next-line no-sparse-arrays
+          ret.push(handler.apply(handlerCtx, params.concat([,,,,,,,,,, event])));
         }
       });
     }
@@ -7515,7 +7523,7 @@ function internalMixin(Vue) {
   };
 
   Vue.prototype.__map = function(val, iteratee) {
-    //TODO 暂不考虑 string,number
+    //TODO 暂不考虑 string
     var ret, i, l, keys, key;
     if (Array.isArray(val)) {
       ret = new Array(val.length);
@@ -7529,6 +7537,13 @@ function internalMixin(Vue) {
       for (i = 0, l = keys.length; i < l; i++) {
         key = keys[i];
         ret[key] = iteratee(val[key], key, i);
+      }
+      return ret
+    } else if (typeof val === 'number') {
+      ret = new Array(val);
+      for (i = 0, l = val; i < l; i++) {
+        // 第一个参数暂时仍和小程序一致
+        ret[i] = iteratee(i, i);
       }
       return ret
     }
@@ -7657,9 +7672,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!************************************************************!*\
-  !*** /Users/wangyao/Desktop/TS/xingdongdaka-ui/pages.json ***!
-  \************************************************************/
+/*!*********************************************************!*\
+  !*** /Users/wangyao/Desktop/xingdongdaka-ui/pages.json ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8660,13 +8675,13 @@ main();
 /*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, author, bugs, bundleDependencies, deprecated, description, devDependencies, files, gitHead, homepage, license, main, name, repository, scripts, version, default */
 /***/ (function(module) {
 
-module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.0.0-28320200727001","_inBundle":false,"_integrity":"sha512-WE4UMWPIpO02wlx1vmnsXpMCFjWfiCe1RaWiKb/UamN44zdvDHcxJZqLBkEWQcL/GjdH80nCL5+wW2QWFlgUWQ==","_location":"/@dcloudio/uni-stat","_phantomChildren":{},"_requested":{"type":"tag","registry":true,"raw":"@dcloudio/uni-stat@next","name":"@dcloudio/uni-stat","escapedName":"@dcloudio%2funi-stat","scope":"@dcloudio","rawSpec":"next","saveSpec":null,"fetchSpec":"next"},"_requiredBy":["#USER","/","/@dcloudio/vue-cli-plugin-uni"],"_resolved":"https://registry.npmjs.org/@dcloudio/uni-stat/-/uni-stat-2.0.0-28320200727001.tgz","_shasum":"1758c35abbba9a3c3951d5b4815491d064048a3b","_spec":"@dcloudio/uni-stat@next","_where":"/Users/guoshengqiang/Documents/dcloud-plugins/release/uniapp-cli","author":"","bugs":{"url":"https://github.com/dcloudio/uni-app/issues"},"bundleDependencies":false,"deprecated":false,"description":"","devDependencies":{"@babel/core":"^7.5.5","@babel/preset-env":"^7.5.5","eslint":"^6.1.0","rollup":"^1.19.3","rollup-plugin-babel":"^4.3.3","rollup-plugin-clear":"^2.0.7","rollup-plugin-commonjs":"^10.0.2","rollup-plugin-copy":"^3.1.0","rollup-plugin-eslint":"^7.0.0","rollup-plugin-json":"^4.0.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-replace":"^2.2.0","rollup-plugin-uglify":"^6.0.2"},"files":["dist","package.json","LICENSE"],"gitHead":"9b36bd8bc013ae87dffe654d0567c51fb332d629","homepage":"https://github.com/dcloudio/uni-app#readme","license":"Apache-2.0","main":"dist/index.js","name":"@dcloudio/uni-stat","repository":{"type":"git","url":"git+https://github.com/dcloudio/uni-app.git","directory":"packages/uni-stat"},"scripts":{"build":"NODE_ENV=production rollup -c rollup.config.js","dev":"NODE_ENV=development rollup -w -c rollup.config.js"},"version":"2.0.0-28320200727001"};
+module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.0.0-28520200811001","_inBundle":false,"_integrity":"sha512-0TZgJKxlo/moPWG88c45+euPZmtI8MZcpVUpB7eM3wTaxg9qF8Cx0KCNVtMTPKJC4sNIUZPX6c8d9iEP+LKY1w==","_location":"/@dcloudio/uni-stat","_phantomChildren":{},"_requested":{"type":"tag","registry":true,"raw":"@dcloudio/uni-stat@next","name":"@dcloudio/uni-stat","escapedName":"@dcloudio%2funi-stat","scope":"@dcloudio","rawSpec":"next","saveSpec":null,"fetchSpec":"next"},"_requiredBy":["#USER","/","/@dcloudio/vue-cli-plugin-uni"],"_resolved":"https://registry.npmjs.org/@dcloudio/uni-stat/-/uni-stat-2.0.0-28520200811001.tgz","_shasum":"86888b5978bb4dbff593152393f97b416c8e3972","_spec":"@dcloudio/uni-stat@next","_where":"/Users/guoshengqiang/Documents/dcloud-plugins/release/uniapp-cli","author":"","bugs":{"url":"https://github.com/dcloudio/uni-app/issues"},"bundleDependencies":false,"deprecated":false,"description":"","devDependencies":{"@babel/core":"^7.5.5","@babel/preset-env":"^7.5.5","eslint":"^6.1.0","rollup":"^1.19.3","rollup-plugin-babel":"^4.3.3","rollup-plugin-clear":"^2.0.7","rollup-plugin-commonjs":"^10.0.2","rollup-plugin-copy":"^3.1.0","rollup-plugin-eslint":"^7.0.0","rollup-plugin-json":"^4.0.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-replace":"^2.2.0","rollup-plugin-uglify":"^6.0.2"},"files":["dist","package.json","LICENSE"],"gitHead":"1e18bad9641bfcbf2264fa7a2365f93294ac9d2a","homepage":"https://github.com/dcloudio/uni-app#readme","license":"Apache-2.0","main":"dist/index.js","name":"@dcloudio/uni-stat","repository":{"type":"git","url":"git+https://github.com/dcloudio/uni-app.git","directory":"packages/uni-stat"},"scripts":{"build":"NODE_ENV=production rollup -c rollup.config.js","dev":"NODE_ENV=development rollup -w -c rollup.config.js"},"version":"2.0.0-28520200811001"};
 
 /***/ }),
 /* 7 */
-/*!****************************************************************************!*\
-  !*** /Users/wangyao/Desktop/TS/xingdongdaka-ui/pages.json?{"type":"stat"} ***!
-  \****************************************************************************/
+/*!*************************************************************************!*\
+  !*** /Users/wangyao/Desktop/xingdongdaka-ui/pages.json?{"type":"stat"} ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8675,9 +8690,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 /* 8 */
-/*!*****************************************************************************!*\
-  !*** /Users/wangyao/Desktop/TS/xingdongdaka-ui/pages.json?{"type":"style"} ***!
-  \*****************************************************************************/
+/*!**************************************************************************!*\
+  !*** /Users/wangyao/Desktop/xingdongdaka-ui/pages.json?{"type":"style"} ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8688,9 +8703,144 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 9 */,
 /* 10 */,
 /* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
+/* 12 */
+/*!*****************************************************************!*\
+  !*** /Users/wangyao/Desktop/xingdongdaka-ui/common/xdConfig.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = exports.env = void 0; // 获取当前小程序信息（要求小程序版本2.10.0）
+var accountInfo = uni.getAccountInfoSync();
+// env类型
+var env = accountInfo.miniProgram.envVersion;exports.env = env;
+uni.setStorageSync("env", env);
+var baseApi = {
+  // 开发版
+  develop: "http://testxingdongdaka.zhidashixun.com",
+  // 体验版
+  trial: "http://testxingdongdaka.zhidashixun.com",
+  // 正式版
+  release: "https://xingdongdaka.zhidashixun.com" };
+
+// 系统配置
+var appConfig = {
+  enableDebug: true, // 设置是否打开调试开关。此开关对正式版也能生效。
+  // server 配置
+  serverIp: baseApi[env] // server IP
+};var _default =
+
+{
+  appConfig: appConfig };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+/* 13 */
+/*!*********************************************************************!*\
+  !*** /Users/wangyao/Desktop/xingdongdaka-ui/common/xdServerUrls.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+var _xdConfig = _interopRequireDefault(__webpack_require__(/*! ./xdConfig.js */ 12));var _serverUrls;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+var config = _xdConfig.default.appConfig; // 配置
+
+var serverBaseUrl = config.serverIp; //动态根据小程序类型自动获取接口地址
+var serverUrls = (_serverUrls = { //根据接口具体配置
+  xd_register: serverBaseUrl + '/xxx', // 注册
+  xd_login: serverBaseUrl + '/xxx', // 登录
+  xd_logout: serverBaseUrl + '/xxx',
+  xd_change_pass: serverBaseUrl + '/xxxxx', // 修改密码
+
+  xd_bannerList: serverBaseUrl + '/banner/bannerList', // banner广告
+  xd_label: serverBaseUrl + '/label/getLabels', //标签
+  xd_getLabelsById: serverBaseUrl + '/label/getLabelsById', //通过标签id获取标签信息
+  xd_tacitlyPushPng: serverBaseUrl + '/publishTarget/tacitlyPushPng', //标签
+
+  xd_saveCardReplayComment: serverBaseUrl + '/cardReplayComment/saveCardReplayComment', //保存打卡回复评论
+  xd_saveCardComment: serverBaseUrl + '/cardComment/saveCardComment', //保存打卡评论
+  xd_showCardComment: serverBaseUrl + '/cardComment/showCardCommentAndReplayCommtent', //评论和回复的展现
+  xd_showUserCardCommentAndReplayCommtent: serverBaseUrl + '/cardComment/showUserCardCommentAndReplayCommtent', //通过用户id查询所有打卡详情、评论及评论回复
+
+  xd_saveGiveLikeByPush: serverBaseUrl + '/giveLike/saveGiveLikeByPush', //给行动项或打卡记录点赞
+  xd_iSAttention: serverBaseUrl + '/attention/iSAttention', //判断该用户是否已经关注了
+  xd_getAttentionList: serverBaseUrl + '/attention/getAttentionList', //获取关注列表
+  xd_getFansList: serverBaseUrl + '/attention/getFansList', //获取粉丝列表
+  xd_saveAttention: serverBaseUrl + '/attention/saveAttention', //保存关注
+  xd_getLookerCountByUserId: serverBaseUrl + '/attention/getLookerCountByUserId', //根据用户id获取关注数量和粉丝数量
+
+  xd_lookerPushListByUserId: serverBaseUrl + '/publishTarget/lookerPushListByUserId', //当前用户围观的行动项计划
+  xd_pushByCreateTimeList: serverBaseUrl + '/publishTarget/pushByCreateTimeList', //根据创建时间获取目标列表
+  xd_pushByHighGradeList: serverBaseUrl + '/publishTarget/pushByHighGradeList', //根据点赞数获取目标列表
+  xd_pushByUserIdList: serverBaseUrl + '/publishTarget/pushByUserIdList', //根据用户id获取目标列表
+  xd_savePush: serverBaseUrl + '/publishTarget/savePush', //保存发起的目标
+  xd_pushByLabel: serverBaseUrl + '/publishTarget/pushByLabel', //根据标签获取行动项列表
+
+  xd_uploadFile: serverBaseUrl + '/uploadFile/saveFiles', //上传图片
+
+  xd_getLookerByPushId: serverBaseUrl + '/looker/getLookerByPushId', //根据行动项id查看围观人
+  xd_saveLooker: serverBaseUrl + '/looker/saveLooker', //保存围观信息
+  xd_getLookerByUserId: serverBaseUrl + '/looker/getLookerByUserId', //根据用户id获取围观数据
+  xd_getLookerCountInfoByPushIdAndUserId: serverBaseUrl + '/looker/getLookerCountInfoByPushIdAndUserId', //根据行动项id和围观用户id查看点击数详情
+
+  xd_wechatCommercialTenant: serverBaseUrl + '/wechatCommercialTenant/pay', //微信商户给用户付款pay
+  xd_decodeUserInfo: serverBaseUrl + '/wechat/decodeUserInfo', //获取微信的openid和unionid
+  xd_pay: serverBaseUrl + '/wechat/pay', //pay
+  xd_resultCallBack: serverBaseUrl + '/wechat/resultCallBack', //decodeUserInfo
+
+  xd_generalPay: serverBaseUrl + '/generalWechat/pay', //通用微信支付 pay
+
+
+  xd_getImgIsNormal: serverBaseUrl + '/login/getImgIsNormal', //图片是否正常
+  xd_modifyUserInfo: serverBaseUrl + '/login/modifyUserInfo', //修改用户的基础信息
+  xd_weiXinLogin: serverBaseUrl + '/login/weiXinLogin', //微信登陆接口
+  xd_getUserInfoByUserId: serverBaseUrl + '/login/getUserInfoByUserId', //根据用户id获取用户信息
+  // GET /login/getAccessToken 获取token
+  // GET /login/getContentIsNormal 内容是否正常
+
+  xd_saveReplayComment: serverBaseUrl + '/replayPushComment/saveReplayComment', //行动项回复评论
+  xd_saveComment: serverBaseUrl + '/pushComment/saveComment', //保存行动项评论
+  xd_showCommentAndReplayCommtent: serverBaseUrl + '/pushComment/showCommentAndReplayCommtent', //评论和回复的展现
+
+  xd_savePushCard: serverBaseUrl + '/publishCard/savePushCard', //保存打卡记录
+  xd_pushCardListByPushId: serverBaseUrl + '/publishCard/pushCardListByPushId', //根据行动项id获取打卡列表
+
+  xd_pushDataByPushId: serverBaseUrl + '/publishTarget/pushDataByPushId' }, _defineProperty(_serverUrls, "xd_getUserInfoByUserId",
+serverBaseUrl + '/login/getUserInfoByUserId'), _defineProperty(_serverUrls, "xd_updatePushDataByPushId",
+serverBaseUrl + '/publishTarget/updatePushDataByPushId'), _defineProperty(_serverUrls, "xd_getContentIsNormal",
+
+serverBaseUrl + '/login/getContentIsNormal'), _defineProperty(_serverUrls, "xd_getImgIsNormal",
+serverBaseUrl + '/login/getImgIsNormal'), _defineProperty(_serverUrls, "xd_searchPushData",
+serverBaseUrl + '/publishTarget/searchPushData'), _defineProperty(_serverUrls, "xd_onOff",
+
+serverBaseUrl + '/config/onOff'), _defineProperty(_serverUrls, "xd_delPushDataByPushId",
+serverBaseUrl + '/publishTarget/delPushDataByPushId'), _defineProperty(_serverUrls, "xd_saveShareInfo",
+serverBaseUrl + '/share/saveShareInfo'), _defineProperty(_serverUrls, "xd_getLookerByPushId",
+serverBaseUrl + '/looker/getLookerByPushId'), _defineProperty(_serverUrls, "xd_savefeedbackInfo",
+
+serverBaseUrl + '/feedback/savefeedbackInfo'), _defineProperty(_serverUrls, "xd_balanceOrderQuery",
+
+serverBaseUrl + '/balance/balanceOrderQuery'), _defineProperty(_serverUrls, "xd_balanceWithdrawal",
+serverBaseUrl + '/balance/balanceWithdrawal'), _defineProperty(_serverUrls, "xd_topUpBalance",
+serverBaseUrl + '/balance/topUpBalance'), _defineProperty(_serverUrls, "xd_inquireBalance",
+serverBaseUrl + '/balance/inquireBalance'), _defineProperty(_serverUrls, "xd_selectBurieStatistics",
+serverBaseUrl + '/burie/selectBurieStatistics'), _defineProperty(_serverUrls, "xd_updateBurieStatistics",
+serverBaseUrl + '/burie/updateBurieStatistics'), _defineProperty(_serverUrls, "xd_saveSponsor",
+
+serverBaseUrl + '/sponsor/save'), _serverUrls);var _default =
+
+
+{
+  serverUrls: serverUrls,
+  serverBaseUrl: serverBaseUrl };exports.default = _default;
+
+/***/ }),
+/* 14 */,
+/* 15 */,
+/* 16 */
 /*!**********************************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
   \**********************************************************************************************************/
@@ -8818,16 +8968,16 @@ function normalizeComponent (
 
 
 /***/ }),
-/* 15 */
-/*!****************************************************************!*\
-  !*** /Users/wangyao/Desktop/TS/xingdongdaka-ui/store/index.js ***!
-  \****************************************************************/
+/* 17 */
+/*!*************************************************************!*\
+  !*** /Users/wangyao/Desktop/xingdongdaka-ui/store/index.js ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 _vue.default.use(_vuex.default);
 
 var store = new _vuex.default.Store({
@@ -8866,7 +9016,7 @@ store;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 16 */
+/* 18 */
 /*!********************************************!*\
   !*** ./node_modules/vuex/dist/vuex.esm.js ***!
   \********************************************/
@@ -9816,142 +9966,10 @@ var index_esm = {
 
 
 /***/ }),
-/* 17 */
-/*!************************************************************************!*\
-  !*** /Users/wangyao/Desktop/TS/xingdongdaka-ui/common/xdServerUrls.js ***!
-  \************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
-var _xdConfig = _interopRequireDefault(__webpack_require__(/*! ./xdConfig.js */ 18));var _serverUrls;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-var config = _xdConfig.default.appConfig; // 配置
-
-var serverBaseUrl = config.serverIp; //动态根据小程序类型自动获取接口地址
-var serverUrls = (_serverUrls = { //根据接口具体配置
-  xd_register: serverBaseUrl + '/xxx', // 注册
-  xd_login: serverBaseUrl + '/xxx', // 登录
-  xd_logout: serverBaseUrl + '/xxx',
-  xd_change_pass: serverBaseUrl + '/xxxxx', // 修改密码
-
-  xd_bannerList: serverBaseUrl + '/banner/bannerList', // banner广告
-  xd_label: serverBaseUrl + '/label/getLabels', //标签
-  xd_getLabelsById: serverBaseUrl + '/label/getLabelsById', //通过标签id获取标签信息
-  xd_tacitlyPushPng: serverBaseUrl + '/publishTarget/tacitlyPushPng', //标签
-
-  xd_saveCardReplayComment: serverBaseUrl + '/cardReplayComment/saveCardReplayComment', //保存打卡回复评论
-  xd_saveCardComment: serverBaseUrl + '/cardComment/saveCardComment', //保存打卡评论
-  xd_showCardComment: serverBaseUrl + '/cardComment/showCardCommentAndReplayCommtent', //评论和回复的展现
-  xd_showUserCardCommentAndReplayCommtent: serverBaseUrl + '/cardComment/showUserCardCommentAndReplayCommtent', //通过用户id查询所有打卡详情、评论及评论回复
-
-  xd_saveGiveLikeByPush: serverBaseUrl + '/giveLike/saveGiveLikeByPush', //给行动项或打卡记录点赞
-  xd_iSAttention: serverBaseUrl + '/attention/iSAttention', //判断该用户是否已经关注了
-  xd_getAttentionList: serverBaseUrl + '/attention/getAttentionList', //获取关注列表
-  xd_getFansList: serverBaseUrl + '/attention/getFansList', //获取粉丝列表
-  xd_saveAttention: serverBaseUrl + '/attention/saveAttention', //保存关注
-  xd_getLookerCountByUserId: serverBaseUrl + '/attention/getLookerCountByUserId', //根据用户id获取关注数量和粉丝数量
-
-  xd_lookerPushListByUserId: serverBaseUrl + '/publishTarget/lookerPushListByUserId', //当前用户围观的行动项计划
-  xd_pushByCreateTimeList: serverBaseUrl + '/publishTarget/pushByCreateTimeList', //根据创建时间获取目标列表
-  xd_pushByHighGradeList: serverBaseUrl + '/publishTarget/pushByHighGradeList', //根据点赞数获取目标列表
-  xd_pushByUserIdList: serverBaseUrl + '/publishTarget/pushByUserIdList', //根据用户id获取目标列表
-  xd_savePush: serverBaseUrl + '/publishTarget/savePush', //保存发起的目标
-  xd_pushByLabel: serverBaseUrl + '/publishTarget/pushByLabel', //根据标签获取行动项列表
-
-  xd_uploadFile: serverBaseUrl + '/uploadFile/saveFiles', //上传图片
-
-  xd_getLookerByPushId: serverBaseUrl + '/looker/getLookerByPushId', //根据行动项id查看围观人
-  xd_saveLooker: serverBaseUrl + '/looker/saveLooker', //保存围观信息
-  xd_getLookerByUserId: serverBaseUrl + '/looker/getLookerByUserId', //根据用户id获取围观数据
-  xd_getLookerCountInfoByPushIdAndUserId: serverBaseUrl + '/looker/getLookerCountInfoByPushIdAndUserId', //根据行动项id和围观用户id查看点击数详情
-
-  xd_wechatCommercialTenant: serverBaseUrl + '/wechatCommercialTenant/pay', //微信商户给用户付款pay
-  xd_decodeUserInfo: serverBaseUrl + '/wechat/decodeUserInfo', //获取微信的openid和unionid
-  xd_pay: serverBaseUrl + '/wechat/pay', //pay
-  xd_resultCallBack: serverBaseUrl + '/wechat/resultCallBack', //decodeUserInfo
-
-  xd_getImgIsNormal: serverBaseUrl + '/login/getImgIsNormal', //图片是否正常
-  xd_modifyUserInfo: serverBaseUrl + '/login/modifyUserInfo', //修改用户的基础信息
-  xd_weiXinLogin: serverBaseUrl + '/login/weiXinLogin', //微信登陆接口
-  xd_getUserInfoByUserId: serverBaseUrl + '/login/getUserInfoByUserId', //根据用户id获取用户信息
-  // GET /login/getAccessToken 获取token
-  // GET /login/getContentIsNormal 内容是否正常
-
-  xd_saveReplayComment: serverBaseUrl + '/replayPushComment/saveReplayComment', //行动项回复评论
-  xd_saveComment: serverBaseUrl + '/pushComment/saveComment', //保存行动项评论
-  xd_showCommentAndReplayCommtent: serverBaseUrl + '/pushComment/showCommentAndReplayCommtent', //评论和回复的展现
-
-  xd_savePushCard: serverBaseUrl + '/publishCard/savePushCard', //保存打卡记录
-  xd_pushCardListByPushId: serverBaseUrl + '/publishCard/pushCardListByPushId', //根据行动项id获取打卡列表
-
-  xd_pushDataByPushId: serverBaseUrl + '/publishTarget/pushDataByPushId' }, _defineProperty(_serverUrls, "xd_getUserInfoByUserId",
-serverBaseUrl + '/login/getUserInfoByUserId'), _defineProperty(_serverUrls, "xd_updatePushDataByPushId",
-serverBaseUrl + '/publishTarget/updatePushDataByPushId'), _defineProperty(_serverUrls, "xd_getContentIsNormal",
-
-serverBaseUrl + '/login/getContentIsNormal'), _defineProperty(_serverUrls, "xd_getImgIsNormal",
-serverBaseUrl + '/login/getImgIsNormal'), _defineProperty(_serverUrls, "xd_searchPushData",
-serverBaseUrl + '/publishTarget/searchPushData'), _defineProperty(_serverUrls, "xd_onOff",
-
-serverBaseUrl + '/config/onOff'), _defineProperty(_serverUrls, "xd_delPushDataByPushId",
-serverBaseUrl + '/publishTarget/delPushDataByPushId'), _defineProperty(_serverUrls, "xd_saveShareInfo",
-serverBaseUrl + '/share/saveShareInfo'), _defineProperty(_serverUrls, "xd_getLookerByPushId",
-serverBaseUrl + '/looker/getLookerByPushId'), _defineProperty(_serverUrls, "xd_savefeedbackInfo",
-
-serverBaseUrl + '/feedback/savefeedbackInfo'), _defineProperty(_serverUrls, "xd_balanceOrderQuery",
-
-serverBaseUrl + '/balance/balanceOrderQuery'), _defineProperty(_serverUrls, "xd_balanceWithdrawal",
-serverBaseUrl + '/balance/balanceWithdrawal'), _defineProperty(_serverUrls, "xd_topUpBalance",
-serverBaseUrl + '/balance/topUpBalance'), _defineProperty(_serverUrls, "xd_inquireBalance",
-serverBaseUrl + '/balance/inquireBalance'), _defineProperty(_serverUrls, "xd_selectBurieStatistics",
-serverBaseUrl + '/burie/selectBurieStatistics'), _defineProperty(_serverUrls, "xd_updateBurieStatistics",
-serverBaseUrl + '/burie/updateBurieStatistics'), _defineProperty(_serverUrls, "xd_saveSponsor",
-
-serverBaseUrl + '/sponsor/save'), _serverUrls);var _default =
-
-
-{
-  serverUrls: serverUrls,
-  serverBaseUrl: serverBaseUrl };exports.default = _default;
-
-/***/ }),
-/* 18 */
-/*!********************************************************************!*\
-  !*** /Users/wangyao/Desktop/TS/xingdongdaka-ui/common/xdConfig.js ***!
-  \********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = exports.env = void 0; // 获取当前小程序信息（要求小程序版本2.10.0）
-var accountInfo = uni.getAccountInfoSync();
-// env类型
-var env = accountInfo.miniProgram.envVersion;exports.env = env;
-uni.setStorageSync("env", env);
-var baseApi = {
-  // 开发版
-  develop: "http://testxingdongdaka.zhidashixun.com",
-  // 体验版
-  trial: "http://testxingdongdaka.zhidashixun.com",
-  // 正式版
-  release: "https://xingdongdaka.zhidashixun.com" };
-
-// 系统配置
-var appConfig = {
-  enableDebug: true, // 设置是否打开调试开关。此开关对正式版也能生效。
-  // server 配置
-  serverIp: baseApi[env] // server IP
-};var _default =
-
-{
-  appConfig: appConfig };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
 /* 19 */
-/*!**********************************************************************!*\
-  !*** /Users/wangyao/Desktop/TS/xingdongdaka-ui/common/xdUniUtils.js ***!
-  \**********************************************************************/
+/*!*******************************************************************!*\
+  !*** /Users/wangyao/Desktop/xingdongdaka-ui/common/xdUniUtils.js ***!
+  \*******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10358,9 +10376,9 @@ var updateNumber = function updateNumber(gnumber) {
 
 /***/ }),
 /* 20 */
-/*!********************************************************************!*\
-  !*** /Users/wangyao/Desktop/TS/xingdongdaka-ui/common/xdCommon.js ***!
-  \********************************************************************/
+/*!*****************************************************************!*\
+  !*** /Users/wangyao/Desktop/xingdongdaka-ui/common/xdCommon.js ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10397,9 +10415,9 @@ var gzsm_wxfk = "说明：\r\n达成则原额退回。否则将全额扣除，�
 /* 36 */,
 /* 37 */,
 /* 38 */
-/*!*****************************************************************************!*\
-  !*** /Users/wangyao/Desktop/TS/xingdongdaka-ui/static/images/icon/left.png ***!
-  \*****************************************************************************/
+/*!**************************************************************************!*\
+  !*** /Users/wangyao/Desktop/xingdongdaka-ui/static/images/icon/left.png ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -10407,9 +10425,9 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABX
 
 /***/ }),
 /* 39 */
-/*!******************************************************************************!*\
-  !*** /Users/wangyao/Desktop/TS/xingdongdaka-ui/static/images/icon/right.png ***!
-  \******************************************************************************/
+/*!***************************************************************************!*\
+  !*** /Users/wangyao/Desktop/xingdongdaka-ui/static/images/icon/right.png ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 

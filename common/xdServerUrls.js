@@ -44,6 +44,9 @@ const serverUrls = { //根据接口具体配置
 	xd_decodeUserInfo: serverBaseUrl + '/wechat/decodeUserInfo' ,//获取微信的openid和unionid
 	xd_pay: serverBaseUrl + '/wechat/pay' ,//pay
 	xd_resultCallBack: serverBaseUrl + '/wechat/resultCallBack' ,//decodeUserInfo
+
+	xd_generalPay: serverBaseUrl + '/generalWechat/pay' ,//通用微信支付 pay
+	
 	
 	xd_getImgIsNormal: serverBaseUrl + '/login/getImgIsNormal' ,//图片是否正常
 	xd_modifyUserInfo: serverBaseUrl + '/login/modifyUserInfo' ,//修改用户的基础信息

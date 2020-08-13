@@ -86,8 +86,7 @@
 			
 			
 			<view class=" margin-top padding-xl">
-				<button class="cu-btn block bg-orange"  @tap="onCommit">
-					 提交</button>	
+				<button class="cu-btn block bg-orange"  @tap="onCommit">提交</button>	
 			</view>
 			
 			
@@ -263,7 +262,52 @@
 					}
 				})
 			},
-			onCommit(){
+			async saveData2(){
+				const arr =  this.form
+				const parm ={
+					rmb:this.rmb.challengeRmb,  //赞助金
+					sponsorCondition:this.sponsorCondition,
+					location:this.imgList.toString(), //活动地址
+					discounts:this.discounts,    //  抵扣券
+					userGroup:'',     // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
+					other:this.other,         // 其他奖励
+					finishCondition: '' ,  // 完成条件
+					status: 1 ,           //   状态:0有效,1无效
+					pushId: uni.getStorageSync('pushId') ,       // 行动项id
+					cardId: uni.getStorageSync('cardId'),	     // 打卡id
+					createTime: new Date()    , //	创建时间
+					updateTime : new Date()    //   更新时间
+				} 
+				this.xd_request_post(this.xdServerUrls.xd_saveSponsor,parm).then(res=>{
+					if(res.resultCode==0){
+						if(res.obj.payWay != 1){
+							this.goPay();
+						}else{
+							uni.showToast({
+								title: '赞助成功',
+								icon: 'success',
+								duration: 2000,
+								success:function(){
+									uni.setStorageSync('pushData','' );
+									uni.reLaunch({
+										url: '../index/action/action?pushId='+res.obj.id
+									})
+								}
+							});
+						}
+					}else{
+						uni.showToast({
+							title: res.obj,
+							icon: 'none',
+							duration: 3000,
+							success:function() {
+								return false;
+							}
+						});
+					}
+				})
+			},
+			async onCommit(){
 				if(!this.hasLogin){
 					uni.navigateTo({
 						url: '../login/login' 
@@ -282,57 +326,9 @@
 				}catch(e){
 					//TODO handle the exception
 				}
-				
-				
-				
-						const arr =  this.form
-						const parm ={
-							rmb:this.rmb.challengeRmb,  //赞助金
-							sponsorCondition:this.sponsorCondition,
-							location:this.imgList.toString(), //活动地址
-							discounts:this.discounts,    //  抵扣券
-							userGroup:'',     // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
-							other:this.other,         // 其他奖励
-							finishCondition: '' ,  // 完成条件
-							status: 1 ,           //   状态:0有效,1无效
-							pushId: uni.getStorageSync('pushId') ,       // 行动项id
-							cardId: uni.getStorageSync('cardId'),	     // 打卡id
-							createTime: new Date()    , //	创建时间
-							updateTime : new Date()    //   更新时间
-						} 
-						
-						this.xd_request_post(this.xdServerUrls.xd_saveSponsor,parm).then(res=>{
-						// that.xd_request_post(that.xdServerUrls.xd_savePush,that.saveData,true).then( res=>{
-							if(res.resultCode==0){
-								if(res.obj.payWay != 1){
-									this.goPay();
-								}else{
-									uni.showToast({
-										title: '赞助成功',
-										icon: 'success',
-										duration: 2000,
-										success:function(){
-											uni.setStorageSync('pushData','' );
-											uni.reLaunch({
-												url: '../index/action/action?pushId='+res.obj.id
-											})
-										}
-									});
-								}
-							}else{
-								uni.showToast({
-									title: res.obj,
-									icon: 'none',
-									duration: 3000,
-									success:function() {
-										return false;
-									}
-								});
-							}
-						})
-					
-				
-							
+				that.saveData = userData
+				that.saveData2()
+				await this.goPay()
 				
 			},
 			
@@ -372,13 +368,14 @@
 				data.unionId=userInfo.unionId;
 				data.openid=userInfo.openId;
 				data.payRmb=that.mony;
-				data.pushId=that.pushData.obj.id;
+				data.pushId=uni.getStorageSync('pushId');
 				wx.getSetting({
 				  success: res => {
 				    if (res.authSetting['scope.userInfo']) {
-						that.xd_request_post(that.xdServerUrls.xd_pay,data,false).then(res=>{
+						// that.xd_request_post(that.xdServerUrls.xd_generalPay,data,false).then(res=>{
+						that.xd_request_post(that.xdServerUrls.xd_Pay,data,false).then(res=>{
 							uni.requestPayment({
-								 'appId': res.obj.appId,
+								'appId': res.obj.appId,
 								'timeStamp': res.obj.timeStamp,
 								'nonceStr': res.obj.nonceStr,
 								'package': res.obj.packageAlias,
@@ -386,21 +383,17 @@
 								'paySign': res.obj.paySign,
 								success: function (re) {
 									uni.showToast({
-										title: '发布成功',
+										title: '支付成功',
 										icon: 'success',
 										duration: 2000,
 										success:function(){
-											//that.updataPushId();
-											uni.setStorageSync('pushData','' );
-											uni.reLaunch({
-												url: '../index/action/action?pushId='+that.pushData.obj.id
-											})
+											that.saveData()
+											// uni.reLaunch({url: '../index/index'})
 										}
 									});
 								},
 								fail: function (err) {
 									// 支付失败的回调中 用户未付款
-									that.updataPushId();
 									uni.showModal({
 										content:'支付取消',
 										confirmText:'重新填写',
@@ -409,19 +402,12 @@
 										success:function(ress) {
 											 if (ress.confirm) {
 												 uni.setStorageSync('pushData',that.pushData.obj );
-												
-												 uni.reLaunch({
-													url: 'step1'
-													  })
-															}else if (ress.cancel) {
-											
+												 uni.reLaunch({url: 'form'})
+											}else if (ress.cancel) {
 												uni.setStorageSync('pushData',that.pushData.obj );
-												uni.reLaunch({
-													url: '../index/index'
-												     })
-			                                                }
-											},
-											
+												uni.reLaunch({url: '../index/index'})
+											}
+										}
 									});
 								}
 							});
