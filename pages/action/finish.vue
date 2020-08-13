@@ -67,16 +67,7 @@ export default {
 				token:'',
 				userId:'',
 			}	
-			if( e.detail.value.challengeRmb<0|| isNaN(e.detail.value.challengeRmb)){
-				uni.showToast({
-				    title: '输入保证金有误',
-					mask:true,
-				    duration: 2000,
-					icon:'none'
-				});
-				return false
-				
-			}
+			
 			try{
 				userData.token=uni.getStorageSync('token');
 				userData.userId=uni.getStorageSync('id');
@@ -84,6 +75,16 @@ export default {
 				//TODO handle the exception
 			}
 			if(that.rmb.challengeRmb==5 ){
+				if( e.detail.value.challengeRmb<0|| isNaN(e.detail.value.challengeRmb)){
+					uni.showToast({
+					    title: '输入保证金有误',
+						mask:true,
+					    duration: 2000,
+						icon:'none'
+					});
+					return false
+					
+				}
 				that.saveData=Object.assign(that.formData,e.detail.value,userData);
 			}else{
 				that.saveData=Object.assign(that.formData,that.rmb,userData);	

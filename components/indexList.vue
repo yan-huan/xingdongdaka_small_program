@@ -23,7 +23,7 @@
 					<view class="cu-tag bg-pink radius sm" >打卡</view>
 					<text class="contentext" >{{list.pushCardList[0].content}}</text>
 				</view>
-				<view class="text-content margin-top-sm padding-bottom-sm"  @tap="goPageCard(list)" v-if="list.pushCardCount==0">
+				<view class="text-content margin-top-sm padding-bottom-sm"  @tap="goPageCard(list)" v-if="list.pushCardCount.length==0">
 					<view class="cu-tag bg-green radius sm" >行动</view>
 					<text class="contentext" >{{list.content}}</text>
 				</view>
