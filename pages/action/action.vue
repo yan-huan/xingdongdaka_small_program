@@ -19,8 +19,11 @@
 				</view>
 			</view>
 		</view>	
-		<view class="btn_bar">
+		<!-- <view class="btn_bar">
 			<view class="btns"><button class="btn" @click="goStep">制定新的行动项</button></view>
+		</view> -->
+		<view class="start-add" @click="goStep" >
+			<image src="../../static/images/icon/add.png" mode="widthFix"></image>
 		</view>
 		<view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">
 			<view class="mask-content" >
@@ -77,7 +80,9 @@ export default {
 		
 		let that = this;
 		if(res.from=="menu"){
-		return	that.xdUniUtils.xd_onShare();
+		return	that.xdUniUtils.xd_onShare(
+		'','/pages/selfCenter/selfView?userId='+uni.getStorageSync('id'),''
+		);
 		}else{
 			if(that.tab==0){
 				return {
@@ -94,7 +99,16 @@ export default {
 			}
 			
 		}		
-	},
+	},//#ifdef MP-WEIXIN
+		onShareTimeline(){
+			let that = this;
+			return {			
+				query:'/pages/selfCenter/selfView?userId='+uni.getStorageSync('id'),
+			}
+				
+			
+		},
+		//#endif
 	methods: {
 		tabs(e){
 			this.tab=e
@@ -197,13 +211,7 @@ export default {
 			let token='';
 			let id='';
 			let that=this;
-			if(!that.hasLogin){
-				uni.redirectTo
-					({
-					url: '../login/login' 
-				});
-				return false;
-			}
+			that.xdUniUtils.xd_login(that.hasLogin);
 			try{
 				token=uni.getStorageSync('token');
 				id=uni.getStorageSync('id');
@@ -235,6 +243,7 @@ export default {
 						pageSize:10,
 					},
 					true).then(res=>{
+						
 						that.lookerList=res.obj.list;
 						that.nextPageTwo=res.obj.nextPage;
 						that.looktotal=res.obj.total;
@@ -341,24 +350,29 @@ export default {
 				},
 				dataPaly(res){
 					let dataList=res.obj.list;
-					var date=new Date();
-					date=date.getTime();
 					
+					var date=new Date();
+					
+					date=date.getTime();
 					for(var i=0;i <dataList.length;i++){
-						var num=dataList[i].targetDay-dataList[i].pushCardCount;
-						var num2=dataList[i].targetDay;
-						var num3=dataList[i].targetDay+dataList[i].holidayDay
-						var num4=dataList[i].pushCardCount;
-						let d = new Date(dataList[i].createTime);
-						let newD = new Date(d.setDate(d.getDate() + num3));
-						newD=newD.getTime()
-						let dd=Math.round((date-newD) / (1000 * 60 * 60 * 24));
-						if(num>0 && dd<=0 ){
-							dataList[i].btn=0//立即打卡
-						}else if(num2>num4 && dd>0){
-							dataList[i].btn=1}//未达成
-							else if(num==0&&num2==num4){
-								dataList[i].btn=2}	//已完成    
+						
+						// var num=dataList[i].targetDay-dataList[i].pushCardCount;
+						// var num2=dataList[i].targetDay;
+						// var num3=dataList[i].targetDay+dataList[i].holidayDay
+						// var num4=dataList[i].pushCardCount;
+						
+						// let d = new Date(dataList[i].createTime);
+						// let newD = new Date(d.setDate(d.getDate() + num3));
+						
+						// newD=newD.getTime()
+						
+						// let dd=Math.round((date-newD) / (1000 * 60 * 60 * 24));
+						// if(num>0 && dd<=0 ){
+						// 	dataList[i].btn=0//立即打卡
+						// }else if(num2>num4 && dd>0){
+						// 	dataList[i].btn=1}//未达成
+						// 	else if(num==0&&num2==num4){
+						// 		dataList[i].btn=2}	//已完成    
 						
 						dataList[i].challengeRmb=Math.floor(dataList[i].challengeRmb/100);		
 						
@@ -372,6 +386,7 @@ export default {
 	},
 	onPullDownRefresh() {
 		this.inDada(this.tab);
+		uni.stopPullDownRefresh();
 	},
 	components:{
 		actionlist
@@ -401,30 +416,30 @@ export default {
 		}
 	}
 }
-.btn_bar{
-	position: fixed;
-	bottom: 0;
-	left:25%;
-	width: 50%;
-	.btns {
-		height: 100rpx;
+// .btn_bar{
+// 	position: fixed;
+// 	bottom: 0;
+// 	left:25%;
+// 	width: 50%;
+// 	.btns {
+// 		height: 100rpx;
 		
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		font-size: 28rpx;
-		.btn {
-			flex: 1;
-			height: 64rpx;
-			line-height: 64rpx;
-			background: #ffa700;
-			// color: #fff;
-			font-size: 28rpx;
-			border-radius: 40rpx;
+// 		display: flex;
+// 		align-items: center;
+// 		justify-content: space-between;
+// 		font-size: 28rpx;
+// 		.btn {
+// 			flex: 1;
+// 			height: 64rpx;
+// 			line-height: 64rpx;
+// 			background: #ffa700;
+// 			// color: #fff;
+// 			font-size: 28rpx;
+// 			border-radius: 40rpx;
 
-		}
-	}
-	}
+// 		}
+// 	}
+// 	}
 	
 	.mask{
 		display: flex;
@@ -474,6 +489,17 @@ export default {
 		font-weight: bold;
 		line-height: 100upx;
 
+	}
+	.start-add{
+		width: 100upx; height:100upx;
+		display:flex; flex-direction:row; justify-content:center; align-items:center;
+		background: #ffe66f;
+		border: 2px solid #ffa700;
+		border-radius: 50%;
+		position: fixed; bottom: 100upx; right:30upx; z-index: 99;
+	}
+	.start-add image{
+		width: 48upx; height:48upx;
 	}
 	
 </style>

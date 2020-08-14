@@ -29,10 +29,10 @@
 							</view>
 							<view class="text-gray text-sm  flex flex-wrap">
 								<view class="">
-									坚持天数：{{pushList.pushCardCount}}/{{pushList.targetDay}}
+									已达成天数：{{pushList.pushCardCount}}/{{pushList.targetDay}}
 								</view>
 								<view class="margin-left-sm"> 
-								    休假天数：{{pushList.holidayDay}}天
+								    可休假天数：{{pushList.kholidayDay}}/{{pushList.holidayDay}}
 								</view>
 							</view>
 						</view>
@@ -65,7 +65,7 @@
 						<text class="text-gray text-df ">{{pushList.onlookerCount}}</text>
 					</view>
 					<view class="text-xxl"  >
-						<button class="cu-btn line-green sm round  " @click="goSteps" v-if="userId==pushList.userId&&pushList.pushCardCount<pushList.targetDay" >立即打卡</button>
+						<button class="cu-btn line-green sm round  " @click="goSteps" v-if="userId==pushList.userId" >立即打卡</button>
 						<button class="cu-btn line-green sm round  " @click="gostep" v-else>一起行动</button>
 					</view>
 				
@@ -104,10 +104,18 @@
 				</view>
 			</block>
 			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1">
-				<view class="actionLi">
+				<view class="actionLi bg-white">
 					<view class="ali-main">
+						<view class="texticon" v-if="index==0">
+							<text class="lg cuIcon-crown"> </text>
+						</view>
+						<view class="textnum" v-if="index>0">
+							{{index+1}}
+						</view>
 						<view class="ali-main-img" @tap="goUser(attention.lookUserId)">
+							
 							<image class='xd-mag xd-box-shadow' :src="attention.userHead"></image>
+							
 						</view>
 						<view class="lli-main-content xd-list-body" @tap="goUser(attention.lookUserId)">
 							<view class="xd-list-title-text">
@@ -122,7 +130,7 @@
 							</view>
 						</view>
 						<view class="ali-main-list" @tap="showBanner(attention.lookUserId,attention.pushId)">
-							<view>{{attention.lookerCount}}</view>
+							<view class="ali-main-list-num">{{attention.lookerCount}}</view>
 						</view>
 					</view>
 				</view>
@@ -194,28 +202,56 @@
 	
 		onShareAppMessage(res) {
 			let that = this;
+			let tit=that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'打Call：'+that.pusCardList[0].content;
+			let path='/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen;
+			let img=that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png';
+			
+		    let	tit2= that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pushList.content:'我为@'+that.pushList.userName+'打Call：'+that.pushList.content;
+		    let	path2= '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen;
+		    let	img2=that.pushList.pictures?that.pushList.pictures:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png';
 			if(res.from=="menu"){
-			return	that.xdUniUtils.xd_onShare();
+				
+			if(that.pusCardList.length>0){
+				that.setSaveShareInfo();
+				return	that.xdUniUtils.xd_onShare(tit,path,img);
+				
+			}else{
+				that.setSaveShareInfo();
+				return	that.xdUniUtils.xd_onShare(tit2,path2,img2);	
+			}
 			}else{
 				if(that.pusCardList.length>0){
 					that.setSaveShareInfo();
-					return {
-						title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'打Call：'+that.pusCardList[0].content,
-						path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
-						imageUrl:that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
-					}
+					return	that.xdUniUtils.xd_onShare(tit,path,img);
 					
 				}else{
 					that.setSaveShareInfo();
-					return {
-						title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pushList.content:'我为@'+that.pushList.userName+'打Call：'+that.pushList.content,
-						path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
-						imageUrl:that.pushList.pictures?that.pushList.pictures:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
-					}
-					
+					return	that.xdUniUtils.xd_onShare(tit2,path2,img2);	
 				}
 			}		
 		},
+		//#ifdef MP-WEIXIN
+		onShareTimeline(){
+			let that = this;
+			if(that.pusCardList.length>0){
+				that.setSaveShareInfo();
+				return {
+					title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'打Call：'+that.pusCardList[0].content,
+					query: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
+					imageUrl:that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+				}
+				
+			}else{
+				that.setSaveShareInfo();
+				return {
+					title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pushList.content:'我为@'+that.pushList.userName+'打Call：'+that.pushList.content,
+					query: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
+					imageUrl:that.pushList.pictures?that.pushList.pictures:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+				}
+				
+			}
+		},
+		//#endif
 		methods:{
 		    showBanner(lookUserId,pushId){
 				this.$refs.lookerCountInfo.showBanner(lookUserId,pushId);
@@ -230,9 +266,27 @@
 				return this.xdUniUtils.xd_timestampToTime(d1.createTime,false,false,false) > this.xdUniUtils.xd_timestampToTime(d2.createTime,false,false,false)
 			},
 			gostep(){
-				uni.navigateTo({
-					url:'../../action/step1'
-				})
+				if(!uni.getStorageSync('token')){
+					uni.switchTab({
+						url:'../index'
+					})
+				}else{
+					uni.showModal({
+						 content: '是否要创建相同行动项',
+						 confirmText: '新建',
+						 success: (res) => {
+						   if (res.confirm) {
+							   uni.setStorageSync('pushData',this.pushList)
+							 uni.navigateTo({
+							 	url:'../../action/step1'
+							 });
+						   } else if (res.cancel) {
+							 
+						   }
+						 }
+					})
+				}
+				
 			},
 			tabSelect(e){
 				this.TabCur=e.target.id;
@@ -324,10 +378,26 @@
 				})
 			},
 			goSteps(){
-				
-				uni.navigateTo({
-					url: '../../selfCenter/clockIn?pushId='+this.pushList.id
-				});
+				if(this.pushList.pushCardStatus==2||this.pushList.pushCardStatus==3){
+					uni.showModal({
+						 content: this.xdCommon.gzsm_clickCard,
+						 confirmText: '新建',
+						 success: (res) => {
+						   if (res.confirm) {
+							   uni.setStorageSync('pushData',this.pushList)
+							 uni.navigateTo({
+							 	url:'../../action/step1'
+							 });
+						   } else if (res.cancel) {
+							 
+						   }
+						 }
+					})
+				}else{
+					uni.navigateTo({
+						url: '../../selfCenter/clockIn?pushId='+this.pushList.id
+					});
+				}
 			},
 			goPageImg(e,index){
 				this.xdUniUtils.xd_showImg(e,index);
@@ -439,7 +509,6 @@
 						token:uni.getStorageSync('token')
 				},false).then(res=>{
 					
-					
 					this.pushComentList=this.timeStamp(res);
 				})
 			},
@@ -536,15 +605,20 @@
 	.commentCount{
 		right: 0;
 	}
-	
+	.actionLi{
+		padding-bottom: 10upx;
+	}
 	.ali-main{
 		display: flex;
 		padding: 20rpx;
-		border-bottom: 3px solid #fff;
-		
 		.ali-main-list{
+			color: #f37b1d;
+			margin-left: 10%;
 			line-height: 130rpx;
 			width: 140rpx;
+			.ali-main-list-num{
+				margin-left: 40%;
+			}
 		}
 		.ali-main-img .xd-mag{
 			border-radius: 100%;
@@ -556,9 +630,10 @@
 				background:#66CCFF;
 				color:#fff;
 				display: inline-block;
-				padding:0 6rpx;
+				padding:0 12upx;
 				border-radius: 100%;
-				font-size: 22rpx;
+				font-size: 25rpx;
+				
 				margin-left: 14rpx;
 			}
 			.lli-main-content-text{
@@ -595,6 +670,27 @@
 	}
 	.widthtext{
 		width: 100%;
+	}
+	.texticon{
+		display: inline-flex;
+		position: absolute;
+		color: #f37b1d;
+		font-size: 35upx;
+		white-space: nowrap;
+		-webkit-transform:rotate(-50deg);
+		z-index: 10;
+
+	}
+	.textnum{
+		display: inline-flex;
+		position: absolute;
+		color: #FFFFFF;
+		background-color:#f37b1d;
+		white-space: nowrap;
+		z-index: 10;
+		border-radius: 200rpx;
+		padding: 0rpx 10rpx;
+		height: 28rpx;
 	}
 
 </style>

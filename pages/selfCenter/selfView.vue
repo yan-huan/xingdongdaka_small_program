@@ -1,6 +1,6 @@
 <template>
 	<view class="selfCenter">
-		<usershow  :list="userInfo" :looktotals="looktotals" :guanzhu="guanzhu" :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags' ></usershow>
+		<usershow  :list="userInfo"  :guanzhu="guanzhu" :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags' ></usershow>
 		<view class="actionInfo">
 			-----
 			<view class="tabbar bg-white">
@@ -43,11 +43,10 @@
 				userId:'',
 				user:uni.getStorageSync('id'),
 				total:'',
-				userInfo:uni.getStorageSync('userInfo'),
+				userInfo:'',
 				lookerList:[],
 				pushId:'',
 				lookTotal:0,
-				looktotals:'',
 				lookerCount: 0,
 				likeCount: 0,
 				guanzhu:'关注'
@@ -90,7 +89,7 @@
 			this.userId = option.userId;
 			this.getCardList();
 			this.getLookerList();
-			// this.getUserInfo();
+			this.getUserInfo();
 			this.getIsAttention();
 			this.lookerCountData();
 		},
@@ -189,28 +188,16 @@
 					})
 				}
 			},
-			getShowFollow(){
-				this.xd_request_post(this.xdServerUrls.xd_getLookerCountByUserId,
-				{
-					userId:userId,
-				
-				},
-				true
-					   ).then((res) => {
-						   this.looktotals=res.obj.total;
-					   }).catch(err => {											
-				                           });
-				
-				
+			
+			getUserInfo(){
+				this.xd_request_post(this.xdServerUrls.xd_getUserInfoByUserId,{
+					userId:this.userId,
+				},true)
+				.then(res=>{
+					this.userInfo=res.obj;
+					// this.$set(this.userInfo,res.obj)
+				})
 			},
-			// getUserInfo(){
-			// 	this.xd_request_post(this.xdServerUrls.xd_getUserInfoByUserId,{
-			// 		userId:this.userId,
-			// 	},true)
-			// 	.then(res=>{
-			// 		this.userInfo=res.obj;
-			// 	})
-			// },
 			getCardList(){
 				this.xd_request_post(this.xdServerUrls.xd_pushByUserIdList,{
 					token:uni.getStorageSync('token'),
@@ -219,7 +206,6 @@
 				},true)
 				.then(res=>{
 					this.list=this.timeStamp(res);
-					
 					this.total=res.obj.total;
 				})
 			},

@@ -69,11 +69,12 @@
 			 					</view>
 			 				</view>
 			 				<view class="" v-if="videodata">
-			 					<view class="cu-form-group">
-			 						<view class="grid col-4 grid-square " >						
-			 								<video :src="videodata" controls></video>
+			 						<view class="flex flex-wrap " >	
+			 							<video :src="videodata" controls></video>
+										<view class="cu-tag bg-gray" @tap="Viewvideo">
+											<text class='cuIcon-close'></text>
+										</view>
 			 						</view>
-			 					</view>
 			 				</view>
 							<view class="" v-if="MP3data">
 								<view class="cu-form-group">	
@@ -104,9 +105,9 @@
 					<view class="">
 						<button type="default"  @tap="popUpVideo">上传视频</button>
 					</view>
-					<view class="">
+					<!-- <view class="">
 						<button type="default"  @tap="showmp">录音上传</button>
-					</view>
+					</view> -->
 		 		</view>
 		 	</view>
 		 </view>
@@ -133,9 +134,14 @@
 
 <script>
 	import{ mapState,mapMutations} from 'vuex'
+	import imtAudio from 'components/imt-audio/imt-audio'
 	const recorderManager = uni.getRecorderManager();
 	const innerAudioContext = uni.createInnerAudioContext();
 export default {
+	components:{
+		imtAudio
+		
+	},
 	data() {
 		return {
 			plays:true,
@@ -157,7 +163,7 @@ export default {
 			pushList:'',
 			voicePath:'',
 			
-			max: 600000, // 录音最大时长，单位毫秒
+			max:120000, // 录音最大时长，单位毫秒
 			frame: 50, // 执行绘画的频率，单位毫秒
 			maxTiming: false, // 最长录音时间的定时器
 			draw: undefined,
@@ -192,21 +198,17 @@ export default {
 			this.showmp3=!this.showmp3;
 		},
 		ViewImage(e){
-			console.log(e)
+			
 			this.param.pictures.splice(e,1);
 		},
-		error: function() {
-			
-			var num=Math.floor(Math.random()*8+1);
-			this.audioPlaySrc='../../static/images/icon/img/title'+num+'.png'
+		Viewvideo(){
+			this.videodata='';
+		},
+		error: function() {	
+			this.audioPlaySrc=this.xdUniUtils.xd_randomImg();
 		            }  ,
 		getpushList(){
-						 if(!uni.getStorageSync('token')){
-						 	uni.navigateTo({
-						 		url: '../../login/login' 
-						 	});
-							return false
-						 }
+			this.xdUniUtils.xd_login(this.hasLogin);
 			this.xd_request_post(this.xdServerUrls.xd_pushDataByPushId,{
 				            pushId:this.pushId,
 							isShare:this.isShare,
@@ -229,12 +231,7 @@ export default {
 		},
 		submitFrom(e){
 			var end=undefined;
-			if(!this.hasLogin){
-				uni.navigateTo({
-					url: '../login/login' 
-				});
-				return false;
-			}
+			this.xdUniUtils.xd_login(this.hasLogin);
 			if(e.detail.value.content==''){
 				uni.showToast({
 				    title: '打卡不能为空',
@@ -286,6 +283,14 @@ export default {
 		},
 		popUpImg(){
 			const that = this;
+			if(that.videodata!=''){
+				uni.showToast({
+				    title: '已上传视频无法上传图片',
+					icon:'none',
+				    duration: 2000
+				});
+				return false
+			}
 			that.popUp=false;
 			uni.chooseImage({
 			    count: 4, //默认9
@@ -336,6 +341,14 @@ export default {
 		popUpVideo(){
 			 // 上传视频
 			 const that = this;
+			 if(that.videodata!=''){
+			 	uni.showToast({
+			 	    title: '已上传视频',
+			 		icon:'none',
+			 	    duration: 2000
+			 	});
+			 	return false
+			 }
 			 that.popUp=false;
 				uni.chooseVideo({
 					maxDuration:60,
@@ -396,8 +409,7 @@ export default {
 						}, that.max);
 						let x=e.detail.x/2;
 						let y=e.detail.y/2;
-						console.log(x)
-						console.log(y)
+						
 						// 录音过程圆圈动画
 						let angle = -0.5;
 						var millisecond = 0; //毫秒
@@ -414,7 +426,7 @@ export default {
 							context.setLineWidth(3);
 							context.arc(30, 30, 25,  -0.5 * Math.PI, (angle += 2 / (that.max / that.frame)) * Math.PI, false);
 							context.stroke();
-							context.draw();
+							context.draw(false);
 						}, that.frame);
 		            },
 		endRecord(e) {
@@ -424,7 +436,6 @@ export default {
 			recorderManager.stop();
 	        recorderManager.onStop(function (res) {
 				const	voicePath = res.tempFilePath;
-				
 					const uploadTask =uni.uploadFile({
 						url:that.xdServerUrls.xd_uploadFile,
 						method:"POST",
@@ -437,7 +448,7 @@ export default {
 						filePath:voicePath,
 						name:'files',
 						success: (res) => {    
-							
+							that.timeminute=0;
 							that.MP3data = JSON.parse(res.data).obj[0] 
 						}
 					})

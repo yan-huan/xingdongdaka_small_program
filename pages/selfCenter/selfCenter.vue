@@ -1,6 +1,6 @@
 <template>
 	<view class="selfCenter ">	
-		<usershow  :list="userInfos" :userId="userId" :looktotals="looktotals"  :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags' :num="num" v-on:clickMe="clickMe"></usershow>
+		<usershow  :list="userInfos" :userId="id" :guanzhu="guanzhu" :looktotals="looktotals"  :lookerCount="lookerCount" :likeCount="likeCount" v-on:clidtags='clidtags' :num="num" v-on:clickMe="clickMe"></usershow>
 		<view class="moreInfo">
 			<view class="moreInfoRow2">
 				<view class="user_column_item">
@@ -46,8 +46,9 @@
 		data() {
 			return {
 				tab: 0, //行动，围观，收藏
-				list: [1, 2, 3, 4, 5],
+				// list: [1, 2, 3, 4, 5],
 				userInfos:'',
+				looktotals:0,
 				lookerCount: 0,
 				likeCount: 0,
 				num:0, //关注新增数量
@@ -55,7 +56,9 @@
 				// onOff: true,
 				// env:uni.getStorageSync('env'),
 				rmb:0.00,
+				id:uni.getStorageSync('id'),
 				userId:'',
+				guanzhu:''
 			}
 		},
 		computed: {
@@ -73,15 +76,11 @@
 			this.getBalance();
 			this.lookerCountData();
 			this.burieInit();
+			this.getShowFollow();
 		},
 
 		onLoad() {
-			if (!this.hasLogin) {
-				uni.redirectTo({
-					url: '../login/login'
-				});
-				return false;
-			};
+			this.xdUniUtils.xd_login(this.hasLogin,true);
 			this.onToOff();
 			
 		},
@@ -105,6 +104,20 @@
 					}
 				})
 			},
+			getShowFollow(){
+				this.xd_request_post(this.xdServerUrls.xd_getInviteList,
+				{
+					token:uni.getStorageSync('token'),
+				
+				},
+				true
+					   ).then((res) => {
+						   this.looktotals=res.obj.total;
+					   }).catch(err => {											
+				                           });
+				
+				
+			},
 			burieInit(){
 				this.xd_request_post(this.xdServerUrls.xd_selectBurieStatistics,
 				{
@@ -115,7 +128,7 @@
 						this.num = gz_num;
 						this.wg_num = wg_num;
 						let num = gz_num+wg_num;
-						this.xdUniUtils.updateNumber(num);
+						this.xdUniUtils.updateNumber(0);
 					}
 				})
 				
@@ -141,19 +154,14 @@
 			},
 		   lookerCountData: function(list) {
 				var that = this;
-				if (!that.hasLogin) {
-					uni.navigateTo({
-						url: '../login/login'
-					});
-					return false;
-				}
+				that.xdUniUtils.xd_login(that.hasLogin);
 				that.userId = uni.getStorageSync('id');
 				that.xd_request_post(that.xdServerUrls.xd_getLookerCountByUserId, {
 					userId: that.userId
 				}, false).then(res => {
 
 					if (res.resultCode == 0) {
-						console.log(res)
+						
 						that.lookerCount = res.obj.lookerCount
 						that.likeCount = res.obj.likeCount
 					} else {

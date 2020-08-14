@@ -66,12 +66,7 @@ export default {
 	methods: {
 		
 		gopay(){
-			if(!this.hasLogin){
-				uni.navigateTo({
-					url: '../login/login' 
-				});
-				return false;
-			}
+		    this.xdUniUtils.xd_login(this.hasLogin);
 			var that=this;
 			that.xd_request_post(that.xdServerUrls.xd_balanceWithdrawal,{
 				desc:'',

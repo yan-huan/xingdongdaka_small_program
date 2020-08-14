@@ -2,9 +2,14 @@
 <script>
 	import Vue from 'vue'
 	import xdConfig from '@/common/xdConfig.js'; // 系统配置
-	import xdServerUrls from '@/common/xdServerUrls.js'; // 服务 url
+	
+	import{ mapState,mapMutations} from 'vuex';
 	export default {
-		
+
+		methods: {
+			...mapMutations(['IndexlogIn'])
+		},
+
 		onLaunch: function() {
 			uni.getSystemInfo({
 				success: function(e) {
@@ -144,10 +149,14 @@
 			        }
 			    });
 			});
+			if(uni.getStorageSync('token')){
+				this.IndexlogIn();
+			}
 		},
 		onShow: function() {
 			
 		},
+		
 		onHide: function() {
 			
 		}

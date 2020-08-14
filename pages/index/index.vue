@@ -15,7 +15,11 @@
 			<!-- 最新 -->
 			<view class="xd-list-info" :hidden="active == 1||active==2|| active ==3">				
 				<block v-for="(list, index) in listsTab" :key="index" >								
+
 				  <indexList  @gotoSponsor='gotoSponsor' :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg'></indexList>
+
+				  <indexList  :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg' :Off="Off"></indexList>
+
 				</block>
 			</view>
 			<!-- 推荐 -->
@@ -30,16 +34,15 @@
 					</view>
 				</view>
 				<view class="swiper-banner" v-if="active == 1 || active ==3">
-				  <swiper class="swiper"  autoplay="true" circular="true">
-					<swiper-item v-for="item  in num" :key="item">					
-							<ad
-							   unit-id="adunit-333032749ac71266"
-							   :ad-intervals="adtime"
-							  
-							   @error='aderror'
-							   bindclose="adClose"
-							 ></ad>
+				  <swiper class="swiper"  autoplay="true" circular="true" v-if="adOff">
+					<swiper-item v-for="item  in adid" :key="item">	
+							<ad-custom :unit-id="item" :ad-intervals="adtime" @load="bindload" @error="binderror"></ad-custom>
 					</swiper-item>
+				  </swiper>
+				  <swiper class="swiper"  autoplay="true" circular="true" v-else>
+				  		<swiper-item v-for="item  in bannerList" :key="item">	
+				  				<image class="swiper-item" :src="item.bannerImage"  v-model="aspectFit"></image>
+				  		</swiper-item>
 				  </swiper>
 				</view>
 				<!-- 推荐内容 -->
@@ -116,9 +119,9 @@
 			return {
 				// audioPlaySrc:'../static/images/icon/img/title1.png',
 				inimg:'',
-				adtime:100,
+				adtime:31,
 				active:1,
-				adid:['adunit-333032749ac71266','adunit-177916543bde0660','adunit-a4c464a26f8907dc'],
+				adid:['adunit-694551ca7bf1d034','adunit-ceaf57e168a329aa','adunit-a1ac7b29661ff452'],
 				currentIndex:-1,
 				labelId:1,
 				bannerList:[],
@@ -132,7 +135,9 @@
 				searchValue:'',
 				adswiper:'',
 				num:3,
+				Off:'',
 				scrollTop:0,
+				adOff:true,
 					
 			};
 		},
@@ -142,13 +147,7 @@
 		},
 		onShareAppMessage(res) {
 			let that = this;
-			 if(!that.hasLogin){
-			 	uni.navigateTo({
-			 		url: '../login/login' 
-			 	});
-			 	return false;
-			 }
-			
+			that.xdUniUtils.xd_login(that.hasLogin);
 			if(res.from=="menu"){
 			return	that.xdUniUtils.xd_onShare();
 			}else{
@@ -182,23 +181,15 @@
 		        },  
 		methods:{
 			...mapMutations(['logIn','logOut','IndexlogIn'])  ,
-			aderror(e){0
-				console.log(e)
+			bindload(){
+				
 			},
-			getLocationInfo () {
-			    var query = uni.createSelectorQuery().in(this);
-				 query.selectAll('#indexList').boundingClientRect()
-				 query.exec(res => {
-				       console.log(res)
-					   })
-			  },
+			binderror(e){
+				console.log('2')
+				this.adOff=false;
+			},
 			goUser(e){
-				if(!this.hasLogin){
-					uni.navigateTo({
-						url: '../login/login' 
-					});
-					return false;
-				}
+				this.xdUniUtils.xd_login(this.hasLogin);
 				uni.navigateTo({
 					url:'../selfCenter/selfView?userId='+e
 				})
@@ -241,23 +232,13 @@
 				
 			},
 			goPage(url){
-				if(!this.hasLogin){
-					uni.navigateTo({
-						url: '../login/login' 
-					});
-					return false;
-				}
+				this.xdUniUtils.xd_login(this.hasLogin);
 				uni.navigateTo({
 					url
 				});
 			},
 			//首页信息
 			indexData:function(){
-				var token=uni.getStorageSync('token');
-				
-				if(token!=''){
-					this.IndexlogIn();
-				}
 				this.xd_request_post(this.xdServerUrls.xd_bannerList,{},true
 				 ).then((res) => {
 														   this.bannerList=res.obj
@@ -295,12 +276,7 @@
 			//围观
 			lookerClick:function(list,index){
 				var that=this ;
-				if(!that.hasLogin){
-					uni.navigateTo({
-						url: '../login/login' 
-					});
-					return false;
-				}
+				that.xdUniUtils.xd_login(that.hasLogin);
 				that.userId=uni.getStorageSync('id');
 				that.xd_request_post(that.xdServerUrls.xd_saveLooker,{
 					
@@ -344,46 +320,41 @@
 					
 				})
 			},
-			//点赞
-			loveClick:function(e,index){
-				let list=e;
-				if(!this.hasLogin){
-					uni.navigateTo({
-						url: '../login/login' 
-					});
-					return false;
-				}
-				this.xd_request_post(this.xdServerUrls.xd_saveGiveLikeByPush,{
+			// //点赞
+			// loveClick:function(e,index){
+			// 	let list=e;
+			// 	this.xdUniUtils.xd_login(this.hasLogin);
+			// 	this.xd_request_post(this.xdServerUrls.xd_saveGiveLikeByPush,{
 					
-					pushId:list.id,
-					initiatorUserId:uni.getStorageSync('id'),
-					giveLikeUserId:list.userId,
-				},true
-				   ).then(res => {	
+			// 		pushId:list.id,
+			// 		initiatorUserId:uni.getStorageSync('id'),
+			// 		giveLikeUserId:list.userId,
+			// 	},true
+			// 	   ).then(res => {	
 						   
-						   if(!this.listsTab[index].currentUserGiveLike){								   
-												this.listsTab[index].currentUserGiveLike=true;
-												this.listsTab[index].giveLike++;
-						   }else{
-						   uni.showToast({
-						   								title:'已经赞过了',
-						   								 duration: 1000,
-						   								 icon:'none',
-						   })}
+			// 			   if(!this.listsTab[index].currentUserGiveLike){								   
+			// 									this.listsTab[index].currentUserGiveLike=true;
+			// 									this.listsTab[index].giveLike++;
+			// 			   }else{
+			// 			   uni.showToast({
+			// 			   								title:'已经赞过了',
+			// 			   								 duration: 1000,
+			// 			   								 icon:'none',
+			// 			   })}
 						   
-					   }).catch(err => {
-						   if(err=='操作失败'){
-							   uni.showToast({
-								title:'已经赞过了',
-								 duration: 1000,
-								 icon:'none',
-							   })
-						   }
+			// 		   }).catch(err => {
+			// 			   if(err=='操作失败'){
+			// 				   uni.showToast({
+			// 					title:'已经赞过了',
+			// 					 duration: 1000,
+			// 					 icon:'none',
+			// 				   })
+			// 			   }
 					
-				})
+			// 	})
 				
 				
-			},
+			// },
 			// 最新
 			showNew: function () {
 				this.active = 0;	
@@ -466,12 +437,7 @@
 				this.getShowFollow();
 			},
 			getShowFollow(){
-				if(!this.hasLogin){
-					uni.navigateTo({
-						url: '../login/login' 
-					});
-					return false;
-				}
+				this.xdUniUtils.xd_login(this.hasLogin);
 				this.xd_request_post(this.xdServerUrls.xd_getAttentionList,
 				{
 					userId:uni.getStorageSync('id'),
@@ -723,6 +689,7 @@
 			width: 100%; min-height: 208upx;max-height: 270upx;
 			swiper-item image{
 				width: 100%; 
+				height: 100%;
 				border-radius: 10upx;
 			}
 		}

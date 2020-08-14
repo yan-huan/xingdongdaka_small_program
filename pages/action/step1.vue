@@ -60,7 +60,7 @@
 				<view class="text-xl">
 					<text class="lg text-gray cuIcon-calendar"></text>
 				</view>
-				<view class="title margin-left-xs">行动时间(打卡时间)</view>
+				<view class="title margin-left-xs">计划天数</view>
 				<view class="flex flex-wrap  bg-gray radius align-center card-time-left ">
 					<picker class="data-time-left-whint" @change="PickerChange"  :range="picker" >
 						<view class="picker">
@@ -74,7 +74,7 @@
 				</view>
 			</view>
 			<view class="flex flex-wrap padding solid-top align-center">
-				<view class="margin-left-lg ">休息天数</view>
+				<view class="margin-left-lg ">可休假天数</view>
 				<view class="flex flex-wrap  bg-gray radius align-center data-time-left">
 					<picker class="data-time-left-whint" @change="PickerChangeholiday" :value="holidayDay" :range="pickerdate">
 						<view class="picker">
@@ -99,7 +99,7 @@
 				</view>
 				 
 			</view>
-			<view class=" flex flex-wrap padding solid-top align-center" v-if="switchB==1">
+			<view class=" flex flex-wrap padding solid-top align-center pading-time" v-if="switchB==1">
 				<view class="title margin-left-xs">选择提现时间</view>
 				<view class="flex flex-wrap  bg-gray radius align-center card-time-left ">
 					<picker mode="time" class="data-time-left-whint" @change="bindTimeChange"   >
@@ -164,7 +164,6 @@ export default {
 		var data=uni.getStorageSync("pushData");
 		if(data){
 			this.content=data.content;
-			this.extendContent=data.extendContent;
 			this.punchCardWay=data.punchCardWay;
 			this.param.pictures=data.pictures;
 		}
@@ -285,8 +284,27 @@ export default {
 				uni.showToast({
 				    title: '请输入行动内容',
 					mask:true,
-				    duration: 1000,
-					image:'/static/images/icon/clock.png'
+				    duration: 2000,
+					icon:'none'
+				});
+				return false
+			};
+			if(this.holidayDay>this.targetDay){
+				uni.showToast({
+				    title: '休假天数不能大于计划天数',
+					mask:true,
+				    duration: 2000,
+					icon:'none'
+				});
+				return false
+			};
+			
+			if(this.targetDay==0||this.targetDay==''){
+				uni.showToast({
+				    title: '计划天数不能为0或不填',
+					mask:true,
+				    duration: 2000,
+					icon:'none'
 				});
 				return false
 			};
@@ -301,7 +319,7 @@ export default {
 			e.detail.value.isopen=this.switchA;
 			e.detail.value.subscribeType=this.switchB;
 			e.detail.value.targetDay=this.targetDay;
-			e.detail.value.holidayDay=this.holidayDay;
+			e.detail.value.holidayDay=this.holidayDay==''?0:this.holidayDay;
 			e.detail.value.pictures= this.param.pictures;
 			this.xdUniUtils.xd_request_text({content:e.detail.value}).then(res=>{
 				if(res.obj.errcode==0){
@@ -386,7 +404,7 @@ export default {
 	width: 390rpx;
 }
 .card-time-left{
-	margin-left: 15%;
+	margin-left: 38%;
 	width: 150upx;
 }
 .data-time-left{
@@ -397,7 +415,7 @@ export default {
 	width: 115upx;
 }
 .btn_bar{
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	width: 100%;
 	margin-bottom: 10upx;
@@ -407,5 +425,8 @@ export default {
 }
 .data-time-left-whint{
 	width: 115upx;
+}
+.pading-time{
+	margin-bottom: 20%;
 }
 </style>

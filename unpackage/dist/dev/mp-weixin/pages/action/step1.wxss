@@ -33,7 +33,7 @@
   width: 390rpx;
 }
 .card-time-left {
-  margin-left: 15%;
+  margin-left: 38%;
   width: 150rpx;
 }
 .data-time-left {
@@ -44,7 +44,7 @@
   width: 115rpx;
 }
 .btn_bar {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   margin-bottom: 10rpx;
@@ -54,5 +54,8 @@
 }
 .data-time-left-whint {
   width: 115rpx;
+}
+.pading-time {
+  margin-bottom: 20%;
 }
 

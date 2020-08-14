@@ -3,12 +3,12 @@
 		<!-- 关注 -->
 		<view class="xd-list-info">
 			<block v-for="(attention, index) in attentionList" :key="index">
-				<view class="actionLi" @tap="goUser(attention.attentionUserId)">
+				<view class="actionLi" >
 					<view class="ali-main">
 						<view class="ali-main-img">
-							<image class='xd-mag xd-box-shadow' :src="attention.userHead"></image>
+							<image class='xd-mag xd-box-shadow' :src="attention.userHead" @tap="goPageImg(attention.userHead)"></image>
 						</view>
-						<view class="lli-main-content xd-list-body ">
+						<view class="lli-main-content xd-list-body " @tap="goUser(attention.attentionUserId)">
 							<view class="xd-list-title-text">
 								<text>{{attention.userName}}</text>
 								<text v-if="attention.sex==1" class="boy">♂</text>
@@ -67,6 +67,9 @@
 			this.getShowFollow();
 		},
 		methods: {
+			goPageImg(e,index){
+				this.xdUniUtils.xd_showImg(e,index)
+			},
 			goUser(e){
 				uni.navigateTo({
 					url:'selfView?userId='+e

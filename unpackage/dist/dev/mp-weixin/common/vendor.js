@@ -7672,9 +7672,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!*********************************************************!*\
-  !*** /Users/wangyao/Desktop/xingdongdaka-ui/pages.json ***!
-  \*********************************************************/
+/*!***************************************************************!*\
+  !*** C:/Users/85002/Documents/HBuilderProjects/ui/pages.json ***!
+  \***************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8679,9 +8679,9 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 
 /***/ }),
 /* 7 */
-/*!*************************************************************************!*\
-  !*** /Users/wangyao/Desktop/xingdongdaka-ui/pages.json?{"type":"stat"} ***!
-  \*************************************************************************/
+/*!*******************************************************************************!*\
+  !*** C:/Users/85002/Documents/HBuilderProjects/ui/pages.json?{"type":"stat"} ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8690,9 +8690,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 /* 8 */
-/*!**************************************************************************!*\
-  !*** /Users/wangyao/Desktop/xingdongdaka-ui/pages.json?{"type":"style"} ***!
-  \**************************************************************************/
+/*!********************************************************************************!*\
+  !*** C:/Users/85002/Documents/HBuilderProjects/ui/pages.json?{"type":"style"} ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8704,9 +8704,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 10 */,
 /* 11 */,
 /* 12 */
-/*!*****************************************************************!*\
-  !*** /Users/wangyao/Desktop/xingdongdaka-ui/common/xdConfig.js ***!
-  \*****************************************************************/
+/*!***********************************************************************!*\
+  !*** C:/Users/85002/Documents/HBuilderProjects/ui/common/xdConfig.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8719,6 +8719,7 @@ uni.setStorageSync("env", env);
 var baseApi = {
   // 开发版
   develop: "http://testxingdongdaka.zhidashixun.com",
+  // develop: "https://xingdongdaka.zhidashixun.com",
   // 体验版
   trial: "http://testxingdongdaka.zhidashixun.com",
   // 正式版
@@ -8737,9 +8738,9 @@ var appConfig = {
 
 /***/ }),
 /* 13 */
-/*!*********************************************************************!*\
-  !*** /Users/wangyao/Desktop/xingdongdaka-ui/common/xdServerUrls.js ***!
-  \*********************************************************************/
+/*!***************************************************************************!*\
+  !*** C:/Users/85002/Documents/HBuilderProjects/ui/common/xdServerUrls.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8830,7 +8831,12 @@ serverBaseUrl + '/balance/inquireBalance'), _defineProperty(_serverUrls, "xd_sel
 serverBaseUrl + '/burie/selectBurieStatistics'), _defineProperty(_serverUrls, "xd_updateBurieStatistics",
 serverBaseUrl + '/burie/updateBurieStatistics'), _defineProperty(_serverUrls, "xd_saveSponsor",
 
-serverBaseUrl + '/sponsor/save'), _serverUrls);var _default =
+
+serverBaseUrl + '/sponsor/save'), _defineProperty(_serverUrls, "xd_getInviteList",
+
+serverBaseUrl + '/invite/getInviteList'), _serverUrls);var _default =
+
+
 
 
 {
@@ -8838,185 +8844,7 @@ serverBaseUrl + '/sponsor/save'), _serverUrls);var _default =
   serverBaseUrl: serverBaseUrl };exports.default = _default;
 
 /***/ }),
-/* 14 */,
-/* 15 */,
-/* 16 */
-/*!**********************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \**********************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode, /* vue-cli only */
-  components, // fixed by xxxxxx auto components
-  renderjs // fixed by xxxxxx renderjs
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // fixed by xxxxxx auto components
-  if (components) {
-    if (!options.components) {
-      options.components = {}
-    }
-    var hasOwn = Object.prototype.hasOwnProperty
-    for (var name in components) {
-      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
-        options.components[name] = components[name]
-      }
-    }
-  }
-  // fixed by xxxxxx renderjs
-  if (renderjs) {
-    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
-      this[renderjs.__module] = this
-    });
-    (options.mixins || (options.mixins = [])).push(renderjs)
-  }
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 17 */
-/*!*************************************************************!*\
-  !*** /Users/wangyao/Desktop/xingdongdaka-ui/store/index.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-_vue.default.use(_vuex.default);
-
-var store = new _vuex.default.Store({
-  state: {
-
-    hasLogin: false,
-    real: false,
-    infoRes: {},
-    userInfo: {} },
-
-
-
-  mutations: {
-
-    logIn: function logIn(state, provider) {
-      state.hasLogin = true;
-      state.userInfo = provider;
-      uni.setStorageSync('userInfo', state.userInfo);
-
-    },
-    IndexlogIn: function IndexlogIn(state) {
-      state.hasLogin = true;
-    },
-    logOut: function logOut(state) {
-      state.hasLogin = false;
-      uni.setStorageSync('userInfo', '');
-      uni.setStorageSync('token', '');
-    },
-    uPuserInfo: function uPuserInfo(state, provider) {
-      state.userInfo = provider;
-      uni.setStorageSync('userInfo', state.userInfo);
-    } } });var _default =
-
-
-store;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 18 */
+/* 14 */
 /*!********************************************!*\
   !*** ./node_modules/vuex/dist/vuex.esm.js ***!
   \********************************************/
@@ -9966,10 +9794,188 @@ var index_esm = {
 
 
 /***/ }),
-/* 19 */
+/* 15 */,
+/* 16 */,
+/* 17 */
+/*!**********************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode, /* vue-cli only */
+  components, // fixed by xxxxxx auto components
+  renderjs // fixed by xxxxxx renderjs
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // fixed by xxxxxx auto components
+  if (components) {
+    if (!options.components) {
+      options.components = {}
+    }
+    var hasOwn = Object.prototype.hasOwnProperty
+    for (var name in components) {
+      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
+        options.components[name] = components[name]
+      }
+    }
+  }
+  // fixed by xxxxxx renderjs
+  if (renderjs) {
+    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
+      this[renderjs.__module] = this
+    });
+    (options.mixins || (options.mixins = [])).push(renderjs)
+  }
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 18 */
 /*!*******************************************************************!*\
-  !*** /Users/wangyao/Desktop/xingdongdaka-ui/common/xdUniUtils.js ***!
+  !*** C:/Users/85002/Documents/HBuilderProjects/ui/store/index.js ***!
   \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+_vue.default.use(_vuex.default);
+
+var store = new _vuex.default.Store({
+  state: {
+
+    hasLogin: false,
+    real: false,
+    infoRes: {},
+    userInfo: {} },
+
+
+
+  mutations: {
+
+    logIn: function logIn(state, provider) {
+      state.hasLogin = true;
+      state.userInfo = provider;
+      uni.setStorageSync('userInfo', state.userInfo);
+
+    },
+    IndexlogIn: function IndexlogIn(state) {
+      state.hasLogin = true;
+    },
+    logOut: function logOut(state) {
+      state.hasLogin = false;
+      uni.setStorageSync('userInfo', '');
+      uni.setStorageSync('token', '');
+    },
+    uPuserInfo: function uPuserInfo(state, provider) {
+      state.userInfo = provider;
+      uni.setStorageSync('userInfo', state.userInfo);
+    } } });var _default =
+
+
+store;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+/* 19 */
+/*!*************************************************************************!*\
+  !*** C:/Users/85002/Documents/HBuilderProjects/ui/common/xdUniUtils.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10093,25 +10099,26 @@ function xd_request(url, method, params, headers) {
         if (d.data.resultCode == 10002) {
           // 清除登录相关内容
           try {
-            uni.removeStorageSync('userInfo');
-            uni.removeStorageSync('id');
-            uni.removeStorageSync('token');
+            uni.removeStorage('userInfo');
+            uni.removeStorage('id');
+            uni.removeStorage('token');
           } catch (e) {
           }
           // 切换到登录页面
           uni.reLaunch({
-            url: '../login/login' });
+            url: '/pages/login/login' });
 
 
         } else if (d.data.resultCode == 0 || d.data.status == 1) {
           resolve(d.data);
         } else {
+
           resolve(d.data);
         }
       },
       fail: function fail(err) {
         uni.showToast({
-          title: err });
+          title: err.errMsg });
 
         console.log(err);
         reject(err);
@@ -10343,7 +10350,22 @@ var updateNumber = function updateNumber(gnumber) {
   // 	key: "gnumber",
   // 	data: gnumber
   // })
-};var _default =
+};
+//登录检测
+function xd_login(e, nav) {
+  if (!e) {
+    if (nav) {
+      uni.reLaunch({
+        url: '/pages/login/login' });
+
+    } else {
+      uni.navigateTo({
+        url: '/pages/login/login' });
+
+    }
+    return false;
+  }
+}var _default =
 
 {
   updateNumber: updateNumber,
@@ -10371,14 +10393,15 @@ var updateNumber = function updateNumber(gnumber) {
   xd_request_text: xd_request_text,
   xd_showImg: xd_showImg,
   xd_randomImg: xd_randomImg,
-  xd_onShare: xd_onShare };exports.default = _default;
+  xd_onShare: xd_onShare,
+  xd_login: xd_login };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 20 */
-/*!*****************************************************************!*\
-  !*** /Users/wangyao/Desktop/xingdongdaka-ui/common/xdCommon.js ***!
-  \*****************************************************************/
+/*!***********************************************************************!*\
+  !*** C:/Users/85002/Documents/HBuilderProjects/ui/common/xdCommon.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10389,12 +10412,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var gzsm_wgglts = "感谢你的围观鼓励帮助！如果TA未达成，你将瓜分保证金，为TA打Call越多、【评论量】越多、获得TA的【认可度】越高，分得越多。如果TA已达成，你的鼓励帮助有效，TA对你的认可度高，TA也愿意给你感谢金";
 
 //微信付款页规则说明
-var gzsm_wxfk = "说明：\r\n达成则原额退回。否则将全额扣除，分配给有效的围观者、分享等相关方，最终解释权属于平台。";var _default =
+var gzsm_wxfk = "说明：\r\n达成则原额退回。否则将全额扣除，分配给有效的围观者、分享等相关方，最终解释权属于平台。";
 
-
+//为完成行动打卡提示语
+var gzsm_clickCard = "本行动项已结束，是否需要新建继续本行动项？";var _default =
 {
   gzsm_wgglts: gzsm_wgglts,
-  gzsm_wxfk: gzsm_wxfk };exports.default = _default;
+  gzsm_wxfk: gzsm_wxfk,
+  gzsm_clickCard: gzsm_clickCard };exports.default = _default;
 
 /***/ }),
 /* 21 */,
@@ -10415,9 +10440,9 @@ var gzsm_wxfk = "说明：\r\n达成则原额退回。否则将全额扣除，�
 /* 36 */,
 /* 37 */,
 /* 38 */
-/*!**************************************************************************!*\
-  !*** /Users/wangyao/Desktop/xingdongdaka-ui/static/images/icon/left.png ***!
-  \**************************************************************************/
+/*!********************************************************************************!*\
+  !*** C:/Users/85002/Documents/HBuilderProjects/ui/static/images/icon/left.png ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -10425,9 +10450,9 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABX
 
 /***/ }),
 /* 39 */
-/*!***************************************************************************!*\
-  !*** /Users/wangyao/Desktop/xingdongdaka-ui/static/images/icon/right.png ***!
-  \***************************************************************************/
+/*!*********************************************************************************!*\
+  !*** C:/Users/85002/Documents/HBuilderProjects/ui/static/images/icon/right.png ***!
+  \*********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
