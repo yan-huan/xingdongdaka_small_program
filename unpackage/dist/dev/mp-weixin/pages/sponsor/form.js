@@ -255,10 +255,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(n);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 
 {
   data: function data() {
@@ -282,6 +279,8 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
       discounts: '', // 抵扣券
       userGroup: '', // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
       other: '', // 其他奖励
+      sponsorID: '',
+      sponsorObj: null,
 
       form: [{
         label: "赞 助 金",
@@ -347,11 +346,8 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
     },
     PickerChangeItem: function PickerChangeItem(e) {
       this.pickedIndex = e.detail.value;
-      console.log(e);
-      // this.indexholiday=0;
-      // this.holidayDay=1;
     },
-    ChooseImage: function ChooseImage() {var _this = this;
+    ChooseImage: function ChooseImage() {
       var that = this;
       uni.chooseImage({
         count: 4, //默认9
@@ -359,6 +355,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
         sourceType: ['album'], //从相册选择
         success: function success(res) {
           var tempFilePaths = res.tempFilePaths;
+          console.log("tempFilePaths----", tempFilePaths);
           that.xdUniUtils.xd_request_img(res.tempFilePaths[0]).then(function (res) {
             if (res) {
               uni.uploadFile({
@@ -369,9 +366,12 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
                   'userId': uni.getStorageSync('id') },
 
                 success: function success(uploadFileRes) {
-
-                  that.param.pictures = JSON.parse(uploadFileRes.data).obj[0];
-                  console.log(that.param.pictures);
+                  var arrPhotos = JSON.parse(uploadFileRes.data).obj;
+                  console.log("uploadFileRes----", JSON.parse(uploadFileRes.data));
+                  that.imgList = [].concat(_toConsumableArray(that.imgList), _toConsumableArray(arrPhotos));
+                },
+                fail: function fail(err) {
+                  console.log("uploadFileRes----", err);
                 } });
 
             } else {
@@ -384,13 +384,6 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
               return false;
             }
           });
-
-
-          if (_this.imgList.length != 0) {
-            _this.imgList = _this.imgList.concat(res.tempFilePaths);
-          } else {
-            _this.imgList = res.tempFilePaths;
-          }
         } });
 
     },
@@ -400,7 +393,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
         current: e.currentTarget.dataset.url });
 
     },
-    DelImg: function DelImg(e) {var _this2 = this;
+    DelImg: function DelImg(e) {var _this = this;
       uni.showModal({
         title: '删除图片',
         content: '确定要删除吗？',
@@ -408,80 +401,60 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
         confirmText: '确定',
         success: function success(res) {
           if (res.confirm) {
-            _this2.imgList.splice(e.currentTarget.dataset.index, 1);
+            _this.imgList.splice(e.currentTarget.dataset.index, 1);
           }
         } });
 
     },
-    saveData2: function saveData2() {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var arr, parm;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-                arr = _this3.form;
+    saveSponser: function saveSponser() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var parm;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
                 parm = {
-                  rmb: _this3.rmb.challengeRmb, //赞助金
-                  sponsorCondition: _this3.sponsorCondition,
-                  location: _this3.imgList.toString(), //活动地址
-                  discounts: _this3.discounts, //  抵扣券
+                  rmb: _this2.rmb.challengeRmb, //赞助金
+                  sponsorCondition: _this2.sponsorCondition,
+                  location: _this2.imgList.toString(), //活动地址
+                  discounts: _this2.discounts, //  抵扣券
                   userGroup: '', // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
-                  other: _this3.other, // 其他奖励
+                  other: _this2.other, // 其他奖励
                   finishCondition: '', // 完成条件
                   status: 1, //   状态:0有效,1无效
                   pushId: uni.getStorageSync('pushId'), // 行动项id
                   cardId: uni.getStorageSync('cardId'), // 打卡id
                   createTime: new Date(), //	创建时间
                   updateTime: new Date() //   更新时间
-                };
-                _this3.xd_request_post(_this3.xdServerUrls.xd_saveSponsor, parm).then(function (res) {
-                  if (res.resultCode == 0) {
-                    if (res.obj.payWay != 1) {
-                      _this3.goPay();
-                    } else {
-                      uni.showToast({
-                        title: '赞助成功',
-                        icon: 'success',
-                        duration: 2000,
-                        success: function success() {
-                          uni.setStorageSync('pushData', '');
-                          uni.reLaunch({
-                            url: '../index/action/action?pushId=' + res.obj.id });
-
-                        } });
-
-                    }
-                  } else {
-                    uni.showToast({
-                      title: res.obj,
-                      icon: 'none',
-                      duration: 3000,
-                      success: function success() {
-                        return false;
-                      } });
-
-                  }
-                });case 3:case "end":return _context.stop();}}}, _callee);}))();
+                };_context.next = 3;return (
+                  _this2.xd_request_post(_this2.xdServerUrls.xd_saveSponsor, parm).then(function (res) {
+                    console.log('this.xdServerUrls.xd_saveSponsor', res);
+                    return res;
+                  }));case 3:return _context.abrupt("return", _context.sent);case 4:case "end":return _context.stop();}}}, _callee);}))();
     },
-    onCommit: function onCommit() {var _this4 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var that, userData;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:if (
-                _this4.hasLogin) {_context2.next = 3;break;}
+
+    onCommit: function onCommit() {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var _yield$_this3$saveSpo, resultCode, obj, msg;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:if (
+                _this3.hasLogin) {_context2.next = 3;break;}
                 uni.navigateTo({
                   url: '../login/login' });return _context2.abrupt("return",
 
-                false);case 3:
+                false);case 3:_context2.next = 5;return (
 
-                that = _this4;
 
-                userData = {
-                  token: '',
-                  userId: '' };
+                  _this3.saveSponser());case 5:_yield$_this3$saveSpo = _context2.sent;resultCode = _yield$_this3$saveSpo.resultCode;obj = _yield$_this3$saveSpo.obj;msg = _yield$_this3$saveSpo.msg;
+                console.log('saveSponser', obj);
 
-                try {
-                  userData.token = uni.getStorageSync('token');
-                  userData.userId = uni.getStorageSync('id');
-                } catch (e) {
-                  //TODO handle the exception
-                }
-                that.saveData = userData;
-                that.saveData2();_context2.next = 10;return (
-                  _this4.goPay());case 10:case "end":return _context2.stop();}}}, _callee2);}))();
+                if (resultCode === '0') {
+                  _this3.sponsorID = obj.id;
+                  _this3.sponsorObj = obj;
+                  _this3.goPay();
+                } else {
+                  uni.showToast({
+                    title: msg,
+                    icon: 'none',
+                    duration: 3000,
+                    success: function success() {
+                      return false;
+                    } });
 
+                }case 11:case "end":return _context2.stop();}}}, _callee2);}))();
     },
+
+
 
     priceRmb: function priceRmb(e) {
       this.rmb.challengeRmb = e;
@@ -490,41 +463,35 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
     },
 
 
-    goPay: function goPay() {var _this5 = this;
+    goPay: function goPay() {var _this4 = this;
+      console.log('goPay');
       var that = this;
+      var userInfo = uni.getStorageSync('userInfo');
       var data = {
-        id: '',
-        userName: '',
-        // userMobile:''
-        token: '',
-        unionId: '',
-        openid: '',
-        city: '',
-        province: '',
-        payRmb: '',
-        pushId: '' };
+        payRmb: that.rmb.challengeRmb, //必传 金额
+        pushId: uni.getStorageSync('pushId'), //必传 活动ID
+        openid: userInfo.openId, //必传 用户ID
+        type: '1', //必传 1赞助金，2感谢金
+        outTradeNo: this.sponsorObj.payNo, // 必传 订单号从何处获取？？
+        id: userInfo.id,
+        token: uni.getStorageSync('token'),
+        unionId: userInfo.unionId,
+        city: userInfo.city,
+        userName: userInfo.nickName,
+        province: userInfo.province };
 
-      var userInfo = {};
-      try {
-        userInfo = uni.getStorageSync('userInfo');
+      console.log('gopay', userInfo, data);
 
-      } catch (e) {
-        //TODO handle the exception
-      };
-      data.id = that.saveData.userId;
-      data.token = that.saveData.token;
-      data.city = userInfo.city;
-      data.userName = userInfo.nickName;
-      data.province = userInfo.province;
-      data.unionId = userInfo.unionId;
-      data.openid = userInfo.openId;
-      data.payRmb = that.mony;
-      data.pushId = uni.getStorageSync('pushId');
       wx.getSetting({
         success: function success(res) {
+          console.log('wx.getSetting', res);
+          console.log('wx.getSetting---', res);
           if (res.authSetting['scope.userInfo']) {
-            // that.xd_request_post(that.xdServerUrls.xd_generalPay,data,false).then(res=>{
-            that.xd_request_post(that.xdServerUrls.xd_Pay, data, false).then(function (res) {
+            console.log('xd_request_--', data);
+
+            // that.xd_request_post(that.xdServerUrls.xd_pay,lgdata,false).then(res=>{
+            that.xd_request_post(that.xdServerUrls.xd_generalPay, data, false).then(function (res) {
+              console.log('xd_request_post-----wx.getSetting---', res);
               uni.requestPayment({
                 'appId': res.obj.appId,
                 'timeStamp': res.obj.timeStamp,
@@ -533,13 +500,15 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
                 'signType': 'MD5',
                 'paySign': res.obj.paySign,
                 success: function success(re) {
+                  console.log('uni.requestPayment----xd_request_post-----wx.getSetting---', re);
                   uni.showToast({
-                    title: '支付成功',
+                    title: '发布成功',
                     icon: 'success',
                     duration: 2000,
                     success: function success() {
-                      that.saveData();
-                      // uni.reLaunch({url: '../index/index'})
+                      uni.reLaunch({
+                        url: 'index' });
+
                     } });
 
                 },
@@ -552,10 +521,8 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
                     image: '/static/images/icon/clock.png',
                     success: function success(ress) {
                       if (ress.confirm) {
-                        uni.setStorageSync('pushData', that.pushData.obj);
                         uni.reLaunch({ url: 'form' });
                       } else if (ress.cancel) {
-                        uni.setStorageSync('pushData', that.pushData.obj);
                         uni.reLaunch({ url: '../index/index' });
                       }
                     } });
@@ -564,15 +531,13 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
 
             });
           } else {
-            _this5.logOut();
+            _this4.logOut();
             uni.navigateTo({
               url: '../login/login' });
 
           }
 
         } });
-
-
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

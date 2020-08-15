@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "关注",
+  "usingComponents": {
+    "index-list": "/components/indexList"
+  }
+}

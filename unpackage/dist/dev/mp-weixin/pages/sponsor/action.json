@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "赞助活动",
+  "usingComponents": {
+    "looker-count-info": "/components/lookerCountInfo"
+  }
+}

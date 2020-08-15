@@ -281,16 +281,11 @@
 			// 赞助
 			gotoSponsor(list,index){
 				console.log('gotoSponsor',index,list)
-				
-				
 				uni.setStorageSync("pushId",list.id);
 				uni.setStorageSync("cardId",list.pushCardList[0].id);
 				uni.navigateTo({
-					url:'../sponsor/form'
+					url:'../sponsor/action'
 				})
-				
-					
-				
 			},
 			//围观
 			lookerClick:function(list,index){

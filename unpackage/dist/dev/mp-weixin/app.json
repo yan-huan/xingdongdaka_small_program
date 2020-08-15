@@ -19,6 +19,7 @@
     "pages/web/webShow",
     "pages/selfCenter/balanDrawal",
     "pages/sponsor/form",
+    "pages/sponsor/action",
     "pages/sponsor/card",
     "pages/sponsor/index"
   ],
@@ -71,6 +72,5 @@
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom",
     "sponsor": "/pages/sponsor/index"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }

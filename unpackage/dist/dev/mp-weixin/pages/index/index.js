@@ -413,15 +413,10 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _toConsumableArray(arr)
     // 赞助
     gotoSponsor: function gotoSponsor(list, index) {
       console.log('gotoSponsor', index, list);
-
-
       uni.setStorageSync("pushId", list.id);
       uni.setStorageSync("cardId", list.pushCardList[0].id);
       uni.navigateTo({
-        url: '../sponsor/form' });
-
-
-
+        url: '../sponsor/action' });
 
     },
     //围观

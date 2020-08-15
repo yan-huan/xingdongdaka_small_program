@@ -1,0 +1,1 @@
+<view><block wx:if="{{bannerShow}}"><view class="uni-banner" style="background:#FFFFFF;"></view></block><block wx:if="{{bannerShow}}"><view class="uni-mask"></view></block></view>

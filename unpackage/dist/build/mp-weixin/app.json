@@ -1,0 +1,76 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/msg/talk",
+    "pages/selfCenter/clockIn",
+    "pages/selfCenter/selfCenter",
+    "pages/selfCenter/selfView",
+    "pages/selfCenter/income",
+    "pages/action/action",
+    "pages/action/step1",
+    "pages/action/finish",
+    "pages/index/cardDetails/cardDetails",
+    "pages/index/action/action",
+    "pages/selfCenter/editUserInfo",
+    "pages/selfCenter/feedback",
+    "pages/selfCenter/myattention",
+    "pages/selfCenter/myfans",
+    "pages/login/login",
+    "pages/web/webShow",
+    "pages/selfCenter/balanDrawal",
+    "pages/sponsor/form",
+    "pages/sponsor/card",
+    "pages/sponsor/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "行动打卡",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#b8b9bb",
+    "selectedColor": "#28333d",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/images/icon/tabbar/tabbar1.png",
+        "selectedIconPath": "static/images/icon/tabbar/tabbar1-on.png",
+        "text": "圈子"
+      },
+      {
+        "pagePath": "pages/action/action",
+        "iconPath": "static/images/icon/tabbar/tabbar2.png",
+        "selectedIconPath": "static/images/icon/tabbar/tabbar2-on.png",
+        "text": "行动"
+      },
+      {
+        "pagePath": "pages/sponsor/index",
+        "iconPath": "static/images/icon/tabbar/tabbarMsg.png",
+        "selectedIconPath": "static/images/icon/tabbar/tabbarMsg-on.png",
+        "text": "赞助"
+      },
+      {
+        "pagePath": "pages/selfCenter/selfCenter",
+        "iconPath": "static/images/icon/tabbar/tabbar3.png",
+        "selectedIconPath": "static/images/icon/tabbar/tabbar3-on.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "navigateToMiniProgramAppIdList": [
+    "wxf9286c35b3f9d0d0"
+  ],
+  "permission": {},
+  "uniStatistics": {
+    "enable": true
+  },
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom",
+    "sponsor": "/pages/sponsor/index"
+  },
+  "sitemapLocation": "sitemap.json"
+}

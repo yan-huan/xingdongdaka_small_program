@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "圈子",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "index-list": "/components/indexList",
+    "back-top": "/components/backTop"
+  }
+}

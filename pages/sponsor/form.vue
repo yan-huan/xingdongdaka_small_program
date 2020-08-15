@@ -62,27 +62,24 @@
 				</view>
 			</view>
 			
-			
-			
-			
-				<view v-if="Number(pickedIndex)===2" class="cu-form-group ">
-					<view class="title"><span class='form-label'>代金券</span></view>
-					<textarea  v-model="discounts" maxlength="-1"  placeholder="请输入代金券"></textarea>
-					
-				</view>
-				<view v-if="Number(pickedIndex)===3" class="cu-form-group ">
-					<view class="title"><span class='form-label'>折扣权</span></view>
-					<textarea  v-model="discounts" maxlength="-1"  placeholder="请输入折扣权"></textarea>
-				</view>
-				<view v-if="Number(pickedIndex) ===4" class="cu-form-group">
-					<view class="title"><span class='form-label'>其他</span></view>
-					<textarea  v-model="other" maxlength="-1"  placeholder=" "></textarea>
-				</view>
+			<view v-if="Number(pickedIndex)===2" class="cu-form-group ">
+				<view class="title"><span class='form-label'>代金券</span></view>
+				<textarea  v-model="discounts" maxlength="-1"  placeholder="请输入代金券"></textarea>
 				
-				<view  v-if="pickedIndex !==0" class="cu-form-group">
-					<view class="title"><span class='form-label'>获取条件</span></view>
-					<textarea v-model="sponsorCondition"  maxlength="-1"  placeholder="请输入获取条件"></textarea>
-				</view>
+			</view>
+			<view v-if="Number(pickedIndex)===3" class="cu-form-group ">
+				<view class="title"><span class='form-label'>折扣权</span></view>
+				<textarea  v-model="discounts" maxlength="-1"  placeholder="请输入折扣权"></textarea>
+			</view>
+			<view v-if="Number(pickedIndex) ===4" class="cu-form-group">
+				<view class="title"><span class='form-label'>其他</span></view>
+				<textarea  v-model="other" maxlength="-1"  placeholder=" "></textarea>
+			</view>
+			
+			<view  v-if="pickedIndex !==0" class="cu-form-group">
+				<view class="title"><span class='form-label'>获取条件</span></view>
+				<textarea v-model="sponsorCondition"  maxlength="-1"  placeholder="请输入获取条件"></textarea>
+			</view>
 			
 			
 			<view class=" margin-top padding-xl">
@@ -131,6 +128,8 @@
 				discounts:'',     // 抵扣券
 				userGroup:'',     // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
 				other:'',         // 其他奖励
+				sponsorID:'',
+				sponsorObj:null,
 				
 				form:[{
 						label:"赞 助 金",
@@ -196,50 +195,44 @@
 			},
 			PickerChangeItem(e){
 				this.pickedIndex = e.detail.value
-				console.log(e)
-				// this.indexholiday=0;
-				// this.holidayDay=1;
 			},
 			ChooseImage() {
-				const that=this;
+				const that=this;	
 				uni.chooseImage({
 					count: 4, //默认9
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album'], //从相册选择
 					success: (res) => {
-							let tempFilePaths = res.tempFilePaths;
-							that.xdUniUtils.xd_request_img(res.tempFilePaths[0]).then(res=>{
-								if(res){
-									uni.uploadFile({
-									           url: that.xdServerUrls.xd_uploadFile, 
-									           filePath: tempFilePaths[0],
-									           name: 'files',
-									           formData: {
-									               'userId': uni.getStorageSync('id'),
-									           },
-									           success: (uploadFileRes) => {
-																		
-																		 that.param.pictures=JSON.parse(uploadFileRes.data).obj[0];
-																		console.log(that.param.pictures)
-									           }
-									       });
-								}else{
-									uni.showToast({
-									    title: '内容包含敏感内容',
-										mask:true,
-									    duration: 2000,
-										
-									});
-									return false
-								}
-							});
-							
-						
-						if (this.imgList.length != 0) {
-							this.imgList = this.imgList.concat(res.tempFilePaths)
-						} else {
-							this.imgList = res.tempFilePaths
-						}
+						let tempFilePaths = res.tempFilePaths;
+						console.log("tempFilePaths----" ,tempFilePaths)
+						that.xdUniUtils.xd_request_img(res.tempFilePaths[0]).then(res=>{
+							if(res){
+								uni.uploadFile({
+									url: that.xdServerUrls.xd_uploadFile, 
+									filePath: tempFilePaths[0],
+									name: 'files',
+									formData: {
+										'userId': uni.getStorageSync('id'),
+									},
+									success: function(uploadFileRes){
+										const arrPhotos = JSON.parse(uploadFileRes.data).obj
+										console.log("uploadFileRes----" ,JSON.parse(uploadFileRes.data))
+										that.imgList = [...that.imgList,...arrPhotos]
+									},
+									fail: function (err) {
+										console.log("uploadFileRes----",err)
+									}
+								});
+							}else{
+								uni.showToast({
+									title: '内容包含敏感内容',
+									mask:true,
+									duration: 2000,
+									
+								});
+								return false
+							}
+						});
 					}
 				});
 			},
@@ -262,14 +255,13 @@
 					}
 				})
 			},
-			async saveData2(){
-				const arr =  this.form
+			async saveSponser(){
 				const parm ={
 					rmb:this.rmb.challengeRmb,  //赞助金
 					sponsorCondition:this.sponsorCondition,
 					location:this.imgList.toString(), //活动地址
 					discounts:this.discounts,    //  抵扣券
-					userGroup:'',     // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
+					userGroup: '',     // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
 					other:this.other,         // 其他奖励
 					finishCondition: '' ,  // 完成条件
 					status: 1 ,           //   状态:0有效,1无效
@@ -278,35 +270,12 @@
 					createTime: new Date()    , //	创建时间
 					updateTime : new Date()    //   更新时间
 				} 
-				this.xd_request_post(this.xdServerUrls.xd_saveSponsor,parm).then(res=>{
-					if(res.resultCode==0){
-						if(res.obj.payWay != 1){
-							this.goPay();
-						}else{
-							uni.showToast({
-								title: '赞助成功',
-								icon: 'success',
-								duration: 2000,
-								success:function(){
-									uni.setStorageSync('pushData','' );
-									uni.reLaunch({
-										url: '../index/action/action?pushId='+res.obj.id
-									})
-								}
-							});
-						}
-					}else{
-						uni.showToast({
-							title: res.obj,
-							icon: 'none',
-							duration: 3000,
-							success:function() {
-								return false;
-							}
-						});
-					}
+				return await this.xd_request_post(this.xdServerUrls.xd_saveSponsor,parm).then(res=>{
+					console.log('this.xdServerUrls.xd_saveSponsor',res);
+					return res
 				})
 			},
+
 			async onCommit(){
 				if(!this.hasLogin){
 					uni.navigateTo({
@@ -314,24 +283,28 @@
 					});
 					return false;
 				}
-				const that = this;
 				
-				let userData={
-					token:'',
-					userId:'',
-				}
-				try{
-					userData.token=uni.getStorageSync('token');
-					userData.userId=uni.getStorageSync('id');
-				}catch(e){
-					//TODO handle the exception
-				}
-				that.saveData = userData
-				that.saveData2()
-				await this.goPay()
+				const {resultCode,obj,msg} = await this.saveSponser()
+				console.log('saveSponser',obj);
 				
+				if(resultCode==='0'){
+					this.sponsorID=obj.id
+					this.sponsorObj=obj
+					this.goPay()
+				} else {
+					uni.showToast({
+						title: msg,
+						icon: 'none',
+						duration: 3000,
+						success:function() {
+							return false;
+						}
+					})
+				}
 			},
 			
+			
+				
 			priceRmb(e){
 				this.rmb.challengeRmb=e
 				console.log(this.rmb)
@@ -340,40 +313,34 @@
 			
 			//#ifdef MP-WEIXIN
 			goPay(){
-				var that = this;
-				var data={
-					id:'',
-					userName:'',
-					// userMobile:''
-					token:'',
-					unionId:'',
-					openid:'',
-					city:'',
-					province:'',
-					payRmb:'',
-					pushId:'',
+				console.log('goPay');
+				let that = this;
+				const userInfo=uni.getStorageSync('userInfo');
+				let data={
+					payRmb:that.rmb.challengeRmb,   //必传 金额
+					pushId:uni.getStorageSync('pushId'), //必传 活动ID
+					openid: userInfo.openId, //必传 用户ID
+					type: '1', //必传 1赞助金，2感谢金
+					outTradeNo: this.sponsorObj.payNo, // 必传 订单号从何处获取？？
+					id: userInfo.id,
+					token: uni.getStorageSync('token'),
+					unionId: userInfo.unionId,
+					city: userInfo.city,
+					userName: userInfo.nickName,
+					province: userInfo.province,
 				};
-				let userInfo={};
-				try{
-					userInfo=uni.getStorageSync('userInfo');
-					
-				}catch(e){
-					//TODO handle the exception
-				};
-				data.id=that.saveData.userId;
-				data.token=that.saveData.token;
-				data.city=userInfo.city;
-				data.userName=userInfo.nickName;
-				data.province=userInfo.province;
-				data.unionId=userInfo.unionId;
-				data.openid=userInfo.openId;
-				data.payRmb=that.mony;
-				data.pushId=uni.getStorageSync('pushId');
+				console.log('gopay',userInfo,data);
+				
 				wx.getSetting({
 				  success: res => {
+					console.log('wx.getSetting',res);
+					console.log('wx.getSetting---',res);
 				    if (res.authSetting['scope.userInfo']) {
-						// that.xd_request_post(that.xdServerUrls.xd_generalPay,data,false).then(res=>{
-						that.xd_request_post(that.xdServerUrls.xd_Pay,data,false).then(res=>{
+						console.log('xd_request_--',data);
+						
+						// that.xd_request_post(that.xdServerUrls.xd_pay,lgdata,false).then(res=>{
+						that.xd_request_post(that.xdServerUrls.xd_generalPay,data,false).then(res=>{
+							console.log('xd_request_post-----wx.getSetting---',res);
 							uni.requestPayment({
 								'appId': res.obj.appId,
 								'timeStamp': res.obj.timeStamp,
@@ -382,13 +349,15 @@
 								'signType': 'MD5',
 								'paySign': res.obj.paySign,
 								success: function (re) {
+									console.log('uni.requestPayment----xd_request_post-----wx.getSetting---',re);
 									uni.showToast({
-										title: '支付成功',
+										title: '发布成功',
 										icon: 'success',
 										duration: 2000,
 										success:function(){
-											that.saveData()
-											// uni.reLaunch({url: '../index/index'})
+											uni.reLaunch({
+												url: 'index'
+											})
 										}
 									});
 								},
@@ -400,30 +369,27 @@
 										cancelText:'回到首页',
 										image:'/static/images/icon/clock.png',
 										success:function(ress) {
-											 if (ress.confirm) {
-												 uni.setStorageSync('pushData',that.pushData.obj );
-												 uni.reLaunch({url: 'form'})
+											if (ress.confirm) {
+												uni.reLaunch({url: 'form'})
 											}else if (ress.cancel) {
-												uni.setStorageSync('pushData',that.pushData.obj );
 												uni.reLaunch({url: '../index/index'})
 											}
-										}
+										},
 									});
 								}
 							});
 						})
-				}else{
-					  this.logOut();
-					  uni.navigateTo({
-						url: '../login/login'
-					  });
+					}else{
+						this.logOut();
+						uni.navigateTo({
+							url: '../login/login'
+						});
+					}
+					
 				  }
-									
+				})
 			}
-			
-			})
 			//#endif
-		}
 	},
 }
 </script>

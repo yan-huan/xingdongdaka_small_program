@@ -130,6 +130,12 @@
 			}
 		},
 		{
+		    "path" : "pages/sponsor/action",
+		    "style" : {
+				"navigationBarTitleText": "赞助活动"
+			}
+		},
+		{
 		    "path" : "pages/sponsor/card",
 		    "style" : {
 				"navigationBarTitleText": "赞助"

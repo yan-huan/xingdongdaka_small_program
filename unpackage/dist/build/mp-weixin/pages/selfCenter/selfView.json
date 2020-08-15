@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "查看信息",
+  "usingComponents": {
+    "usershow": "/components/usershow",
+    "actionlist": "/components/actionlist"
+  }
+}
