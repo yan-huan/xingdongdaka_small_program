@@ -56,6 +56,7 @@
 }
 .swiper-banner .swiper swiper-item image.data-v-57280228 {
   width: 100%;
+  height: 100%;
   border-radius: 10rpx;
 }
 .xd-info-main.data-v-57280228 {

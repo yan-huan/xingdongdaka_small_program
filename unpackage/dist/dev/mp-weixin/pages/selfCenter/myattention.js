@@ -199,6 +199,9 @@ var indexList = function indexList() {__webpack_require__.e(/*! require.ensure |
       pageSize: 10, //每页条数
       userId: '', userInfo: '', token: uni.getStorageSync('token') };}, onShow: function onShow() {if (this.userInfo == '' || this.userInfo == undefined || this.userInfo == null) {try {this.userInfo = uni.getStorageSync('userInfo');} catch (e) {console.log(Error);};}}, onLoad: function onLoad(options) {this.userId = options.userId;try {this.userInfo = uni.getStorageSync('userInfo');} catch (e) {console.log(Error);};this.getShowFollow();},
   methods: {
+    goPageImg: function goPageImg(e, index) {
+      this.xdUniUtils.xd_showImg(e, index);
+    },
     goUser: function goUser(e) {
       uni.navigateTo({
         url: 'selfView?userId=' + e });

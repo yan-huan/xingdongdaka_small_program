@@ -212,10 +212,27 @@ var _default =
       this.audioPlaySrc = this.xdUniUtils.xd_randomImg();
     },
     goPage: function goPage(item) {
+      if (item.pushCardStatus == 2 || item.pushCardStatus == 3) {
+        uni.showModal({
+          content: this.xdCommon.gzsm_clickCard,
+          confirmText: '新建',
+          success: function success(res) {
+            if (res.confirm) {
+              uni.setStorageSync('pushData', item);
+              uni.navigateTo({
 
-      uni.navigateTo({
-        url: '/pages/selfCenter/clockIn?pushId=' + item });
+                url: '/pages/action/step1' });
 
+            } else if (res.cancel) {
+
+            }
+          } });
+
+      } else {
+        uni.navigateTo({
+          url: '/pages/selfCenter/clockIn?pushId=' + item.id });
+
+      }
     },
     goPageCard: function goPageCard(e) {
 

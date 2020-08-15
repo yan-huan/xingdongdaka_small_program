@@ -256,6 +256,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var imtAudio = function imtAudio() {__webpack_require__.e(/*! require.ensure | components/imt-audio/imt-audio */ "components/imt-audio/imt-audio").then((function () {return resolve(__webpack_require__(/*! components/imt-audio/imt-audio */ 221));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 var audio = uni.createInnerAudioContext(); //创建音频
@@ -294,23 +297,31 @@ var _default = {
   onShareAppMessage: function onShareAppMessage(res) {
 
     var that = this;
-    if (!that.hasLogin) {
-      uni.navigateTo({
-        url: '../../login/login' });
-
-      return false;
-    }
-
+    that.xdUniUtils.xd_login(that.hasLogin);
+    var text = that.pusCardLists.userId == that.userId ? '第' + that.dakacishu + '次打卡:' + that.pusCardLists.pushCardList[0].content : '我为@' + that.pusCardLists.userName + '打Call：' + that.pusCardLists.pushCardList[0].content;
+    var pathText = '/pages/index/action/action?pushId=' + that.pusCardLists.id + '&share=' + that.id + '&isopen=' + that.pusCardLists.isopen;
+    var img = that.showCardCommentlist.pushCard.pictures[0] ? that.showCardCommentlist.pushCard.pictures[0] : 'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png';
     if (res.from == "menu") {
-      return that.xdUniUtils.xd_onShare();
+      return that.xdUniUtils.xd_onShare(text, pathText, img);
+
     } else {
       that.setSaveShareInfo();
-      var text = that.pusCardLists.userId == that.userId ? '第' + that.dakacishu + '次打卡:' + that.pusCardLists.pushCardList[0].content : '我为@' + that.pusCardLists.userName + '打Call：' + that.pusCardLists.pushCardList[0].content;
-      var pathText = '/pages/index/action/action?pushId=' + that.pusCardLists.id + '&share=' + that.id + '&isopen=' + that.pusCardLists.isopen;
-      var img = that.showCardCommentlist.pushCard.pictures[0] ? that.showCardCommentlist.pushCard.pictures[0] : 'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png';
       return that.xdUniUtils.xd_onShare(text, pathText, img);
     }
   },
+
+  onShareTimeline: function onShareTimeline() {
+    var that = this;
+    that.setSaveShareInfo();
+    return {
+      title: that.pusCardLists.userId == that.userId ? '第' + that.dakacishu + '次打卡:' + that.pusCardLists.pushCardList[0].content : '我为@' + that.pusCardLists.userName + '打Call：' + that.pusCardLists.pushCardList[0].content,
+      query: '/pages/index/action/action?pushId=' + that.pusCardLists.id + '&share=' + that.id + '&isopen=' + that.pusCardLists.isopen,
+      imageUrl: that.showCardCommentlist.pushCard.pictures[0] ? that.showCardCommentlist.pushCard.pictures[0] : 'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png' };
+
+
+
+  },
+
   onLoad: function onLoad(option) {
 
     wx.showShareMenu({
@@ -331,12 +342,7 @@ var _default = {
 
     lookerClick: function lookerClick(list) {
       var that = this;
-      if (!that.hasLogin) {
-        uni.navigateTo({
-          url: '../login/login' });
-
-        return false;
-      }
+      that.xdUniUtils.xd_login(that.hasLogin);
       that.userId = uni.getStorageSync('id');
       that.xd_request_post(that.xdServerUrls.xd_saveLooker, {
 
@@ -394,13 +400,7 @@ var _default = {
       });
     },
     goUser: function goUser(e) {
-
-      if (!this.hasLogin) {
-        uni.navigateTo({
-          url: '../../login/login' });
-
-        return false;
-      }
+      this.xdUniUtils.xd_login(this.hasLogin);
       uni.navigateTo({
         url: '../../selfCenter/selfView?userId=' + e });
 
@@ -520,12 +520,7 @@ var _default = {
       this.value = e.detail.value;
     },
     showInputComent: function showInputComent() {
-      if (!this.hasLogin) {
-        uni.navigateTo({
-          url: '../../login/login' });
-
-        return false;
-      }
+      this.xdUniUtils.xd_login(this.hasLogin);
       this.showInput = !this.showInput;
       this.inputType = 2;
       this.conmmmenttext = '请输入评论内容';

@@ -196,22 +196,23 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
       img: '',
       openId: '',
       unionId: '',
-      customItem: '全部',
+      // customItem: '全部',
       region: [] };
 
 
   },
   onLoad: function onLoad() {
     var userInfo = uni.getStorageSync('userInfo');
-    this.userName = userInfo.nickName;
-    // this.province=userInfo.province;
-    // this.city=userInfo.city;
+    this.userName = userInfo.userName;
     this.current = userInfo.gender;
-    this.img = userInfo.avatarUrl;
+    this.img = userInfo.userHead;
     this.openId = userInfo.openId;
     this.schoolName = userInfo.schoolName;
     this.unionId = userInfo.unionId;
     this.userMobile = userInfo.userMobile;
+    this.region.push('');
+    this.region.push(userInfo.province);
+    this.region.push(userInfo.city);
   },
   methods: _objectSpread({},
   (0, _vuex.mapMutations)(['uPuserInfo']), {
@@ -258,7 +259,14 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
         token: '',
         id: '' };
 
+      if (this.img == '') {
+        uni.showToast({
+          title: '请上传头像',
+          icon: 'none',
+          duration: 2000 });
 
+        return false;
+      }
       try {
         userData.token = uni.getStorageSync('token');
         userData.id = uni.getStorageSync('id');
@@ -273,8 +281,8 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
             userMobile: e.detail.value.userMobile,
             schoolName: e.detail.value.schoolName,
             userName: e.detail.value.userName,
-            province: _this.region[1],
-            city: _this.region[2],
+            province: _this.region[1] ? _this.region[1] : '',
+            city: _this.region[2] ? _this.region[2] : '',
             token: userData.token,
             sex: e.detail.value.sex,
             id: userData.id,
@@ -290,8 +298,8 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
               true).then(function (res) {
                 if (res.resultCode == 0) {
                   var userInfo = {
-                    nickName: '',
-                    avatarUrl: '',
+                    userName: '',
+                    userHead: '',
                     province: '',
                     city: '',
                     gender: '',
@@ -299,8 +307,8 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
                     openId: _this.openId,
                     unionId: _this.unionId };
 
-                  userInfo.nickName = res.obj.userName;
-                  userInfo.avatarUrl = res.obj.userHead;
+                  userInfo.userName = res.obj.userName;
+                  userInfo.userHead = res.obj.userHead;
                   userInfo.province = res.obj.province;
                   userInfo.city = res.obj.city;
                   userInfo.gender = res.obj.sex ? res.obj.sex : '2';

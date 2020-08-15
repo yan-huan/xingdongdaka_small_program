@@ -296,7 +296,6 @@ var _default =
     var data = uni.getStorageSync("pushData");
     if (data) {
       this.content = data.content;
-      this.extendContent = data.extendContent;
       this.punchCardWay = data.punchCardWay;
       this.param.pictures = data.pictures;
     }
@@ -417,8 +416,27 @@ var _default =
         uni.showToast({
           title: '请输入行动内容',
           mask: true,
-          duration: 1000,
-          image: '/static/images/icon/clock.png' });
+          duration: 2000,
+          icon: 'none' });
+
+        return false;
+      };
+      if (this.holidayDay > this.targetDay) {
+        uni.showToast({
+          title: '休假天数不能大于计划天数',
+          mask: true,
+          duration: 2000,
+          icon: 'none' });
+
+        return false;
+      };
+
+      if (this.targetDay == 0 || this.targetDay == '') {
+        uni.showToast({
+          title: '计划天数不能为0或不填',
+          mask: true,
+          duration: 2000,
+          icon: 'none' });
 
         return false;
       };
@@ -433,7 +451,7 @@ var _default =
       e.detail.value.isopen = this.switchA;
       e.detail.value.subscribeType = this.switchB;
       e.detail.value.targetDay = this.targetDay;
-      e.detail.value.holidayDay = this.holidayDay;
+      e.detail.value.holidayDay = this.holidayDay == '' ? 0 : this.holidayDay;
       e.detail.value.pictures = this.param.pictures;
       this.xdUniUtils.xd_request_text({ content: e.detail.value }).then(function (res) {
         if (res.obj.errcode == 0) {

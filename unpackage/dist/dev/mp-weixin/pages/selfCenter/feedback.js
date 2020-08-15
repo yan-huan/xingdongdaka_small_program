@@ -187,12 +187,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
   },
 
   onLoad: function onLoad() {
-    if (!this.hasLogin) {
-      uni.redirectTo({
-        url: '../login/login' });
-
-      return false;
-    };
+    this.xdUniUtils.xd_login(this.hasLogin);
     try {
 
       this.userInfo = uni.getStorageSync('userInfo');
@@ -226,12 +221,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
     },
     submitFeedback: function submitFeedback(e) {
       var that = this;
-      if (!that.hasLogin) {
-        uni.navigateTo({
-          url: '../login/login' });
-
-        return false;
-      }
+      that.xdUniUtils.xd_login(that.hasLogin);
       that.userId = uni.getStorageSync('id');
       if (that.index == 0) {
         uni.showToast({

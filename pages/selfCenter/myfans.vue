@@ -3,24 +3,24 @@
 		<!-- 关注 -->
 		<view class="xd-list-info">
 			<block v-for="(attention, index) in attentionList" :key="index">
-				<view class="actionLi" @tap="goUser(attention.userId)">
+				<view class="actionLi" >
 					<view class="ali-main">
 						<view class="ali-main-img">
-							<image class='xd-mag xd-box-shadow' :src="attention.userHead"></image>
+							<image class='xd-mag xd-box-shadow' :src="attention.userHead" @tap="goPageImg(attention.userHead)"></image>
 						</view>
-						<view class="lli-main-content xd-list-body ">
+						<view class="lli-main-content xd-list-body " @tap="goUser(attention.userId)">
 							<view class="xd-list-title-text">
 								<text>{{attention.userName}}</text>
 								<text v-if="attention.sex==1" class="boy">♂</text>
 								<text v-else-if="attention.sex==0" class="boy">♀</text>
 								<text v-else class="boy">密</text>
 							</view>
-							<view class="moreInfoIn">
+							<view class="moreInfoIn"  v-if="attention.province">
 								<image class='address' src="/static/images/icon/address.png"></image>
 								<text class="province">{{attention.province}}.{{attention.city}}</text>
 							</view>
 						</view>
-						<view class="lli-main-content">
+						<view class="lli-main-content" v-if="userId">
 							<text class="lli-main-content-text">已关注</text>
 						</view>
 					</view>
@@ -57,29 +57,64 @@
 		},
 		
 		onLoad(options) {
-			this.userId = options.userId
+			let title = '';
+			if(options.userId==undefined){
+				this.getInviteList();
+				 title = '分享量';
+				uni.setNavigationBarTitle({
+					title:title
+					
+				})
+			}else{
+				title = '粉丝';
+				this.userId = options.userId;
+				this.getShowFollow();
+				this.burieUpdate();//查看埋点数据后删除
+				uni.setNavigationBarTitle({
+					title:title
+					
+				})
+			}
 			try {
 				this.userInfo = uni.getStorageSync('userInfo')
 		
 			} catch (e) {
 				console.log(Error)
 			};
-			this.getShowFollow();
-			this.burieUpdate();//查看埋点数据后删除
+			uni.setNavigationBarTitle({
+				title:title
+				
+			})
+			
 		},
 		methods: {
+			goPageImg(e,index){
+				this.xdUniUtils.xd_showImg(e,index)
+			},
 			goUser(e){
 				uni.navigateTo({
 					url:'selfView?userId='+e
 				})
 			},
+			getInviteList(){
+				this.xd_request_post(this.xdServerUrls.xd_getInviteList,
+				{
+					token:uni.getStorageSync('token'),
+				
+				},
+				true
+					   ).then((res) => {
+						   this.attentionList=res.obj.list;
+						   this.pageNum = res.obj.nextPage;
+					   }).catch(err => {											
+				                           });
+				
+				
+			},
 			getShowFollow() {
 				var that = this;
-				if(that.userId == ''){
-					that.userId = uni.getStorageSync('id');
-				}
 				this.xd_request_post(this.xdServerUrls.xd_getFansList, {
-						userId: that.userId,
+						userId: that.userId?that.userId:uni.getStorageSync('id'),
 						pageNum: 1,
 						pageSize: 10,
 					},
@@ -121,24 +156,46 @@
 					});
 					return false;
 				}
-				that.xd_request_post(that.xdServerUrls.xd_getAttentionList,
-				{
-					userId:that.userId,
-					pageNum:that.pageNum,
-					pageSize:that.pageSize,
-				},
-				true).then(res=>{
-					that.pageNum=res.obj.nextPage;						
-					that.attentionList = that.attentionList.concat(res.obj.list);					
-					setTimeout(function () {
-						uni.hideLoading()
-					}, 1000);
-					
-				})
+				if(this.userId=''){
+					that.xd_request_post(that.xdServerUrls.xd_getInviteList,
+					{
+						token:uni.getStorageSync('token'),
+						pageNum:that.pageNum,
+						pageSize:that.pageSize,
+					},
+					true).then(res=>{
+						that.pageNum=res.obj.nextPage;						
+						that.attentionList = that.attentionList.concat(res.obj.list);					
+						setTimeout(function () {
+							uni.hideLoading()
+						}, 1000);
+						
+					})
+				}else{
+					that.xd_request_post(that.xdServerUrls.xd_getAttentionList,
+					{
+						userId:that.userId?that.userId:uni.getStorageSync('id'),
+						pageNum:that.pageNum,
+						pageSize:that.pageSize,
+					},
+					true).then(res=>{
+						that.pageNum=res.obj.nextPage;						
+						that.attentionList = that.attentionList.concat(res.obj.list);					
+						setTimeout(function () {
+							uni.hideLoading()
+						}, 1000);
+						
+					})
+				}
 			}
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
+			if(this.userId=''){
+				this.getInviteList();
+			}else{
+				this.getShowFollow();
+			}
 			this.getShowFollow(),
 			this.pageNum = 1,
 			uni.stopPullDownRefresh()

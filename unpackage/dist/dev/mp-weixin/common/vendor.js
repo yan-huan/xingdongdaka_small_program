@@ -8697,7 +8697,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "圈子", "enablePullDownRefresh": true, "usingComponents": { "index-list": "/components/indexList", "back-top": "/components/backTop" }, "usingAutoImportComponents": {} }, "pages/msg/talk": { "navigationBarTitleText": "消息回复", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/clockIn": { "navigationBarTitleText": "打卡", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/selfCenter": { "navigationBarTitleText": "我的", "usingComponents": { "usershow": "/components/usershow" }, "usingAutoImportComponents": {} }, "pages/selfCenter/selfView": { "navigationBarTitleText": "查看信息", "usingComponents": { "usershow": "/components/usershow", "actionlist": "/components/actionlist" }, "usingAutoImportComponents": {} }, "pages/selfCenter/income": { "navigationBarTitleText": "账单", "enablePullDownRefresh": true, "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/action/action": { "navigationBarTitleText": "行动", "enablePullDownRefresh": true, "usingComponents": { "actionlist": "/components/actionlist" }, "usingAutoImportComponents": {} }, "pages/action/step1": { "navigationBarTitleText": "新建行动", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/action/finish": { "navigationBarTitleText": "保证金", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/index/cardDetails/cardDetails": { "navigationBarTitleText": "打卡详情", "usingComponents": { "imt-audio": "/components/imt-audio/imt-audio" }, "usingAutoImportComponents": { "imt-audio": "/components/imt-audio/imt-audio" } }, "pages/index/action/action": { "navigationBarTitleText": "行动详情", "usingComponents": { "looker-count-info": "/components/lookerCountInfo" }, "usingAutoImportComponents": {} }, "pages/selfCenter/editUserInfo": { "navigationBarTitleText": "编辑信息", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/feedback": { "navigationBarTitleText": "意见反馈", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/myattention": { "navigationBarTitleText": "关注", "usingComponents": { "index-list": "/components/indexList" }, "usingAutoImportComponents": {} }, "pages/selfCenter/myfans": { "navigationBarTitleText": "粉丝", "usingComponents": { "index-list": "/components/indexList" }, "usingAutoImportComponents": {} }, "pages/login/login": { "navigationBarTitleText": "微信授权登录", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/web/webShow": { "navigationBarTitleText": "网页", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/balanDrawal": { "navigationBarTitleText": "提现", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/form": { "navigationBarTitleText": "赞助", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/card": { "navigationBarTitleText": "赞助", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/index": { "navigationBarTitleText": "赞助", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/action": { "navigationBarTitleText": "赞助活动" } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "行动打卡", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "圈子", "enablePullDownRefresh": true, "usingComponents": { "index-list": "/components/indexList", "back-top": "/components/backTop" }, "usingAutoImportComponents": {} }, "pages/msg/talk": { "navigationBarTitleText": "消息回复", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/clockIn": { "navigationBarTitleText": "打卡", "usingComponents": { "imt-audio": "/components/imt-audio/imt-audio" }, "usingAutoImportComponents": {} }, "pages/selfCenter/selfCenter": { "navigationBarTitleText": "我的", "usingComponents": { "usershow": "/components/usershow" }, "usingAutoImportComponents": {} }, "pages/selfCenter/selfView": { "navigationBarTitleText": "查看信息", "usingComponents": { "usershow": "/components/usershow", "actionlist": "/components/actionlist" }, "usingAutoImportComponents": {} }, "pages/selfCenter/income": { "navigationBarTitleText": "账单", "enablePullDownRefresh": true, "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/action/action": { "navigationBarTitleText": "行动", "enablePullDownRefresh": true, "usingComponents": { "actionlist": "/components/actionlist" }, "usingAutoImportComponents": {} }, "pages/action/step1": { "navigationBarTitleText": "新建行动", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/action/finish": { "navigationBarTitleText": "保证金", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/index/cardDetails/cardDetails": { "navigationBarTitleText": "打卡详情", "usingComponents": { "imt-audio": "/components/imt-audio/imt-audio" }, "usingAutoImportComponents": { "imt-audio": "/components/imt-audio/imt-audio" } }, "pages/index/action/action": { "navigationBarTitleText": "行动详情", "usingComponents": { "looker-count-info": "/components/lookerCountInfo" }, "usingAutoImportComponents": {} }, "pages/selfCenter/editUserInfo": { "navigationBarTitleText": "编辑信息", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/feedback": { "navigationBarTitleText": "意见反馈", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/myattention": { "navigationBarTitleText": "关注", "usingComponents": { "index-list": "/components/indexList" }, "usingAutoImportComponents": {} }, "pages/selfCenter/myfans": { "navigationBarTitleText": "粉丝", "usingComponents": { "index-list": "/components/indexList" }, "usingAutoImportComponents": {} }, "pages/login/login": { "navigationBarTitleText": "微信授权登录", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/web/webShow": { "navigationBarTitleText": "网页", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/balanDrawal": { "navigationBarTitleText": "提现", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/form": { "navigationBarTitleText": "赞助", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/card": { "navigationBarTitleText": "赞助", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/index": { "navigationBarTitleText": "赞助", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/action": { "navigationBarTitleText": "赞助活动", "usingComponents": { "looker-count-info": "/components/lookerCountInfo" }, "usingAutoImportComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "行动打卡", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 /* 9 */,
@@ -8719,6 +8719,7 @@ uni.setStorageSync("env", env);
 var baseApi = {
   // 开发版
   develop: "http://testxingdongdaka.zhidashixun.com",
+  // develop: "https://xingdongdaka.zhidashixun.com",
   // 体验版
   trial: "http://testxingdongdaka.zhidashixun.com",
   // 正式版
@@ -8830,7 +8831,9 @@ serverBaseUrl + '/balance/inquireBalance'), _defineProperty(_serverUrls, "xd_sel
 serverBaseUrl + '/burie/selectBurieStatistics'), _defineProperty(_serverUrls, "xd_updateBurieStatistics",
 serverBaseUrl + '/burie/updateBurieStatistics'), _defineProperty(_serverUrls, "xd_saveSponsor",
 
-serverBaseUrl + '/sponsor/save'), _serverUrls);var _default =
+serverBaseUrl + '/sponsor/save'), _defineProperty(_serverUrls, "xd_getInviteList",
+serverBaseUrl + '/invite/getInviteList'), _serverUrls);var _default =
+
 
 
 {
@@ -10093,25 +10096,26 @@ function xd_request(url, method, params, headers) {
         if (d.data.resultCode == 10002) {
           // 清除登录相关内容
           try {
-            uni.removeStorageSync('userInfo');
-            uni.removeStorageSync('id');
-            uni.removeStorageSync('token');
+            uni.removeStorage('userInfo');
+            uni.removeStorage('id');
+            uni.removeStorage('token');
           } catch (e) {
           }
           // 切换到登录页面
           uni.reLaunch({
-            url: '../login/login' });
+            url: '/pages/login/login' });
 
 
         } else if (d.data.resultCode == 0 || d.data.status == 1) {
           resolve(d.data);
         } else {
+
           resolve(d.data);
         }
       },
       fail: function fail(err) {
         uni.showToast({
-          title: err });
+          title: err.errMsg });
 
         console.log(err);
         reject(err);
@@ -10343,7 +10347,22 @@ var updateNumber = function updateNumber(gnumber) {
   // 	key: "gnumber",
   // 	data: gnumber
   // })
-};var _default =
+};
+//登录检测
+function xd_login(e, nav) {
+  if (!e) {
+    if (nav) {
+      uni.reLaunch({
+        url: '/pages/login/login' });
+
+    } else {
+      uni.navigateTo({
+        url: '/pages/login/login' });
+
+    }
+    return false;
+  }
+}var _default =
 
 {
   updateNumber: updateNumber,
@@ -10371,7 +10390,8 @@ var updateNumber = function updateNumber(gnumber) {
   xd_request_text: xd_request_text,
   xd_showImg: xd_showImg,
   xd_randomImg: xd_randomImg,
-  xd_onShare: xd_onShare };exports.default = _default;
+  xd_onShare: xd_onShare,
+  xd_login: xd_login };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
@@ -10389,12 +10409,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var gzsm_wgglts = "感谢你的围观鼓励帮助！如果TA未达成，你将瓜分保证金，为TA打Call越多、【评论量】越多、获得TA的【认可度】越高，分得越多。如果TA已达成，你的鼓励帮助有效，TA对你的认可度高，TA也愿意给你感谢金";
 
 //微信付款页规则说明
-var gzsm_wxfk = "说明：\r\n达成则原额退回。否则将全额扣除，分配给有效的围观者、分享等相关方，最终解释权属于平台。";var _default =
+var gzsm_wxfk = "说明：\r\n达成则原额退回。否则将全额扣除，分配给有效的围观者、分享等相关方，最终解释权属于平台。";
 
-
+//为完成行动打卡提示语
+var gzsm_clickCard = "本行动项已结束，是否需要新建继续本行动项？";var _default =
 {
   gzsm_wgglts: gzsm_wgglts,
-  gzsm_wxfk: gzsm_wxfk };exports.default = _default;
+  gzsm_wxfk: gzsm_wxfk,
+  gzsm_clickCard: gzsm_clickCard };exports.default = _default;
 
 /***/ }),
 /* 21 */,

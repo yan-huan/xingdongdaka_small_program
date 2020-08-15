@@ -264,10 +264,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+
+var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var imtAudio = function imtAudio() {__webpack_require__.e(/*! require.ensure | components/imt-audio/imt-audio */ "components/imt-audio/imt-audio").then((function () {return resolve(__webpack_require__(/*! components/imt-audio/imt-audio */ 221));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+
 var recorderManager = uni.getRecorderManager();
 var innerAudioContext = uni.createInnerAudioContext();var _default =
 {
+  components: {
+    imtAudio: imtAudio },
+
+
   data: function data() {
     return {
       plays: true,
@@ -289,7 +295,7 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
       pushList: '',
       voicePath: '',
 
-      max: 600000, // 录音最大时长，单位毫秒
+      max: 120000, // 录音最大时长，单位毫秒
       frame: 50, // 执行绘画的频率，单位毫秒
       maxTiming: false, // 最长录音时间的定时器
       draw: undefined,
@@ -324,21 +330,17 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
       this.showmp3 = !this.showmp3;
     },
     ViewImage: function ViewImage(e) {
-      console.log(e);
+
       this.param.pictures.splice(e, 1);
     },
+    Viewvideo: function Viewvideo() {
+      this.videodata = '';
+    },
     error: function error() {
-
-      var num = Math.floor(Math.random() * 8 + 1);
-      this.audioPlaySrc = '../../static/images/icon/img/title' + num + '.png';
+      this.audioPlaySrc = this.xdUniUtils.xd_randomImg();
     },
     getpushList: function getpushList() {var _this = this;
-      if (!uni.getStorageSync('token')) {
-        uni.navigateTo({
-          url: '../../login/login' });
-
-        return false;
-      }
+      this.xdUniUtils.xd_login(this.hasLogin);
       this.xd_request_post(this.xdServerUrls.xd_pushDataByPushId, {
         pushId: this.pushId,
         isShare: this.isShare,
@@ -361,12 +363,7 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
     },
     submitFrom: function submitFrom(e) {var _this2 = this;
       var end = undefined;
-      if (!this.hasLogin) {
-        uni.navigateTo({
-          url: '../login/login' });
-
-        return false;
-      }
+      this.xdUniUtils.xd_login(this.hasLogin);
       if (e.detail.value.content == '') {
         uni.showToast({
           title: '打卡不能为空',
@@ -418,6 +415,14 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
     },
     popUpImg: function popUpImg() {
       var that = this;
+      if (that.videodata != '') {
+        uni.showToast({
+          title: '已上传视频无法上传图片',
+          icon: 'none',
+          duration: 2000 });
+
+        return false;
+      }
       that.popUp = false;
       uni.chooseImage({
         count: 4, //默认9
@@ -468,6 +473,14 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
     popUpVideo: function popUpVideo() {
       // 上传视频
       var that = this;
+      if (that.videodata != '') {
+        uni.showToast({
+          title: '已上传视频',
+          icon: 'none',
+          duration: 2000 });
+
+        return false;
+      }
       that.popUp = false;
       uni.chooseVideo({
         maxDuration: 60,
@@ -528,8 +541,7 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
       }, that.max);
       var x = e.detail.x / 2;
       var y = e.detail.y / 2;
-      console.log(x);
-      console.log(y);
+
       // 录音过程圆圈动画
       var angle = -0.5;
       var millisecond = 0; //毫秒
@@ -546,7 +558,7 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
         context.setLineWidth(3);
         context.arc(30, 30, 25, -0.5 * Math.PI, (angle += 2 / (that.max / that.frame)) * Math.PI, false);
         context.stroke();
-        context.draw();
+        context.draw(false);
       }, that.frame);
     },
     endRecord: function endRecord(e) {
@@ -556,7 +568,6 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
       recorderManager.stop();
       recorderManager.onStop(function (res) {
         var voicePath = res.tempFilePath;
-
         var uploadTask = uni.uploadFile({
           url: that.xdServerUrls.xd_uploadFile,
           method: "POST",
@@ -569,7 +580,7 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
           filePath: voicePath,
           name: 'files',
           success: function success(res) {
-
+            that.timeminute = 0;
             that.MP3data = JSON.parse(res.data).obj[0];
           } });
 

@@ -157,15 +157,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 var _default =
 {
   name: "usershow",
   props: ['userId', 'list', 'looktotals', 'guanzhu', 'likeCount', 'lookerCount', 'num'],
   data: function data() {
     return {
-      env: uni.getStorageSync('env') };
+      env: uni.getStorageSync('env'),
+      newList: '' };
 
   },
+  watch: {
+    list: function list() {
+
+      this.newList = this.list;
+    } },
+
   methods: {
     clidtags: function clidtags(e) {
       this.$emit("clidtags", e);
@@ -173,9 +185,19 @@ var _default =
     clickMe: function clickMe() {
       this.$emit("clickMe");
     },
-    clidgoPage: function clidgoPage(url) {
-      uni.navigateTo({
-        url: url });
+    clidgoPage: function clidgoPage(num, url) {
+      if (num == 1 && this.guanzhu == '') {
+        uni.navigateTo({
+          url: url });
+
+      } else {
+        if (num != 1) {
+
+          uni.navigateTo({
+            url: num });
+
+        }
+      }
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

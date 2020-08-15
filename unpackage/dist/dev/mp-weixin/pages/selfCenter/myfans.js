@@ -197,28 +197,63 @@ var _vuex = __webpack_require__(/*! vuex */ 18); //
 //
 var indexList = function indexList() {__webpack_require__.e(/*! require.ensure | components/indexList */ "components/indexList").then((function () {return resolve(__webpack_require__(/*! @/components/indexList.vue */ 193));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { attentionList: [], pageNum: 1, //当前页数
       pageSize: 10, //每页条数
-      userId: '', userInfo: '', token: uni.getStorageSync('token') };}, onShow: function onShow() {if (this.userInfo == '' || this.userInfo == undefined || this.userInfo == null) {try {this.userInfo = uni.getStorageSync('userInfo');} catch (e) {console.log(Error);};}}, onLoad: function onLoad(options) {this.userId = options.userId;try {this.userInfo = uni.getStorageSync('userInfo');} catch (e) {console.log(Error);};this.getShowFollow();this.burieUpdate(); //查看埋点数据后删除
+      userId: '', userInfo: '', token: uni.getStorageSync('token') };}, onShow: function onShow() {if (this.userInfo == '' || this.userInfo == undefined || this.userInfo == null) {try {this.userInfo = uni.getStorageSync('userInfo');} catch (e) {console.log(Error);};}}, onLoad: function onLoad(options) {var title = '';if (options.userId == undefined) {this.getInviteList();title = '分享量';uni.setNavigationBarTitle({ title: title });} else {
+      title = '粉丝';
+      this.userId = options.userId;
+      this.getShowFollow();
+      this.burieUpdate(); //查看埋点数据后删除
+      uni.setNavigationBarTitle({
+        title: title });
+
+
+    }
+    try {
+      this.userInfo = uni.getStorageSync('userInfo');
+
+    } catch (e) {
+      console.log(Error);
+    };
+    uni.setNavigationBarTitle({
+      title: title });
+
+
+
   },
   methods: {
+    goPageImg: function goPageImg(e, index) {
+      this.xdUniUtils.xd_showImg(e, index);
+    },
     goUser: function goUser(e) {
       uni.navigateTo({
         url: 'selfView?userId=' + e });
 
     },
-    getShowFollow: function getShowFollow() {var _this = this;
-      var that = this;
-      if (that.userId == '') {
-        that.userId = uni.getStorageSync('id');
-      }
-      this.xd_request_post(this.xdServerUrls.xd_getFansList, {
-        userId: that.userId,
-        pageNum: 1,
-        pageSize: 10 },
+    getInviteList: function getInviteList() {var _this = this;
+      this.xd_request_post(this.xdServerUrls.xd_getInviteList,
+      {
+        token: uni.getStorageSync('token') },
+
 
       true).
       then(function (res) {
         _this.attentionList = res.obj.list;
         _this.pageNum = res.obj.nextPage;
+      }).catch(function (err) {
+      });
+
+
+    },
+    getShowFollow: function getShowFollow() {var _this2 = this;
+      var that = this;
+      this.xd_request_post(this.xdServerUrls.xd_getFansList, {
+        userId: that.userId ? that.userId : uni.getStorageSync('id'),
+        pageNum: 1,
+        pageSize: 10 },
+
+      true).
+      then(function (res) {
+        _this2.attentionList = res.obj.list;
+        _this2.pageNum = res.obj.nextPage;
       }).catch(function (err) {});
 
     },
@@ -253,24 +288,46 @@ var indexList = function indexList() {__webpack_require__.e(/*! require.ensure |
 
         return false;
       }
-      that.xd_request_post(that.xdServerUrls.xd_getAttentionList,
-      {
-        userId: that.userId,
-        pageNum: that.pageNum,
-        pageSize: that.pageSize },
+      if (this.userId = '') {
+        that.xd_request_post(that.xdServerUrls.xd_getInviteList,
+        {
+          token: uni.getStorageSync('token'),
+          pageNum: that.pageNum,
+          pageSize: that.pageSize },
 
-      true).then(function (res) {
-        that.pageNum = res.obj.nextPage;
-        that.attentionList = that.attentionList.concat(res.obj.list);
-        setTimeout(function () {
-          uni.hideLoading();
-        }, 1000);
+        true).then(function (res) {
+          that.pageNum = res.obj.nextPage;
+          that.attentionList = that.attentionList.concat(res.obj.list);
+          setTimeout(function () {
+            uni.hideLoading();
+          }, 1000);
 
-      });
+        });
+      } else {
+        that.xd_request_post(that.xdServerUrls.xd_getAttentionList,
+        {
+          userId: that.userId ? that.userId : uni.getStorageSync('id'),
+          pageNum: that.pageNum,
+          pageSize: that.pageSize },
+
+        true).then(function (res) {
+          that.pageNum = res.obj.nextPage;
+          that.attentionList = that.attentionList.concat(res.obj.list);
+          setTimeout(function () {
+            uni.hideLoading();
+          }, 1000);
+
+        });
+      }
     } },
 
   // 下拉刷新
   onPullDownRefresh: function onPullDownRefresh() {
+    if (this.userId = '') {
+      this.getInviteList();
+    } else {
+      this.getShowFollow();
+    }
     this.getShowFollow(),
     this.pageNum = 1,
     uni.stopPullDownRefresh();

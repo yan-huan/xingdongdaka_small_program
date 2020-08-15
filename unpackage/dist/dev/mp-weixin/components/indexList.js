@@ -198,7 +198,26 @@ var _default =
       audioPlaySrc: '../static/images/icon/img/title.png' };
 
   },
+  // watch:{
+  // 	Off:function(){
+  // 			console.log('1')
+  // 			var query = uni.createSelectorQuery();
+  // 			 query.selectAll('#videowhind').boundingClientRect()
+  // 			 query.exec(res => {
+  // 			       console.log(res)
+  // 		 })
+
+  // 	  },
+  // },
   methods: {
+    getcreat: function getcreat() {
+      console.log('1');
+      var query = uni.createSelectorQuery();
+      query.selectAll('#videowhind').boundingClientRect();
+      query.exec(function (res) {
+        console.log(res);
+      });
+    },
     error: function error() {
       this.audioPlaySrc = this.xdUniUtils.xd_randomImg();
     },

@@ -18,9 +18,9 @@
 						<view class="flex flex-wrap">
 							<view class="cu-tag bg-grey radio">{{item.label}}</view>
 							<view class="margin-left-sm" v-if="tab==0||tab==1">
-								<text class="text-orange" v-if="item.btn==0">进行中...</text>
-								<text class="text-gray" v-else-if="item.btn==1">未完成</text>
-								<text class="text-green" v-else-if="item.btn==2">已完成</text>
+								<text class="text-orange" v-if="item.pushCardStatus==1">进行中...</text>
+								<text class="text-gray" v-else-if="item.pushCardStatus==2">未达成</text>
+								<text class="text-green" v-else-if="item.pushCardStatus==3">已达成</text>
 							</view>
 						</view>
 						<view class="text-gray text-sm ">
@@ -42,11 +42,11 @@
 			<view class="text-content padding-lr textcen">
 				<text class="contentext" @tap="goPageCard(item)" >{{item.content}}</text>
 			</view>
-			<view class="grid flex-sub padding-lr"  >
-				<image class="bg-img imgheit"  :src="item.pictures" mode="aspectFill"
+			<view class="grid flex-sub  padding-lr"  >
+				<image class="imgheit"  :src="item.pictures" mode="aspectFill"
 				 @tap="goPageImg(item.pictures)" v-if="item.pictures!=''" >
 				</image>
-				<image class="bg-img imgheit"  :src="audioPlaySrc" mode="aspectFill"
+				<image class="imgheit"  :src="audioPlaySrc" mode="aspectFill"
 				 @tap="goPageImg(audioPlaySrc)" v-else @error="error">
 				</image>
 			</view>
@@ -58,7 +58,7 @@
 					<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(item,indexs)">围观分钱</button>
 					<text class="text-gray text-df ">{{item.onlookerCount}}</text>
 				</view>
-				<view class="text-xxl" @click="goPage(item.id)" v-if="userId==item.userId&&item.pushCardCount<item.targetDay" >
+				<view class="text-xxl" @click="goPage(item)" v-if="userId==item.userId" >
 					<button class="cu-btn line-green sm round  "  >立即打卡</button>
 				</view>
 			
@@ -82,10 +82,27 @@
 				this.audioPlaySrc=this.xdUniUtils.xd_randomImg();	
 			            } ,
 			goPage(item){
-				
-				uni.navigateTo({
-					url:'/pages/selfCenter/clockIn?pushId='+item
-				});
+				if(item.pushCardStatus==2||item.pushCardStatus==3){
+					uni.showModal({
+						 content: this.xdCommon.gzsm_clickCard,
+						 confirmText: '新建',
+						 success: (res) => {
+						   if (res.confirm) {
+							   uni.setStorageSync('pushData',item)
+							 uni.navigateTo({
+								 
+							 	url:'/pages/action/step1'
+							 });
+						   } else if (res.cancel) {
+							 
+						   }
+						 }
+					})
+				}else{
+					uni.navigateTo({
+						url:'/pages/selfCenter/clockIn?pushId='+item.id
+					});
+				}
 			},
 			goPageCard(e){
 				
@@ -112,7 +129,7 @@
 	}
 </script>
 
-<style  lang="scss">
+<style lang="scss">
 
 	.imgheit{
 		height: 320upx;

@@ -171,6 +171,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var actionlist = function actionlist() {__webpack_require__.e(/*! require.ensure | components/actionlist */ "components/actionlist").then((function () {return resolve(__webpack_require__(/*! @/components/actionlist.vue */ 214));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
@@ -209,7 +212,9 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
 
     var that = this;
     if (res.from == "menu") {
-      return that.xdUniUtils.xd_onShare();
+      return that.xdUniUtils.xd_onShare(
+      '', '/pages/selfCenter/selfView?userId=' + uni.getStorageSync('id'), '');
+
     } else {
       if (that.tab == 0) {
         return {
@@ -227,6 +232,15 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
 
     }
   },
+  onShareTimeline: function onShareTimeline() {
+    var that = this;
+    return {
+      query: '/pages/selfCenter/selfView?userId=' + uni.getStorageSync('id') };
+
+
+
+  },
+
   methods: {
     tabs: function tabs(e) {
       this.tab = e;
@@ -329,13 +343,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
       var token = '';
       var id = '';
       var that = this;
-      if (!that.hasLogin) {
-        uni.redirectTo(
-        {
-          url: '../login/login' });
-
-        return false;
-      }
+      that.xdUniUtils.xd_login(that.hasLogin);
       try {
         token = uni.getStorageSync('token');
         id = uni.getStorageSync('id');
@@ -367,6 +375,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
           pageSize: 10 },
 
         true).then(function (res) {
+
           that.lookerList = res.obj.list;
           that.nextPageTwo = res.obj.nextPage;
           that.looktotal = res.obj.total;
@@ -473,24 +482,29 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
     },
     dataPaly: function dataPaly(res) {
       var dataList = res.obj.list;
-      var date = new Date();
-      date = date.getTime();
 
+      var date = new Date();
+
+      date = date.getTime();
       for (var i = 0; i < dataList.length; i++) {
-        var num = dataList[i].targetDay - dataList[i].pushCardCount;
-        var num2 = dataList[i].targetDay;
-        var num3 = dataList[i].targetDay + dataList[i].holidayDay;
-        var num4 = dataList[i].pushCardCount;
-        var d = new Date(dataList[i].createTime);
-        var newD = new Date(d.setDate(d.getDate() + num3));
-        newD = newD.getTime();
-        var dd = Math.round((date - newD) / (1000 * 60 * 60 * 24));
-        if (num > 0 && dd <= 0) {
-          dataList[i].btn = 0; //立即打卡
-        } else if (num2 > num4 && dd > 0) {
-          dataList[i].btn = 1;} //未达成
-        else if (num == 0 && num2 == num4) {
-            dataList[i].btn = 2;} //已完成    
+
+        // var num=dataList[i].targetDay-dataList[i].pushCardCount;
+        // var num2=dataList[i].targetDay;
+        // var num3=dataList[i].targetDay+dataList[i].holidayDay
+        // var num4=dataList[i].pushCardCount;
+
+        // let d = new Date(dataList[i].createTime);
+        // let newD = new Date(d.setDate(d.getDate() + num3));
+
+        // newD=newD.getTime()
+
+        // let dd=Math.round((date-newD) / (1000 * 60 * 60 * 24));
+        // if(num>0 && dd<=0 ){
+        // 	dataList[i].btn=0//立即打卡
+        // }else if(num2>num4 && dd>0){
+        // 	dataList[i].btn=1}//未达成
+        // 	else if(num==0&&num2==num4){
+        // 		dataList[i].btn=2}	//已完成    
 
         dataList[i].challengeRmb = Math.floor(dataList[i].challengeRmb / 100);
 
@@ -504,6 +518,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
   },
   onPullDownRefresh: function onPullDownRefresh() {
     this.inDada(this.tab);
+    uni.stopPullDownRefresh();
   },
   components: {
     actionlist: actionlist } };exports.default = _default;

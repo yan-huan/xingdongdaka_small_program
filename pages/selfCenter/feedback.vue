@@ -55,12 +55,7 @@
 		},
 
 		onLoad() {
-			if (!this.hasLogin) {
-				uni.redirectTo({
-					url: '../login/login'
-				});
-				return false;
-			};
+			this.xdUniUtils.xd_login(this.hasLogin);
 			try {
 
 				this.userInfo = uni.getStorageSync('userInfo')
@@ -94,12 +89,7 @@
 			},
 			submitFeedback: function(e) {
 			  var that = this;
-			  if (!that.hasLogin) {
-			  	uni.navigateTo({
-			  		url: '../login/login'
-			  	});
-			  	return false;
-			  }
+			  that.xdUniUtils.xd_login(that.hasLogin);
 			  that.userId = uni.getStorageSync('id');
 			   if (that.index == 0) {
 					uni.showToast({

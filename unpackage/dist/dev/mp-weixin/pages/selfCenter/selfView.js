@@ -184,11 +184,10 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
       userId: '',
       user: uni.getStorageSync('id'),
       total: '',
-      userInfo: uni.getStorageSync('userInfo'),
+      userInfo: '',
       lookerList: [],
       pushId: '',
       lookTotal: 0,
-      looktotals: '',
       lookerCount: 0,
       likeCount: 0,
       guanzhu: '关注' };
@@ -231,7 +230,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
     this.userId = option.userId;
     this.getCardList();
     this.getLookerList();
-    // this.getUserInfo();
+    this.getUserInfo();
     this.getIsAttention();
     this.lookerCountData();
   },
@@ -330,28 +329,16 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
         });
       }
     },
-    getShowFollow: function getShowFollow() {var _this3 = this;
-      this.xd_request_post(this.xdServerUrls.xd_getLookerCountByUserId,
-      {
-        userId: userId },
 
-
+    getUserInfo: function getUserInfo() {var _this3 = this;
+      this.xd_request_post(this.xdServerUrls.xd_getUserInfoByUserId, {
+        userId: this.userId },
       true).
       then(function (res) {
-        _this3.looktotals = res.obj.total;
-      }).catch(function (err) {
+        _this3.userInfo = res.obj;
+        // this.$set(this.userInfo,res.obj)
       });
-
-
     },
-    // getUserInfo(){
-    // 	this.xd_request_post(this.xdServerUrls.xd_getUserInfoByUserId,{
-    // 		userId:this.userId,
-    // 	},true)
-    // 	.then(res=>{
-    // 		this.userInfo=res.obj;
-    // 	})
-    // },
     getCardList: function getCardList() {var _this4 = this;
       this.xd_request_post(this.xdServerUrls.xd_pushByUserIdList, {
         token: uni.getStorageSync('token'),
@@ -360,7 +347,6 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
       true).
       then(function (res) {
         _this4.list = _this4.timeStamp(res);
-
         _this4.total = res.obj.total;
       });
     },

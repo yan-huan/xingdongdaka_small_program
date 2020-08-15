@@ -117,25 +117,26 @@ function xd_request(url, method, params, headers) {
 				if (d.data.resultCode == 10002) {					
 					      // 清除登录相关内容
 						try {
-						  uni.removeStorageSync('userInfo');
-						  uni.removeStorageSync('id');
-						  uni.removeStorageSync('token');
+						  uni.removeStorage('userInfo');
+						  uni.removeStorage('id');
+						  uni.removeStorage('token');
 						} catch (e) {
 						}
 						// 切换到登录页面
 						uni.reLaunch({
-						  url: '../login/login'
+						  url: '/pages/login/login'
 						});
 							  
 				} else if(d.data.resultCode ==0||d.data.status==1){
 						resolve(d.data);
 				}else{
+					
 					resolve(d.data);
 				}
 			},
 			fail: function(err) {
 				uni.showToast({
-				  title: err
+				  title: err.errMsg
 				})
 				console.log(err)
 				reject(err);
@@ -368,6 +369,21 @@ const updateNumber = function(gnumber) {
 	// 	data: gnumber
 	// })
 };
+//登录检测
+function xd_login(e,nav){
+	if(!e){
+		if(nav){
+			uni.reLaunch({
+			  url: '/pages/login/login'
+			});
+		}else{
+			uni.navigateTo({
+				url:'/pages/login/login'
+			})
+		}			
+		return false;
+	}
+}
 
 export default {
 	updateNumber,
@@ -395,5 +411,6 @@ export default {
 	xd_request_text,
 	xd_showImg,
 	xd_randomImg,
-	xd_onShare
+	xd_onShare,
+	xd_login
 }

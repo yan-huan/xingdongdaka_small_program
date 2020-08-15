@@ -68,18 +68,13 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
       return data;
     },
     formSubmit: function formSubmit(e) {
-
-      if (!this.hasLogin) {
-        uni.navigateTo({
-          url: '../login/login' });
-
-        return false;
-      }
+      this.xdUniUtils.xd_login(this.hasLogin);
       var that = this;
 
       var userData = {
         token: '',
         userId: '' };
+
 
       try {
         userData.token = uni.getStorageSync('token');
@@ -88,11 +83,21 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
         //TODO handle the exception
       }
       if (that.rmb.challengeRmb == 5) {
+        if (e.detail.value.challengeRmb < 0 || isNaN(e.detail.value.challengeRmb)) {
+          uni.showToast({
+            title: '输入保证金有误',
+            mask: true,
+            duration: 2000,
+            icon: 'none' });
+
+          return false;
+
+        }
         that.saveData = Object.assign(that.formData, e.detail.value, userData);
       } else {
         that.saveData = Object.assign(that.formData, that.rmb, userData);
       }
-      console.log('formSubmit------ that.saveData', that.saveData);
+
       if (that.saveData.challengeRmb == 0 || that.saveData.challengeRmb == '') {
         if (e.detail.value.challengeRmb == '' || e.detail.value.challengeRmb <= 0) {
           that.saveData.challengeRmb = 0;
@@ -114,7 +119,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
             } else {
 
               uni.showToast({
-                title: res.obj,
+                title: res,
                 icon: 'none',
                 duration: 3000,
                 success: function success() {
@@ -181,9 +186,8 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
 
 
         } else {
-
           uni.showToast({
-            title: res.obj,
+            title: res.status,
             icon: 'none',
             duration: 3000,
             success: function success() {
@@ -223,9 +227,9 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function ownKeys(object, enumera
       };
       data.id = that.saveData.userId;
       data.token = that.saveData.token;
-      data.city = userInfo.city;
-      data.userName = userInfo.nickName;
-      data.province = userInfo.province;
+      // data.city=userInfo.city;
+      // data.userName=userInfo.nickName;
+      // data.province=userInfo.province;
       data.unionId = userInfo.unionId;
       data.openid = userInfo.openId;
       data.payRmb = that.mony;

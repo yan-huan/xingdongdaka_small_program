@@ -178,8 +178,9 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
   data: function data() {
     return {
       tab: 0, //行动，围观，收藏
-      list: [1, 2, 3, 4, 5],
+      // list: [1, 2, 3, 4, 5],
       userInfos: '',
+      looktotals: 0,
       lookerCount: 0,
       likeCount: 0,
       num: 0, //关注新增数量
@@ -187,7 +188,9 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
       // onOff: true,
       // env:uni.getStorageSync('env'),
       rmb: 0.00,
-      userId: '' };
+      id: uni.getStorageSync('id'),
+      userId: '',
+      guanzhu: '' };
 
   },
   computed: _objectSpread({},
@@ -205,15 +208,11 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
     this.getBalance();
     this.lookerCountData();
     this.burieInit();
+    this.getShowFollow();
   },
 
   onLoad: function onLoad() {
-    if (!this.hasLogin) {
-      uni.redirectTo({
-        url: '../login/login' });
-
-      return false;
-    };
+    this.xdUniUtils.xd_login(this.hasLogin, true);
     this.onToOff();
 
   },
@@ -237,17 +236,31 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
                   }
                 });case 1:case "end":return _context.stop();}}}, _callee);}))();
     },
-    burieInit: function burieInit() {var _this3 = this;
+    getShowFollow: function getShowFollow() {var _this3 = this;
+      this.xd_request_post(this.xdServerUrls.xd_getInviteList,
+      {
+        token: uni.getStorageSync('token') },
+
+
+      true).
+      then(function (res) {
+        _this3.looktotals = res.obj.total;
+      }).catch(function (err) {
+      });
+
+
+    },
+    burieInit: function burieInit() {var _this4 = this;
       this.xd_request_post(this.xdServerUrls.xd_selectBurieStatistics,
       {},
       true).then(function (res) {
         if (res.resultCode == 0) {
           var gz_num = res.obj.gzCount;
           var wg_num = res.obj.wgCount;
-          _this3.num = gz_num;
-          _this3.wg_num = wg_num;
+          _this4.num = gz_num;
+          _this4.wg_num = wg_num;
           var num = gz_num + wg_num;
-          _this3.xdUniUtils.updateNumber(num);
+          _this4.xdUniUtils.updateNumber(0);
         }
       });
 
@@ -273,19 +286,14 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
     },
     lookerCountData: function lookerCountData(list) {
       var that = this;
-      if (!that.hasLogin) {
-        uni.navigateTo({
-          url: '../login/login' });
-
-        return false;
-      }
+      that.xdUniUtils.xd_login(that.hasLogin);
       that.userId = uni.getStorageSync('id');
       that.xd_request_post(that.xdServerUrls.xd_getLookerCountByUserId, {
         userId: that.userId },
       false).then(function (res) {
 
         if (res.resultCode == 0) {
-          console.log(res);
+
           that.lookerCount = res.obj.lookerCount;
           that.likeCount = res.obj.likeCount;
         } else {
@@ -293,7 +301,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
         }
       });
     },
-    clickMe: function clickMe() {var _this4 = this;
+    clickMe: function clickMe() {var _this5 = this;
       var that = this;
 
       wx.getSetting({
@@ -355,7 +363,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18);function _interopRequireDefault(
             });
 
           } else {
-            _this4.logOut();
+            _this5.logOut();
             uni.navigateTo({
               url: '../login/login' });
 

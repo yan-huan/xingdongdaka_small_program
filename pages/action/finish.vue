@@ -4,7 +4,7 @@
 			<view class="uni-form-item uni-column">
 				<view class="form-item"><input :value="rmb.challengeRmb" type="number" class="digit" name="challengeRmb" placeholder="请输入保障金数额" maxlength="5" /></view>
 				<view class="pricelis">
-					<view class="priceli" @click="priceRmb(1)"><text>1元</text></view>
+					<view class="priceli" @click="priceRmb(2)"><text>2元</text></view>
 					<view class="priceli" @click="priceRmb(6)"><text>6元</text></view>
 					<view class="priceli" @click="priceRmb(18)"><text>18元</text></view>
 					<view class="priceli" @click="priceRmb(66)"><text>66元</text></view>
@@ -58,19 +58,14 @@ export default {
 				return data;
 		},
 		formSubmit(e) {
-			
-			if(!this.hasLogin){
-				uni.navigateTo({
-					url: '../login/login' 
-				});
-				return false;
-			}
+			this.xdUniUtils.xd_login(this.hasLogin);
 			var that = this;
 			
 			let userData={
 				token:'',
 				userId:'',
-			}
+			}	
+			
 			try{
 				userData.token=uni.getStorageSync('token');
 				userData.userId=uni.getStorageSync('id');
@@ -78,11 +73,21 @@ export default {
 				//TODO handle the exception
 			}
 			if(that.rmb.challengeRmb==5 ){
+				if( e.detail.value.challengeRmb<0|| isNaN(e.detail.value.challengeRmb)){
+					uni.showToast({
+					    title: '输入保证金有误',
+						mask:true,
+					    duration: 2000,
+						icon:'none'
+					});
+					return false
+					
+				}
 				that.saveData=Object.assign(that.formData,e.detail.value,userData);
 			}else{
 				that.saveData=Object.assign(that.formData,that.rmb,userData);	
 			}
-			console.log('formSubmit------ that.saveData',that.saveData);
+			
 			if(that.saveData.challengeRmb==0 ||that.saveData.challengeRmb=='' ){
 				if(e.detail.value.challengeRmb==''||e.detail.value.challengeRmb<=0){
 					that.saveData.challengeRmb=0;
@@ -104,7 +109,7 @@ export default {
 						}else{
 							
 							uni.showToast({
-								title: res.obj,
+								title: res,
 								icon: 'none',
 								duration: 3000,
 								success:function(){
@@ -171,9 +176,8 @@ export default {
 					
 					
 				}else{
-					
 					uni.showToast({
-						title: res.obj,
+						title: res.status,
 						icon: 'none',
 						duration: 3000,
 						success:function(){
@@ -213,9 +217,9 @@ export default {
 			};
 			data.id=that.saveData.userId;
 			data.token=that.saveData.token;
-			data.city=userInfo.city;
-			data.userName=userInfo.nickName;
-			data.province=userInfo.province;
+			// data.city=userInfo.city;
+			// data.userName=userInfo.nickName;
+			// data.province=userInfo.province;
 			data.unionId=userInfo.unionId;
 			data.openid=userInfo.openId;
 			data.payRmb=that.mony;
