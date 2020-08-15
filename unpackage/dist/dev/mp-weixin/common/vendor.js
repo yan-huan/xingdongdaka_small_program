@@ -8697,7 +8697,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "圈子", "enablePullDownRefresh": true, "usingComponents": { "index-list": "/components/indexList", "back-top": "/components/backTop" }, "usingAutoImportComponents": {} }, "pages/msg/talk": { "navigationBarTitleText": "消息回复", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/clockIn": { "navigationBarTitleText": "打卡", "usingComponents": { "imt-audio": "/components/imt-audio/imt-audio" }, "usingAutoImportComponents": {} }, "pages/selfCenter/selfCenter": { "navigationBarTitleText": "我的", "usingComponents": { "usershow": "/components/usershow" }, "usingAutoImportComponents": {} }, "pages/selfCenter/selfView": { "navigationBarTitleText": "查看信息", "usingComponents": { "usershow": "/components/usershow", "actionlist": "/components/actionlist" }, "usingAutoImportComponents": {} }, "pages/selfCenter/income": { "navigationBarTitleText": "账单", "enablePullDownRefresh": true, "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/action/action": { "navigationBarTitleText": "行动", "enablePullDownRefresh": true, "usingComponents": { "actionlist": "/components/actionlist" }, "usingAutoImportComponents": {} }, "pages/action/step1": { "navigationBarTitleText": "新建行动", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/action/finish": { "navigationBarTitleText": "保证金", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/index/cardDetails/cardDetails": { "navigationBarTitleText": "打卡详情", "usingComponents": { "imt-audio": "/components/imt-audio/imt-audio" }, "usingAutoImportComponents": { "imt-audio": "/components/imt-audio/imt-audio" } }, "pages/index/action/action": { "navigationBarTitleText": "行动详情", "usingComponents": { "looker-count-info": "/components/lookerCountInfo" }, "usingAutoImportComponents": {} }, "pages/selfCenter/editUserInfo": { "navigationBarTitleText": "编辑信息", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/feedback": { "navigationBarTitleText": "意见反馈", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/myattention": { "navigationBarTitleText": "关注", "usingComponents": { "index-list": "/components/indexList" }, "usingAutoImportComponents": {} }, "pages/selfCenter/myfans": { "navigationBarTitleText": "粉丝", "usingComponents": { "index-list": "/components/indexList" }, "usingAutoImportComponents": {} }, "pages/login/login": { "navigationBarTitleText": "微信授权登录", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/web/webShow": { "navigationBarTitleText": "网页", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/selfCenter/balanDrawal": { "navigationBarTitleText": "提现", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/form": { "navigationBarTitleText": "赞助", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/card": { "navigationBarTitleText": "赞助", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/index": { "navigationBarTitleText": "赞助", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/sponsor/action": { "navigationBarTitleText": "赞助活动", "usingComponents": { "looker-count-info": "/components/lookerCountInfo" }, "usingAutoImportComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "行动打卡", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "圈子", "enablePullDownRefresh": true }, "pages/msg/talk": { "navigationBarTitleText": "消息回复" }, "pages/selfCenter/clockIn": { "navigationBarTitleText": "打卡" }, "pages/selfCenter/selfCenter": { "navigationBarTitleText": "我的" }, "pages/selfCenter/selfView": { "navigationBarTitleText": "查看信息" }, "pages/selfCenter/income": { "navigationBarTitleText": "账单", "enablePullDownRefresh": true }, "pages/action/action": { "navigationBarTitleText": "行动", "enablePullDownRefresh": true }, "pages/action/step1": { "navigationBarTitleText": "新建行动" }, "pages/action/finish": { "navigationBarTitleText": "保证金" }, "pages/index/cardDetails/cardDetails": { "navigationBarTitleText": "打卡详情" }, "pages/index/action/action": { "navigationBarTitleText": "行动详情" }, "pages/selfCenter/editUserInfo": { "navigationBarTitleText": "编辑信息" }, "pages/selfCenter/feedback": { "navigationBarTitleText": "意见反馈" }, "pages/selfCenter/myattention": { "navigationBarTitleText": "关注" }, "pages/selfCenter/myfans": { "navigationBarTitleText": "粉丝" }, "pages/login/login": { "navigationBarTitleText": "微信授权登录" }, "pages/web/webShow": { "navigationBarTitleText": "网页" }, "pages/selfCenter/balanDrawal": { "navigationBarTitleText": "提现" }, "pages/sponsor/form": { "navigationBarTitleText": "赞助" }, "pages/sponsor/action": { "navigationBarTitleText": "赞助活动" }, "pages/sponsor/card": { "navigationBarTitleText": "赞助" }, "pages/sponsor/index": { "navigationBarTitleText": "赞助" } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "行动打卡", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 /* 9 */,
@@ -8841,185 +8841,7 @@ serverBaseUrl + '/invite/getInviteList'), _serverUrls);var _default =
   serverBaseUrl: serverBaseUrl };exports.default = _default;
 
 /***/ }),
-/* 14 */,
-/* 15 */,
-/* 16 */
-/*!**********************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \**********************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode, /* vue-cli only */
-  components, // fixed by xxxxxx auto components
-  renderjs // fixed by xxxxxx renderjs
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // fixed by xxxxxx auto components
-  if (components) {
-    if (!options.components) {
-      options.components = {}
-    }
-    var hasOwn = Object.prototype.hasOwnProperty
-    for (var name in components) {
-      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
-        options.components[name] = components[name]
-      }
-    }
-  }
-  // fixed by xxxxxx renderjs
-  if (renderjs) {
-    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
-      this[renderjs.__module] = this
-    });
-    (options.mixins || (options.mixins = [])).push(renderjs)
-  }
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 17 */
-/*!*************************************************************!*\
-  !*** /Users/wangyao/Desktop/xingdongdaka-ui/store/index.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-_vue.default.use(_vuex.default);
-
-var store = new _vuex.default.Store({
-  state: {
-
-    hasLogin: false,
-    real: false,
-    infoRes: {},
-    userInfo: {} },
-
-
-
-  mutations: {
-
-    logIn: function logIn(state, provider) {
-      state.hasLogin = true;
-      state.userInfo = provider;
-      uni.setStorageSync('userInfo', state.userInfo);
-
-    },
-    IndexlogIn: function IndexlogIn(state) {
-      state.hasLogin = true;
-    },
-    logOut: function logOut(state) {
-      state.hasLogin = false;
-      uni.setStorageSync('userInfo', '');
-      uni.setStorageSync('token', '');
-    },
-    uPuserInfo: function uPuserInfo(state, provider) {
-      state.userInfo = provider;
-      uni.setStorageSync('userInfo', state.userInfo);
-    } } });var _default =
-
-
-store;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 18 */
+/* 14 */
 /*!********************************************!*\
   !*** ./node_modules/vuex/dist/vuex.esm.js ***!
   \********************************************/
@@ -9967,6 +9789,184 @@ var index_esm = {
 
 /* harmony default export */ __webpack_exports__["default"] = (index_esm);
 
+
+/***/ }),
+/* 15 */,
+/* 16 */,
+/* 17 */
+/*!**********************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode, /* vue-cli only */
+  components, // fixed by xxxxxx auto components
+  renderjs // fixed by xxxxxx renderjs
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // fixed by xxxxxx auto components
+  if (components) {
+    if (!options.components) {
+      options.components = {}
+    }
+    var hasOwn = Object.prototype.hasOwnProperty
+    for (var name in components) {
+      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
+        options.components[name] = components[name]
+      }
+    }
+  }
+  // fixed by xxxxxx renderjs
+  if (renderjs) {
+    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
+      this[renderjs.__module] = this
+    });
+    (options.mixins || (options.mixins = [])).push(renderjs)
+  }
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 18 */
+/*!*************************************************************!*\
+  !*** /Users/wangyao/Desktop/xingdongdaka-ui/store/index.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+_vue.default.use(_vuex.default);
+
+var store = new _vuex.default.Store({
+  state: {
+
+    hasLogin: false,
+    real: false,
+    infoRes: {},
+    userInfo: {} },
+
+
+
+  mutations: {
+
+    logIn: function logIn(state, provider) {
+      state.hasLogin = true;
+      state.userInfo = provider;
+      uni.setStorageSync('userInfo', state.userInfo);
+
+    },
+    IndexlogIn: function IndexlogIn(state) {
+      state.hasLogin = true;
+    },
+    logOut: function logOut(state) {
+      state.hasLogin = false;
+      uni.setStorageSync('userInfo', '');
+      uni.setStorageSync('token', '');
+    },
+    uPuserInfo: function uPuserInfo(state, provider) {
+      state.userInfo = provider;
+      uni.setStorageSync('userInfo', state.userInfo);
+    } } });var _default =
+
+
+store;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 19 */

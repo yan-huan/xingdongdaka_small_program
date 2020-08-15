@@ -56,9 +56,6 @@
   -webkit-flex: 1;
           flex: 1;
 }
-.moreInfoRow .moreInfoIn_text {
-  margin-left: 300rpx;
-}
 .moreInfoRow .moreInfoIn .thin {
   padding: 0 16rpx;
 }

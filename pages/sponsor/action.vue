@@ -41,6 +41,16 @@
 								保证金￥{{pushList.challengeRmb}}
 							</view>
 						</view>
+						<view v-if="userId==pushList.userId">
+							<view class="cu-tag light bg-red radius" >
+								赞助金￥{{pushList.challengeRmb}}
+							</view>
+						</view>
+						<view>
+							<view class="cu-tag light bg-red radius" >
+								赞助数量￥{{pushList.challengeRmb}}
+							</view>
+						</view>
 					</view>
 				</view>
 				
@@ -68,65 +78,12 @@
 						<button class="cu-btn line-green sm round  " @click="goSteps" v-if="userId==pushList.userId&&pushList.pushCardCount<pushList.targetDay" >立即打卡</button>
 						<button class="cu-btn line-green sm round  " @click="gostep" v-else>一起行动</button>
 					</view>
-				
 				</view>
 			</view>
-			<scroll-view scroll-x class="bg-white nav">
-				<view class="flex text-center">
-					<view class="cu-item flex-sub" :class="index==TabCur?'text-orange cur':''" v-for="(items,index) in ['打卡内容','围观排行']" :key="index" @tap="tabSelect" :id="index" >
-						{{items}}
-					</view>
-				</view>
-			</scroll-view>
-			<block v-for="(item,index) in pusCardList" :key="index" v-if="TabCur==0">
-				<view class="cu-timeline">
-					<view class="cu-time" v-if="index == 0 || compareDate(pusCardList[index-1],item)">{{xdUniUtils.xd_timestampToTime(item.createTime,false,false,false)}}</view>
-					<view class="cu-item">
-						<view class="content">
-							<view class="">
-								<view class="cu-tag line-green">第{{pusCardList.length-index}}次打卡</view>
-							</view>
-							<view  class="margin-top-sm margin-bottom-sm margin-left-lg textcon" @tap="gocardComentList(item,0)">{{item.content}}</view>
-							<view class="videheit" v-if="item.videos!=''&&item.videos!=undefined &&item.videos!=null ">
-								<video class="videos"  :src="item.videos" controls></video>
-							</view>
-							<view v-else class="grid flex-sub padding-lr"   >
-								<image class="bg-img imgheit"  :src="item.pictures[0]" mode="aspectFill"
-								 @tap="goPageImg(item.pictures)" v-if="item.pictures.length!=''">
-								</image>
-							</view>
-							<view class="text-xxl flex flex-wrap justify-end " @tap="gocardComentList(item,1)">
-								<text class="text-gray cuIcon-comment  "></text>
-								<text class="text-gray text-df">{{item.commentCount}}</text>
-							</view>
-						</view>
-					</view>
-				</view>
-			</block>
-			<block v-for="(attention,index) in lookerList" :key="index" v-if="TabCur==1">
-				<view class="actionLi">
-					<view class="ali-main">
-						<view class="ali-main-img" @tap="goUser(attention.lookUserId)">
-							<image class='xd-mag xd-box-shadow' :src="attention.userHead"></image>
-						</view>
-						<view class="lli-main-content xd-list-body" @tap="goUser(attention.lookUserId)">
-							<view class="xd-list-title-text">
-								<text>{{attention.userName}}</text>
-								<text v-if="attention.sex==1" class="boy">♂</text>
-								<text v-else-if="attention.sex==0" class="boy">♀</text>
-								<text v-else class="boy">密</text>
-							</view>
-							<view class="moreInfoIn">
-								<image class='address' src="/static/images/icon/address.png"></image>
-								<text class="province">{{attention.province}}.{{attention.city}}</text>
-							</view>
-						</view>
-						<view class="ali-main-list" @tap="showBanner(attention.lookUserId,attention.pushId)">
-							<view>{{attention.lookerCount}}</view>
-						</view>
-					</view>
-				</view>
-			</block>
+			<view class="xd-btm-flex">
+				<uni-button @tap="gotoSponsorForm" style="width:150px" class="cu-btn  bg-yellow " type="">我要赞助</uni-button>
+				<uni-button @tap="gotoShare"  style="width:150px"  class="cu-btn  line-orange" type="">拉赞助</uni-button>
+			</view>
 		</view>
 	</view>
 </template>
@@ -210,6 +167,16 @@
 			}		
 		},
 		methods:{
+			gotoShare(){
+				console.log('gotoShare');
+			},
+			gotoSponsorForm(){
+				console.log('gotoSponsorForm');
+				
+				uni.navigateTo({
+					url:'form'
+				})
+			},
 		    showBanner(lookUserId,pushId){
 				this.$refs.lookerCountInfo.showBanner(lookUserId,pushId);
 			},

@@ -4582,6 +4582,19 @@ scroll-view.cu-steps .cu-item {
 .xd-flex-v-bottom{-webkit-box-align:end;-webkit-align-items:flex-end;align-items:flex-end;}
 .xd-flex1{-webkit-box-flex:1;-webkit-flex:1;flex:1;}
 .xd-pd-tb-10{padding:10rpx 0;}
+.xd-btm-flex{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	        flex-direction: row;
+	-webkit-justify-content: space-around;
+	        justify-content: space-around;
+	position: fixed;
+	border-top: 40px;
+}
 /* 宫格布局 */
 .xd-grids{padding:0; display:-webkit-box; display:-webkit-flex; display:flex; -webkit-flex-wrap:wrap; flex-wrap:wrap;}
 .xd-grids-items{width:100rpx; padding:20rpx 0 0 0; display:-webkit-box; display:-webkit-flex; display:flex;  box-sizing:border-box; -webkit-box-orient:vertical; -webkit-box-direction:normal; -webkit-flex-direction:column; flex-direction:column; -webkit-box-align:center; -webkit-align-items:center; align-items:center;}

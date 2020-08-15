@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _myattention_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./myattention.vue?vue&type=script&lang=js& */ 139);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _myattention_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _myattention_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _myattention_vue_vue_type_style_index_0_id_16b8345d_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./myattention.vue?vue&type=style&index=0&id=16b8345d&scoped=true&lang=scss& */ 141);
-/* harmony import */ var _Applications_HBuilderX_app_Contents_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../Applications/HBuilderX.app/Contents/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 16);
+/* harmony import */ var _Applications_HBuilderX_app_Contents_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../Applications/HBuilderX.app/Contents/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 17);
 
 var renderjs
 
@@ -163,7 +163,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 18); //
+var _vuex = __webpack_require__(/*! vuex */ 14); //
 //
 //
 //
@@ -195,7 +195,7 @@ var _vuex = __webpack_require__(/*! vuex */ 18); //
 //
 //
 //
-var indexList = function indexList() {__webpack_require__.e(/*! require.ensure | components/indexList */ "components/indexList").then((function () {return resolve(__webpack_require__(/*! @/components/indexList.vue */ 193));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { attentionList: [], pageNum: 1, //当前页数
+var indexList = function indexList() {__webpack_require__.e(/*! require.ensure | components/indexList */ "components/indexList").then((function () {return resolve(__webpack_require__(/*! @/components/indexList.vue */ 201));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { attentionList: [], pageNum: 1, //当前页数
       pageSize: 10, //每页条数
       userId: '', userInfo: '', token: uni.getStorageSync('token') };}, onShow: function onShow() {if (this.userInfo == '' || this.userInfo == undefined || this.userInfo == null) {try {this.userInfo = uni.getStorageSync('userInfo');} catch (e) {console.log(Error);};}}, onLoad: function onLoad(options) {this.userId = options.userId;try {this.userInfo = uni.getStorageSync('userInfo');} catch (e) {console.log(Error);};this.getShowFollow();},
   methods: {
