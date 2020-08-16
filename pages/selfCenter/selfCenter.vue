@@ -80,7 +80,9 @@
 		},
 
 		onLoad() {
-			this.xdUniUtils.xd_login(this.hasLogin,true);
+			if(!this.hasLogin){
+				return this.xdUniUtils.xd_login(this.hasLogin);
+			}
 			this.onToOff();
 			
 		},
@@ -154,7 +156,9 @@
 			},
 		   lookerCountData: function(list) {
 				var that = this;
-				that.xdUniUtils.xd_login(that.hasLogin);
+				if(!that.hasLogin){
+					return that.xdUniUtils.xd_login(that.hasLogin);
+				}
 				that.userId = uni.getStorageSync('id');
 				that.xd_request_post(that.xdServerUrls.xd_getLookerCountByUserId, {
 					userId: that.userId

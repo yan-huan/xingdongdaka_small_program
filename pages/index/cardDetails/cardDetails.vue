@@ -102,7 +102,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="">
+						<view class="padding-top-sm">
 							<ad-custom unit-id="adunit-8354389cd1f86a3f" ad-intervals="31" ></ad-custom>
 						</view>
 					</view>
@@ -161,7 +161,9 @@
 		onShareAppMessage(res) {
 			
 			let that = this;
-			that.xdUniUtils.xd_login(that.hasLogin);
+			if(!that.hasLogin){
+				return that.xdUniUtils.xd_login(that.hasLogin);
+			}
 			let text=that.pusCardLists.userId==that.userId? '第'+that.dakacishu+'次打卡:'+that.pusCardLists.pushCardList[0].content:'我为@'+that.pusCardLists.userName+'打Call：'+that.pusCardLists.pushCardList[0].content;
 			let pathText='/pages/index/action/action?pushId='+ that.pusCardLists.id+'&share='+that.id+'&isopen='+that.pusCardLists.isopen;
 			let  img=that.showCardCommentlist.pushCard.pictures[0]?that.showCardCommentlist.pushCard.pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png';
@@ -179,7 +181,7 @@
 			that.setSaveShareInfo();
 			return {
 				title:that.pusCardLists.userId==that.userId? '第'+that.dakacishu+'次打卡:'+that.pusCardLists.pushCardList[0].content:'我为@'+that.pusCardLists.userName+'打Call：'+that.pusCardLists.pushCardList[0].content,
-				query: '/pages/index/action/action?pushId='+ that.pusCardLists.id+'&share='+that.id+'&isopen='+that.pusCardLists.isopen,
+				query: 'pushId='+ that.pusCardLists.id+'&cardId='+that.cardId,
 				imageUrl:that.showCardCommentlist.pushCard.pictures[0]?that.showCardCommentlist.pushCard.pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
 			}
 				
@@ -194,6 +196,7 @@
 			//#endif
 			this.pushId=option.pushId;
 			this.cardId=option.cardId;
+			
 			if(option.show==1){
 				this.showInput=true;
 			}
@@ -206,7 +209,9 @@
 			
 			lookerClick:function(list){
 				var that=this ;
-				that.xdUniUtils.xd_login(that.hasLogin);
+				if(!that.hasLogin){
+					return that.xdUniUtils.xd_login(that.hasLogin);
+				}
 				that.userId=uni.getStorageSync('id');
 				that.xd_request_post(that.xdServerUrls.xd_saveLooker,{
 					
@@ -264,7 +269,9 @@
 					   })
 			},
 			goUser(e){
-				this.xdUniUtils.xd_login(this.hasLogin);
+				if(!this.hasLogin){
+					return this.xdUniUtils.xd_login(this.hasLogin);
+				}
 				uni.navigateTo({
 					url:'../../selfCenter/selfView?userId='+e
 				})
@@ -384,7 +391,9 @@
 				this.value=e.detail.value;
 			},
 			showInputComent(){
-				this.xdUniUtils.xd_login(this.hasLogin);
+				if(!this.hasLogin){
+					return this.xdUniUtils.xd_login(this.hasLogin);
+				}
 				this.showInput=!this.showInput;
 				this.inputType=2;
 				this.conmmmenttext='请输入评论内容'

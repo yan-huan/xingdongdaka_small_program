@@ -18,7 +18,12 @@
 					<view class="flex flex-wrap padding justify-between">
 						<view class="widthtext " >
 							<view class="flex flex-wrap justify-between">
-								<view class="cu-tag bg-grey radio">{{pushList.label}}</view>
+								<view class="">
+									<text class="text-orange" v-if="pushList.pushCardStatus==1">进行中...</text>
+									<text class="text-gray" v-else-if="pushList.pushCardStatus==2">未达成</text>
+									<text class="text-green" v-else-if="pushList.pushCardStatus==3">已达成</text>
+									<view class="margin-left-xs cu-tag bg-grey radio">{{pushList.label}}</view>
+								</view>
 								<view class="text-xl" v-if="pushList.isopen==1">
 									<text class="lg text-orange cuIcon-lock" ></text>
 								</view>
@@ -80,7 +85,7 @@
 			</scroll-view>
 			<block v-for="(item,index) in pusCardList" :key="index" v-if="TabCur==0">
 				<view class="cu-timeline">
-					<view class="cu-time" v-if="index == 0 || compareDate(pusCardList[index-1],item)">{{xdUniUtils.xd_timestampToTime(item.createTime,false,false,false)}}</view>
+					<view class="cu-time" v-if="index == 0 || compareDate(pusCardList[index-1],item)">{{item.createTime}}</view>
 					<view class="cu-item">
 						<view class="content">
 							<view class="">
@@ -136,15 +141,22 @@
 				</view>
 			</block>
 		</view>
+		<backTop :scrollTop="scrollTop"></backTop>
+		<!-- 开始行动-加号 -->
+		<view class="start-add" @tap="goPage('/pages/action/step1')" v-if="scrollTop<2000">
+			<image src="../../../static/images/icon/add.png" mode="widthFix"></image>
+		</view>
 	</view>
 </template>
 
 <script>
 	import lookerCountInfo from "@/components/lookerCountInfo.vue"
 	import{ mapState,mapMutations} from 'vuex'
+	import backTop from "@/components/backTop.vue"
 	export default {
 		components:{
-			lookerCountInfo
+			lookerCountInfo,
+			backTop
 		},
 		data() {
 			return {
@@ -162,9 +174,23 @@
 				lookNextPageTwo:'',
 				pushId:'',
 				isShare:0,
-				guanzhu:'关注'
+				guanzhu:'关注',
+				scrollTop:0,
+				
+				scrollTopinfo:true,
 				
 			};
+		},
+		onPageScroll(e) {
+			this.scrollTop = e.scrollTop;
+			// if(this.scrollTopinfo){
+			// 	this.scrollTopinfo=false;
+			// 	setTimeout(()=>{
+			// 		this.scrollTop=0
+			// 		this.scrollTopinfo=true;
+			// 	},3000)
+			// }
+			
 		},
 		computed: {
 		           ...mapState(['hasLogin'])  
@@ -176,6 +202,7 @@
 			})
 			//#endif
 			if(option.pushList==undefined){
+				
 				this.pushId=option.pushId;
 				this.isShare=option.isopen?option.isopen:0;
 				if(option.share!=undefined){
@@ -237,7 +264,7 @@
 				that.setSaveShareInfo();
 				return {
 					title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'打Call：'+that.pusCardList[0].content,
-					query: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
+					query: 'pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
 					imageUrl:that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
 				}
 				
@@ -245,7 +272,7 @@
 				that.setSaveShareInfo();
 				return {
 					title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pushList.content:'我为@'+that.pushList.userName+'打Call：'+that.pushList.content,
-					query: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
+					query: 'pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
 					imageUrl:that.pushList.pictures?that.pushList.pictures:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
 				}
 				
@@ -253,6 +280,14 @@
 		},
 		//#endif
 		methods:{
+			goPage(url){
+				if(!this.hasLogin){
+					return this.xdUniUtils.xd_login(this.hasLogin);
+				}
+				uni.navigateTo({
+					url
+				});
+			},
 		    showBanner(lookUserId,pushId){
 				this.$refs.lookerCountInfo.showBanner(lookUserId,pushId);
 			},
@@ -274,6 +309,7 @@
 					uni.showModal({
 						 content: '是否要创建相同行动项',
 						 confirmText: '新建',
+						 confirmText:'继续',
 						 success: (res) => {
 						   if (res.confirm) {
 							   uni.setStorageSync('pushData',this.pushList)
@@ -519,6 +555,7 @@
 				},true).then(res=>{
 					var data=res.obj.list;
 					for(let i=0;i<res.obj.list.length;i++){
+						data[i].createTime=this.xdUniUtils.xd_timestampToTime(data[i].createTime,false,false,false);
 						if(res.obj.list[i].pictures!=""){
 							data[i].pictures=res.obj.list[i].pictures.split(',')
 						}
@@ -691,6 +728,17 @@
 		border-radius: 200rpx;
 		padding: 0rpx 10rpx;
 		height: 28rpx;
+	}
+	.start-add{
+		width: 100upx; height:100upx;
+		display:flex; flex-direction:row; justify-content:center; align-items:center;
+		background: #ffe66f;
+		border: 2px solid #ffa700;
+		border-radius: 50%;
+		position: fixed; bottom: 100upx; right:30upx; z-index: 99;
+	}
+	.start-add image{
+		width: 48upx; height:48upx;
 	}
 
 </style>

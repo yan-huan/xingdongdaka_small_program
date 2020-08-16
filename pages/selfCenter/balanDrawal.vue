@@ -66,8 +66,11 @@ export default {
 	methods: {
 		
 		gopay(){
-		    this.xdUniUtils.xd_login(this.hasLogin);
+		   
 			var that=this;
+			 if(!that.hasLogin){
+			 	return that.xdUniUtils.xd_login(that.hasLogin);
+			 }
 			that.xd_request_post(that.xdServerUrls.xd_balanceWithdrawal,{
 				desc:'',
 				rmb:Number(that.rmb)*100,

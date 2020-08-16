@@ -208,7 +208,9 @@ export default {
 			this.audioPlaySrc=this.xdUniUtils.xd_randomImg();
 		            }  ,
 		getpushList(){
-			this.xdUniUtils.xd_login(this.hasLogin);
+			if(!this.hasLogin){
+				return this.xdUniUtils.xd_login(this.hasLogin);
+			}
 			this.xd_request_post(this.xdServerUrls.xd_pushDataByPushId,{
 				            pushId:this.pushId,
 							isShare:this.isShare,
@@ -231,7 +233,9 @@ export default {
 		},
 		submitFrom(e){
 			var end=undefined;
-			this.xdUniUtils.xd_login(this.hasLogin);
+			if(!this.hasLogin){
+				return this.xdUniUtils.xd_login(this.hasLogin);
+			}
 			if(e.detail.value.content==''){
 				uni.showToast({
 				    title: '打卡不能为空',
@@ -293,7 +297,7 @@ export default {
 			}
 			that.popUp=false;
 			uni.chooseImage({
-			    count: 4, //默认9
+			    count: 9, //默认9
 			    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 			    sourceType: ['album'], //从相册选择
 			    success: function (res) {

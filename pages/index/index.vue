@@ -32,7 +32,7 @@
 				<view class="swiper-banner" v-if="active == 1 || active ==3">
 				  <swiper class="swiper"  autoplay="true" circular="true" v-if="adOff">
 					<swiper-item v-for="item  in adid" :key="item">	
-							<ad-custom :unit-id="item" :ad-intervals="adtime" @load="bindload" @error="binderror"></ad-custom>
+							<ad-custom :unit-id="item" :ad-intervals="adtime" ></ad-custom>
 					</swiper-item>
 				  </swiper>
 				  <swiper class="swiper"  autoplay="true" circular="true" v-else>
@@ -95,7 +95,7 @@
 		</view>
 		<backTop :scrollTop="scrollTop"></backTop>
 		<!-- 开始行动-加号 -->
-		<view class="start-add" @tap="goPage('/pages/action/step1')" v-if="scrollTop<3000">
+		<view class="start-add" @tap="goPage('/pages/action/step1')" v-if="scrollTop<2000">
 			<image src="../../static/images/icon/add.png" mode="widthFix"></image>
 		</view>
 	</view>
@@ -134,16 +134,26 @@
 				Off:'',
 				scrollTop:0,
 				adOff:true,
+				scrollTopinfo:true,
 					
 			};
 		},
 		onPageScroll(e) {
-			
 			this.scrollTop = e.scrollTop;
+			if(this.scrollTopinfo){
+				this.scrollTopinfo=false;
+				setTimeout(()=>{
+					this.scrollTop=0
+					this.scrollTopinfo=true;
+				},3000)
+			}
+			
 		},
 		onShareAppMessage(res) {
 			let that = this;
-			that.xdUniUtils.xd_login(that.hasLogin);
+			if(!that.hasLogin){
+				return that.xdUniUtils.xd_login(that.hasLogin);
+			}
 			if(res.from=="menu"){
 			return	that.xdUniUtils.xd_onShare();
 			}else{
@@ -184,7 +194,9 @@
 				this.adOff=false;
 			},
 			goUser(e){
-				this.xdUniUtils.xd_login(this.hasLogin);
+				if(!this.hasLogin){
+					return this.xdUniUtils.xd_login(this.hasLogin);
+				}
 				uni.navigateTo({
 					url:'../selfCenter/selfView?userId='+e
 				})
@@ -227,7 +239,9 @@
 				
 			},
 			goPage(url){
-				this.xdUniUtils.xd_login(this.hasLogin);
+				if(!this.hasLogin){
+					return this.xdUniUtils.xd_login(this.hasLogin);
+				}
 				uni.navigateTo({
 					url
 				});
@@ -257,7 +271,9 @@
 			//围观
 			lookerClick:function(list,index){
 				var that=this ;
-				that.xdUniUtils.xd_login(that.hasLogin);
+				if(!that.hasLogin){
+					return that.xdUniUtils.xd_login(that.hasLogin);
+				}
 				that.userId=uni.getStorageSync('id');
 				that.xd_request_post(that.xdServerUrls.xd_saveLooker,{
 					
@@ -418,7 +434,9 @@
 				this.getShowFollow();
 			},
 			getShowFollow(){
-				this.xdUniUtils.xd_login(this.hasLogin);
+				if(!this.hasLogin){
+					return this.xdUniUtils.xd_login(this.hasLogin);
+				}
 				this.xd_request_post(this.xdServerUrls.xd_getAttentionList,
 				{
 					userId:uni.getStorageSync('id'),
@@ -527,10 +545,7 @@
 					break;
 					case 2:
 					if(!that.hasLogin){
-						uni.navigateTo({
-							url: '../login/login' 
-						});
-						return false;
+						return that.xdUniUtils.xd_login(that.hasLogin);
 					}
 					that.xd_request_post(that.xdServerUrls.xd_getAttentionList,
 					{
