@@ -51,12 +51,15 @@
 								赞助数量￥{{pushList.challengeRmb}}
 							</view>
 						</view>
+						赞助金：赞助金：
 					</view>
 				</view>
 				
 				<view class="text-contents">
 					<text class="contentext" >{{pushList.content}}
 					</text>
+					
+					
 				</view>
 				<view class="grid flex-sub padding-lr"  >
 					<image class="bg-img imgheit"  :src="pushList.pictures" mode="aspectFill"
@@ -66,24 +69,41 @@
 					 @tap="goPageImg(audioPlaySrc)" v-else @error="error">
 					</image>
 				</view>
-				<view class="flex padding justify-between" >
-					<view>
-						<button class="cu-btn bg-light-blue sm round" v-if="pushList.userId==userId"  :id="index" open-type="share">分享邀请</button>
-						<button class="cu-btn bg-orange sm round" v-else-if="pushList.onlooker"  :id="index" open-type="share">为TA打Call</button>
-						<button class="cu-btn bg-green sm round  " v-else-if="pushList.userId!=userId && !pushList.onlooker&&pushList.challengeRmb<=0"  @tap="lookerClick(pushList,index)">围观</button>
-						<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(pushList,index)">围观分钱</button>
-						<text class="text-gray text-df ">{{pushList.onlookerCount}}</text>
+				
+				<view v-if="sponsorList.length>0" class="solids-top margin-top">
+					<view  v-for="(ite,ind) in sponsorList" :key="ind" class="padding">
+						<view> 赞助人：{{ite.zanzhujinRmb}} </view>
+						<view> 赞助人头像：{{ite.zanzhujinRmb}} </view>
+						<view> 赞助金：{{ite.zanzhujinRmb}} </view>
+						<view v-if="!!ite.createTime"> 赞助时间：{{ite.createTime}} </view>
+						<view v-if="!!ite.sponsorCondition"> 赞助条件：{{ite.sponsorCondition}} </view> 
+						<view v-if="!!ite.location"> 赞助场地：{{ite.location}} </view>
+						
+						
+							<view v-if="ite.sponsorPictures.search(',')!==-1" class="grid col-4 grid-square flex-sub">
+								<view class="bg-img" v-for="(item,index) in ite.sponsorPictures.split(',')" :key="index" @tap="ViewImage" :data-url="imgList[index]">
+									<image :src="imgList[index]" mode="aspectFill"></image>
+								</view>
+							</view>
+						
+						<view v-if="!!ite.sponsorPictures"> 场地图片：<image :src="ite.sponsorPictures" mode="aspectFill"></image></view>
+						
+						<view v-if="!!ite.discounts"> 抵扣券：{{ite.discounts}} </view>
+						<view v-if="!!ite.other"> 其他{{ite.other}} </view> 
 					</view>
-					<view class="text-xxl"  >
-						<button class="cu-btn line-green sm round  " @click="goSteps" v-if="userId==pushList.userId&&pushList.pushCardCount<pushList.targetDay" >立即打卡</button>
-						<button class="cu-btn line-green sm round  " @click="gostep" v-else>一起行动</button>
-					</view>
+				</view >	
+
+				<view  class="margin-top" style="padding:30px">
+					
+				</view >	
+				
+
+				<view class="cu-bar foot flex padding justify-around" >
+					<button class="cu-btn bg-yellow  " @tap="gotoSponsorForm()">我要赞助</button>
+					<button class="cu-btn line-green " @tap="gotoShare()">拉赞助</button>
 				</view>
 			</view>
-			<view class="xd-btm-flex">
-				<uni-button @tap="gotoSponsorForm" style="width:150px" class="cu-btn  bg-yellow " type="">我要赞助</uni-button>
-				<uni-button @tap="gotoShare"  style="width:150px"  class="cu-btn  line-orange" type="">拉赞助</uni-button>
-			</view>
+			
 		</view>
 	</view>
 </template>
@@ -111,7 +131,12 @@
 				lookNextPageTwo:'',
 				pushId:'',
 				isShare:0,
-				guanzhu:'关注'
+				guanzhu:'关注',
+
+				sponsorList:[],  //赞助列表
+				sponsorShare:{}, //拉赞助
+				sponsorRmb:0,  //赞助金额
+				sponsorCnt:0,  //赞助笔数
 				
 			};
 		},
@@ -127,6 +152,7 @@
 			if(option.pushList==undefined){
 				this.pushId=option.pushId || uni.getStorageSync('pushId');
 				this.isShare=option.isopen?option.isopen:0;
+				this.getActSponsor()
 				if(option.share!=undefined){
 					try{												
 					 uni.setStorageSync('share',option.share);
@@ -138,6 +164,7 @@
 				this.getPushCardList();
 				this.clickSaveShareInfo();
 			}
+			
 			
 		},
 		
@@ -167,6 +194,39 @@
 			}		
 		},
 		methods:{
+			
+			async getActSponsor(){	
+				
+				const that = this
+				const parm = {
+					token: uni.getStorageSync('token'), 
+					pageSize: 99 , 
+					pageNum: 0 , 
+					pushId: uni.getStorageSync('pushId') ,       // 行动项id
+				} 
+				const {resultCode,obj,msg} = await that.xd_request_post(that.xdServerUrls.xd_getActSponsor,parm)
+				
+				if(resultCode==='0'){
+					
+					if(obj.pageInfo && obj.pageInfo.list &&  Array.isArray(obj.pageInfo.list) && obj.pageInfo.list.length>0 ) {
+						 this.sponsorList = obj.pageInfo.list
+						 console.log('-----------------',this.sponsorList)
+						 this.sponsorCnt = this.sponsorList.length
+					     this.sponsorRmb = this.sponsorList.reduce((t,v)=> t+=v.zanzhujinRmb,0)
+					}
+					this.sponsorShare = obj.pushTarget
+				} else {
+					uni.showToast({
+						title: msg,
+						icon: 'none',
+						duration: 3000,
+						success:function() {
+							return false;
+						}
+					})
+				}
+
+			},
 			gotoShare(){
 				console.log('gotoShare');
 			},

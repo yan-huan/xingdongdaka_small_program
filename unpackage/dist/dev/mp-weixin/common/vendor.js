@@ -8831,7 +8831,8 @@ serverBaseUrl + '/balance/inquireBalance'), _defineProperty(_serverUrls, "xd_sel
 serverBaseUrl + '/burie/selectBurieStatistics'), _defineProperty(_serverUrls, "xd_updateBurieStatistics",
 serverBaseUrl + '/burie/updateBurieStatistics'), _defineProperty(_serverUrls, "xd_saveSponsor",
 
-serverBaseUrl + '/sponsor/save'), _defineProperty(_serverUrls, "xd_getInviteList",
+serverBaseUrl + '/sponsor/save'), _defineProperty(_serverUrls, "xd_getActSponsor",
+serverBaseUrl + '/sponsor/getList'), _defineProperty(_serverUrls, "xd_getInviteList",
 serverBaseUrl + '/invite/getInviteList'), _serverUrls);var _default =
 
 

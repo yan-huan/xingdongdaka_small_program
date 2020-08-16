@@ -97,6 +97,26 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 =
+    _vm.sponsorList.length > 0
+      ? _vm.__map(_vm.sponsorList, function(ite, ind) {
+          var $orig = _vm.__get_orig(ite)
+
+          var g0 = ite.sponsorPictures.search(",")
+          return {
+            $orig: $orig,
+            g0: g0
+          }
+        })
+      : null
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -222,6 +242,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var lookerCountInfo = function lookerCountInfo() {__webpack_require__.e(/*! require.ensure | components/lookerCountInfo */ "components/lookerCountInfo").then((function () {return resolve(__webpack_require__(/*! @/components/lookerCountInfo.vue */ 236));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   components: {
@@ -243,8 +283,13 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
       lookNextPageTwo: '',
       pushId: '',
       isShare: 0,
-      guanzhu: '关注' };
+      guanzhu: '关注',
 
+      sponsorList: [], //赞助列表
+      sponsorShare: {}, //拉赞助
+      sponsorRmb: 0, //赞助金额
+      sponsorCnt: 0 //赞助笔数
+    };
 
   },
   computed: _objectSpread({},
@@ -259,6 +304,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
     if (option.pushList == undefined) {
       this.pushId = option.pushId || uni.getStorageSync('pushId');
       this.isShare = option.isopen ? option.isopen : 0;
+      this.getActSponsor();
       if (option.share != undefined) {
         try {
           uni.setStorageSync('share', option.share);
@@ -270,6 +316,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
       this.getPushCardList();
       this.clickSaveShareInfo();
     }
+
 
   },
 
@@ -299,6 +346,39 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
     }
   },
   methods: {
+
+    getActSponsor: function getActSponsor() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var that, parm, _yield$that$xd_reques, resultCode, obj, msg;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+
+                that = _this;
+                parm = {
+                  token: uni.getStorageSync('token'),
+                  pageSize: 99,
+                  pageNum: 0,
+                  pushId: uni.getStorageSync('pushId') // 行动项id
+                };_context.next = 4;return (
+                  that.xd_request_post(that.xdServerUrls.xd_getActSponsor, parm));case 4:_yield$that$xd_reques = _context.sent;resultCode = _yield$that$xd_reques.resultCode;obj = _yield$that$xd_reques.obj;msg = _yield$that$xd_reques.msg;
+
+                if (resultCode === '0') {
+
+                  if (obj.pageInfo && obj.pageInfo.list && Array.isArray(obj.pageInfo.list) && obj.pageInfo.list.length > 0) {
+                    _this.sponsorList = obj.pageInfo.list;
+                    console.log('-----------------', _this.sponsorList);
+                    _this.sponsorCnt = _this.sponsorList.length;
+                    _this.sponsorRmb = _this.sponsorList.reduce(function (t, v) {return t += v.zanzhujinRmb;}, 0);
+                  }
+                  _this.sponsorShare = obj.pushTarget;
+                } else {
+                  uni.showToast({
+                    title: msg,
+                    icon: 'none',
+                    duration: 3000,
+                    success: function success() {
+                      return false;
+                    } });
+
+                }case 9:case "end":return _context.stop();}}}, _callee);}))();
+
+    },
     gotoShare: function gotoShare() {
       console.log('gotoShare');
     },
@@ -341,7 +421,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
 
       });
     },
-    clickSaveShareInfo: function clickSaveShareInfo() {var _this = this;
+    clickSaveShareInfo: function clickSaveShareInfo() {var _this2 = this;
       if (uni.getStorageSync('share') != '' && this.userId != undefined) {
         this.xd_request_post(this.xdServerUrls.xd_saveShareInfo, {
           pushId: this.pushId,
@@ -349,7 +429,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
           clickUserId: this.userId },
         true).
         then(function (res) {
-          _this.getpushList();
+          _this2.getpushList();
         });
       }
     },
@@ -475,38 +555,38 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
 
 
     },
-    getpushList: function getpushList() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:if (!(
-                _this2.isShare == 1)) {_context.next = 4;break;}if (
-                uni.getStorageSync('token')) {_context.next = 4;break;}
+    getpushList: function getpushList() {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:if (!(
+                _this3.isShare == 1)) {_context2.next = 4;break;}if (
+                uni.getStorageSync('token')) {_context2.next = 4;break;}
                 uni.navigateTo({
-                  url: '../../login/login' });return _context.abrupt("return",
+                  url: '../../login/login' });return _context2.abrupt("return",
 
                 false);case 4:
 
 
-                _this2.xd_request_post(_this2.xdServerUrls.xd_pushDataByPushId, {
-                  pushId: _this2.pushId,
-                  isShare: _this2.isShare,
+                _this3.xd_request_post(_this3.xdServerUrls.xd_pushDataByPushId, {
+                  pushId: _this3.pushId,
+                  isShare: _this3.isShare,
                   lookUserId: uni.getStorageSync('id') },
                 true).then(function (res) {
                   if (res.resultCode == 0) {
                     var data = res.obj;
-                    data.createTime = _this2.xdUniUtils.xd_timestampToTime(res.obj.createTime);
-                    data.endTime = _this2.xdUniUtils.xd_timestampToTime(res.obj.endTime);
+                    data.createTime = _this3.xdUniUtils.xd_timestampToTime(res.obj.createTime);
+                    data.endTime = _this3.xdUniUtils.xd_timestampToTime(res.obj.endTime);
                     data.challengeRmb = res.obj.challengeRmb / 100;
-                    _this2.pushList = data;
-                    if (_this2.pushList.userId == uni.getStorageSync('id')) {
-                      _this2.guanzhu = '';
+                    _this3.pushList = data;
+                    if (_this3.pushList.userId == uni.getStorageSync('id')) {
+                      _this3.guanzhu = '';
                     } else {
-                      _this2.xd_request_post(_this2.xdServerUrls.xd_iSAttention, {
+                      _this3.xd_request_post(_this3.xdServerUrls.xd_iSAttention, {
                         userId: uni.getStorageSync('id'),
-                        attentionUserId: _this2.pushList.userId },
+                        attentionUserId: _this3.pushList.userId },
                       true).
                       then(function (res) {
                         if (res.obj) {
-                          _this2.guanzhu = '已关注';
+                          _this3.guanzhu = '已关注';
                         } else {
-                          _this2.guanzhu = '关注';
+                          _this3.guanzhu = '关注';
                         }
 
                       });
@@ -518,26 +598,26 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
 
                   }
 
-                });case 5:case "end":return _context.stop();}}}, _callee);}))();
+                });case 5:case "end":return _context2.stop();}}}, _callee2);}))();
     },
     goStep: function goStep() {
       uni.navigateTo({
         url: "/pages/action/step1" });
 
     },
-    getPushComenList: function getPushComenList() {var _this3 = this;
+    getPushComenList: function getPushComenList() {var _this4 = this;
       this.xd_request_post(this.xdServerUrls.xd_showCommentAndReplayCommtent, {
         pushId: this.pushId,
         token: uni.getStorageSync('token') },
       false).then(function (res) {
 
 
-        _this3.pushComentList = _this3.timeStamp(res);
+        _this4.pushComentList = _this4.timeStamp(res);
       });
     },
-    getPushCardList: function getPushCardList() {var _this4 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
-                _this4.xd_request_post(_this4.xdServerUrls.xd_pushCardListByPushId, {
-                  pushId: _this4.pushId },
+    getPushCardList: function getPushCardList() {var _this5 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
+                _this5.xd_request_post(_this5.xdServerUrls.xd_pushCardListByPushId, {
+                  pushId: _this5.pushId },
 
                 true).then(function (res) {
                   var data = res.obj.list;
@@ -546,8 +626,8 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
                       data[i].pictures = res.obj.list[i].pictures.split(',');
                     }
                   }
-                  _this4.pusCardList = data;
-                });case 1:case "end":return _context2.stop();}}}, _callee2);}))();
+                  _this5.pusCardList = data;
+                });case 1:case "end":return _context3.stop();}}}, _callee3);}))();
     },
     // 打卡
     cardFn: function cardFn() {
@@ -562,7 +642,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
       this.active = 2;
       this.getLookerList();
     },
-    tags: function tags() {var _this5 = this;
+    tags: function tags() {var _this6 = this;
       if (!uni.getStorageSync('token')) {
         uni.navigateTo({
           url: '../../login/login' });
@@ -578,7 +658,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
 
       true).then(function (res) {
         if (res.resultCode == 0) {
-          _this5.guanzhu = "已关注";
+          _this6.guanzhu = "已关注";
           uni.showToast({
             icon: 'none',
             title: '关注成功' });
@@ -591,19 +671,19 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
         }
       });
     },
-    getLookerList: function getLookerList() {var _this6 = this;
+    getLookerList: function getLookerList() {var _this7 = this;
       this.xd_request_post(this.xdServerUrls.xd_getLookerByPushId, {
         pushId: this.pushId,
         pageNum: this.lookNextPageTwo,
         pageSize: 10 },
       true).
       then(function (res) {
-        _this6.lookerList = res.obj.list;
-        _this6.looktotal = res.obj.total;
-        _this6.lookNextPageTwo = res.obj.nextPage;
-        _this6.lookerList.forEach(function (item) {
+        _this7.lookerList = res.obj.list;
+        _this7.looktotal = res.obj.total;
+        _this7.lookNextPageTwo = res.obj.nextPage;
+        _this7.lookerList.forEach(function (item) {
           if (item.lookUserId == uni.getStorageSync('id')) {
-            _this6.guanzhu = '已关注';
+            _this7.guanzhu = '已关注';
           }
         });
 
