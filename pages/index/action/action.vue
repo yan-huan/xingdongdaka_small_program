@@ -282,7 +282,10 @@
 		methods:{
 			goPage(url){
 				if(!this.hasLogin){
-					return this.xdUniUtils.xd_login(this.hasLogin);
+					uni.switchTab({
+						url:'../index'
+					})
+					return false
 				}
 				uni.navigateTo({
 					url

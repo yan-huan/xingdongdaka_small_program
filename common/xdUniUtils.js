@@ -112,6 +112,7 @@ function xd_request(url, method, params, headers) {
 			data: params || {},
 			header: headers || {},
 			dataType: "json",
+			
 			success: function(res) {
 				var d = res;
 				if (d.data.resultCode == 10002) {					

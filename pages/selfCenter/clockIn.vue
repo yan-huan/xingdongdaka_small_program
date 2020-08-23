@@ -168,6 +168,7 @@ export default {
 			maxTiming: false, // 最长录音时间的定时器
 			draw: undefined,
 			timeminute:0, //显示秒数
+			_isLoaded:'',
 			
 			
 		};
@@ -180,7 +181,26 @@ export default {
 		this.pushId=option.pushId;
 		this.getpushList();
 	},
+	onReady() {
+		  //  this._isLoaded = false
+			 //  rewardedVideoAd = this._rewardedVideoAd = uni.createRewardedVideoAd({ adpid: '1507000689' }) // 仅用于HBuilder基座调试 adpid: '1507000689'
+			 //  rewardedVideoAd.onLoad(() => {
+				// this._isLoaded = true
+			   
+			 //  })
+			 //  rewardedVideoAd.onError((err) => {
+				//   console.log('onError event', err)
+				// })
+				// rewardedVideoAd.onClose((res) => {
+				//   console.log('onClose event', res)
+				// })
+	},
 	methods: {
+		showAd(){
+			if (this._isLoaded) {
+			  this._rewardedVideoAd.show()
+			}
+		},
 		stopplay(){
 			innerAudioContext.stop;
 			this.plays=true;
@@ -342,7 +362,7 @@ export default {
 				}
 			});
 		},
-		popUpVideo(){
+	async	popUpVideo(){
 			 // 上传视频
 			 const that = this;
 			 if(that.videodata!=''){
@@ -353,6 +373,11 @@ export default {
 			 	});
 			 	return false
 			 }
+			 that.xdUniUtils.xd_request_post(that.xdServerUrls.xd_saveRedisByFree,{
+			 								 'token':uni.getStorageSync('token')
+			 }).then(res=>{
+			 								 console.log(res)
+			 })
 			 that.popUp=false;
 				uni.chooseVideo({
 					maxDuration:60,
@@ -360,13 +385,36 @@ export default {
 				    compressed:false,
 					sourceType: ['album'],
 					success: (responent) => {
-						let videoFile = responent.tempFilePath;
-						if(responent.size<100*1024*1024){
-							const uploadTask =uni.uploadFile({
+						let videoFile =  responent.tempFilePath;
+						
+						if(responent.size>100*1024*1024){
+							uni.showToast({
+								title:'视频不能大于100M',
+								icon:'none',
+								
+							})
+							// return false
+							// uni.showModal({
+							// 	title:'观看视频广告免费上传大于100M视频',
+							// 	confirmText:'观看',
+							// 	cancelText:'取消',
+							// 	success:function(ress) {
+							// 		 if (ress.confirm) {
+							// 			 that.showAd();
+										 
+							// 		}else if (ress.cancel) {
+							// 		return false
+										
+							// 		}
+							// })
+							// })
+							}
+							const uploadTask = uni.uploadFile({
 								url:that.xdServerUrls.xd_uploadFile,
 								method:"POST",
 								formData: {
 									'userId': uni.getStorageSync('id'),
+									'token':uni.getStorageSync('token')
 								},
 								filePath:videoFile,
 								name:'files',
@@ -374,7 +422,7 @@ export default {
 									that.videodata = JSON.parse(res.data).obj[0] 
 							
 								}
-							})
+							});
 							uploadTask.onProgressUpdate((res) => {
 								 that.loading=res.progress
 								 if(that.loading>=100){
@@ -384,16 +432,7 @@ export default {
 								 }
 												
 							 });  
-						}else{
-							uni.showToast({
-							    title: '视频应<20M',
-								mask:true,
-							    duration: 2000,
-								
-							});
-							return false
-						}
-						
+					
 					}
 				})
 			

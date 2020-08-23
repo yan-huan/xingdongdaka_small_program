@@ -102,7 +102,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="padding-top-sm">
+						<view class="padding-top-sm" v-if="!showInput">
 							<ad-custom unit-id="adunit-8354389cd1f86a3f" ad-intervals="31" ></ad-custom>
 						</view>
 					</view>
@@ -154,6 +154,19 @@
 				pushCardCreateTime:'',
 				dakacishu:0
 			}
+		},
+		watch:{
+			hasLogin() {
+				setTimeout(() => {
+					this.id=uni.getStorageSync('id');
+					this.userId=uni.getStorageSync('id');
+					this.getpushList();
+					let pages = getCurrentPages(); // 当前页面
+					let beforePage = pages[pages.length - 2]; // 前一个页面
+					beforePage.onLoad(); // 执行前一个页面的onLoad方法
+					
+				}, 100);
+			},
 		},
 		computed: {
 		           ...mapState(['hasLogin'])  
@@ -323,7 +336,10 @@
 				this.inputType=1;
 				this.conmmmenttext='回复：'+e.userName
 			},
-			inputComent(e){			
+			inputComent(e){		
+				if(!this.hasLogin){
+					return this.xdUniUtils.xd_login(this.hasLogin);
+				}
 				if(this.inputType==1){
 					this.xdUniUtils.xd_request_text({content:this.value}).then(res=>{
 						if(res.obj.errcode==0){

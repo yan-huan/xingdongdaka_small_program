@@ -29,10 +29,13 @@
 						<button class="cu-btn shadow-blur round coletext">搜索</button>
 					</view>
 				</view>
+				<view class="">
+					<wyb-noticeBar type="vert" :text="listnotice" v-on:showMore="showMore"  font-weight="bold"  />
+				</view>
 				<view class="swiper-banner" v-if="active == 1 || active ==3">
 				  <swiper class="swiper"  autoplay="true" circular="true" v-if="adOff">
 					<swiper-item v-for="item  in adid" :key="item">	
-							<ad-custom :unit-id="item" :ad-intervals="adtime" ></ad-custom>
+							<ad-custom :unit-id="item" :ad-intervals="adtime"  @load="bindload" @error="binderror"></ad-custom>
 					</swiper-item>
 				  </swiper>
 				  <swiper class="swiper"  autoplay="true" circular="true" v-else>
@@ -104,15 +107,19 @@
 <script>
 	import{ mapState,mapMutations} from 'vuex'
 	import indexList from "@/components/indexList.vue";
-	import backTop from "@/components/backTop.vue"
+	import backTop from "@/components/backTop.vue";
+	import wybNoticeBar from '@/components/wyb-noticeBar/wyb-noticeBar.vue'
 	
 	export default {
 		components:{
 			indexList,
-			backTop
+			backTop,
+			wybNoticeBar,
+			
 		},
 		data() {
 			return {
+				
 				// audioPlaySrc:'../static/images/icon/img/title1.png',
 				inimg:'',
 				adtime:31,
@@ -122,6 +129,9 @@
 				labelId:1,
 				bannerList:[],
 				tabs: [],
+				listnotice: [
+					
+				],
 				listsTab:[],
 				attentionList:[],
 				token:uni.getStorageSync('token'),
@@ -179,6 +189,7 @@
 			//#endif
 		    this.indexData();
 			this.burieInit();
+			this.getnotic();
 			
 		},
 		 computed: {  
@@ -187,6 +198,30 @@
 		methods:{
 			...mapMutations(['logIn','logOut','IndexlogIn'])  ,
 			bindload(){
+				
+			},
+			//获取通知
+			getnotic(){
+				this.xd_request_get(this.xdServerUrls.xd_getVal,{
+					key:'inform_list_config'
+				},true
+				   ).then(res => {
+					var data= JSON.parse(res.obj);
+					data.forEach(item=>{
+						this.listnotice.push(item.desc)
+					})
+					   })
+			},
+			//通知跳转
+			showMore(e){
+				if(this.listnotice[e].type==1){
+					
+				}else{
+					url = encodeURIComponent(this.listnotice[e].url);
+					uni.navigateTo({
+						url: '../web/webShow?url=' + url
+					});
+				}
 				
 			},
 			binderror(e){
@@ -790,5 +825,8 @@
 	}
 	.coletext{
 		background: #ffe66f;
+	}
+	.notice-area{
+		padding-top: 20upx;
 	}
 </style>

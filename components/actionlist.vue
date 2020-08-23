@@ -16,12 +16,13 @@
 				<view class="flex flex-wrap padding justify-between">
 					<view class=" " >
 						<view class="flex flex-wrap">
-							<view class="cu-tag bg-grey radio">{{item.label}}</view>
-							<view class="margin-left-sm" v-if="tab==0||tab==1">
+							<view class="" v-if="tab==0||tab==1">
 								<text class="text-orange" v-if="item.pushCardStatus==1">进行中...</text>
 								<text class="text-gray" v-else-if="item.pushCardStatus==2">未达成</text>
 								<text class="text-green" v-else-if="item.pushCardStatus==3">已达成</text>
 							</view>
+							<view class="cu-tag bg-grey radio margin-left-sm">{{item.label}}</view>
+							
 						</view>
 						<view class="text-gray text-sm ">
 							{{xdUniUtils.xd_timestampToTime(item.createTime,false,true,false) }}  ({{item.pushCardCount}}/{{item.targetDay}})

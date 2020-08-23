@@ -46,6 +46,7 @@
 	import{ mapState,mapMutations} from 'vuex'
 import actionlist from "@/components/actionlist.vue";
 import backTop from "@/components/backTop.vue"
+
 export default {
 	components:{
 		actionlist,
@@ -67,7 +68,8 @@ export default {
 			pushId:'',
 			index:'',
 			scrollTop:0,
-			scrollTopinfo:true
+			scrollTopinfo:true,
+			_isLoaded:'',
 		};
 	},
 	onPageScroll(e) {
@@ -104,7 +106,9 @@ export default {
 		  menus: ['shareAppMessage', 'shareTimeline']
 		})
 		//#endif
+		this.$AD.videoAdInit(adunit-d579021705423692);
 	},
+	
 	computed: {
 	           ...mapState(['hasLogin'])  
 	       },  
@@ -142,7 +146,13 @@ export default {
 		},
 		//#endif
 	methods: {
+		showAd(){
+			if (this._isLoaded) {
+			  this._rewardedVideoAd.show()
+			}
+		},
 		tabs(e){
+			
 			this.tab=e
 			if(e==0){
 				this.inDada(0);
@@ -160,6 +170,7 @@ export default {
 				   })
 		},
 		creatXd(e){
+			this.showAd();
 			var that=this;
 			var id=that.pushId;
 			var i=that.index;
