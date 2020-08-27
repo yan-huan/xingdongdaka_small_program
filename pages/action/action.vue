@@ -86,7 +86,8 @@ export default {
 	watch:{
 		hasLogin(){
 			setTimeout(() => {
-				this.inDada(this.tab)
+				this.inDada(this.tab);
+				this.userId=uni.getStorageSync('id');
 			
 			}, 100);
 			
@@ -106,7 +107,7 @@ export default {
 		  menus: ['shareAppMessage', 'shareTimeline']
 		})
 		//#endif
-		this.$AD.videoAdInit(adunit-d579021705423692);
+		// this.$AD.videoAdInit(adunit-d579021705423692);
 	},
 	
 	computed: {

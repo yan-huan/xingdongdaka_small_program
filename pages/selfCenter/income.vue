@@ -24,15 +24,16 @@
 					<view class="flex flex-direction">
 						<text >日期:{{xdUniUtils.xd_timestampToTime(item.createTime,false,true,false) }}</text>
 						<text >金额:￥{{item.rmb/100}}</text>
-						<text v-if="item.type==101">支付方式:余额支付</text>
-						<text v-if="item.type==102">支付方式:余额支付</text>
-						<text v-if="item.type==103">支付方式:余额支付</text>
-						<text v-if="item.type==104">支付方式:微信支付</text>
-						<text v-if="item.type==105">支付方式:余额支付</text>
-						<text v-if="item.type==106">支付方式:余额支付</text>
-						<text v-if="item.type==107">支付方式:余额支付</text>
-						<text v-if="item.type==000">支付方式:微信支付</text>
-						<text >说明:{{item.cause}}</text>
+						<text v-if="item.type==101">交易方式:余额支付</text>
+						<text v-if="item.type==102">交易方式:余额支付</text>
+						<text v-if="item.type==103">交易方式:余额收入</text>
+						<text v-if="item.type==104">交易方式:微信支付</text>
+						<text v-if="item.type==105">交易方式:余额支付</text>
+						<text v-if="item.type==106">交易方式:余额支付</text>
+						<text v-if="item.type==107">交易方式:余额提现</text>
+						<text v-if="item.type==000">交易方式:微信支付</text>
+						<text class="text-blue" v-if="item.type==103" @tap="gopush(item.pushId)">说明:{{item.cause}}</text>
+						<text  v-else >说明:{{item.cause}}</text>
 					</view>
 				</view>
 			</view>
@@ -61,6 +62,11 @@
 			this.loadata()
 		},
 		methods:{
+			gopush(e){
+				uni.navigateTo({
+					url:'../index/action/action?pushId='+e
+				})
+			},
 			burieUpdate(){
 				this.xd_request_post(this.xdServerUrls.xd_updateBurieStatistics,
 				{

@@ -7,14 +7,15 @@
 				</view>
 				<text class="margin-left-xs">分类</text>
 				<view class=" flex  align-center bg-gray label-left  radius " @tap="showradios" >					
-					<text>请选择(默认自动选择)</text>
+					<text v-if="labeldata.length">{{labeldata}}</text>
+					<text v-else>请选择(默认自动选择)</text>
 					<text class="lg text-gray cuIcon-triangledownfill"></text>
 				</view>
 				<view class="cu-modal  cu-modal-z" :class="modalNamecheckbox?'show':''" @tap="showradios">
 					<view class="cu-dialog" @tap.stop="">
 						<checkbox-group class="block" @change="RadioChange" name="label">
 							<view class="cu-list menu text-left">
-								<view class="cu-item" v-for="(item,index) in pickerlabel" :key="item.id">
+								<view class="cu-item" v-for="(item,index) in pickerlabel" :key="item.id" :id="index">
 									<label class="flex justify-between align-center flex-sub">
 										<view class="flex-sub">{{item.labelName}}</view>
 										<checkbox  class="round" :class="item.checked?'checked':''" :checked="item.checked"
@@ -141,7 +142,6 @@ export default {
 			targetDayf:false,
 			extendContent:'',
 			punchCardWay:'',
-			indexlabel:-1,
 			indextime:0,
 			time:'12:00',
 			indexholiday:0,
@@ -171,7 +171,7 @@ export default {
 			],
 			targetDay:7,
 			holidayDay:1,
-			labeldata:'',
+			labeldata:[],
 		};
 	},
 	onLoad() {
@@ -186,21 +186,35 @@ export default {
 	methods: {
 		showradios(){
 			this.modalNamecheckbox=!this.modalNamecheckbox;
+			// if(this.modalNamecheckbox){
+			// 	console.log(this.labeldata)
+			// 	this.labeldata=[];
+			// }
+			
 		},
 		bindTimeChange(e) {
 		            this.time = e.target.value
 		        },
+				//选择标签
 		RadioChange(e){
+			console.log(e)
 				var	values = e.detail.value;
+				var labeldatas=[];
 				for (var i = 0;i<this.pickerlabel.length;  ++i) {
 					const item = this.pickerlabel[i]
-					if(values.includes(item.id)){
+					 if(values.toString().includes(item.id)){
 						this.pickerlabel[i].checked=true;
+						console.log(this.pickerlabel)
+						labeldatas.push(this.pickerlabel[i].labelName);
+					}else{
+						this.pickerlabel[i].checked=false;
+						labeldatas.splice(i)
 					}
 					
 				}
-			this.labeldata=e.detail.value;
-			this.indexlabel=e.detail.value;
+				this.labeldata=labeldatas
+				
+			
 		},
 		holidayDayinput(e){
 			this.holidayDay=e.detail.value;
@@ -252,7 +266,7 @@ export default {
 			this.targetDay=e.detail.value;
 		},
 		PickerChange(e){
-			console.log(e)
+			
 			var that=this;
 			switch(e.detail.value){
 				case '0':
@@ -304,7 +318,7 @@ export default {
 			}
 		},
 		formSubmit(e){
-		 console.log(e)
+		
 			if(e.detail.value.content==''){
 				uni.showToast({
 				    title: '请输入行动内容',
@@ -410,7 +424,7 @@ export default {
 				   //     res.obj.forEach(function(item){
 						 //   data.push(item.labelName)
 					  //  })
-					  res.obj[0].checked=true;
+					  // res.obj[0].checked=true;
 					   this.pickerlabel=res.obj;
 				   }).catch(err => {
 				
