@@ -24,8 +24,9 @@
 								</view>
 							</view>
 						</checkbox-group>
-						<view class="checkbox-text"  @tap="showradios">
-							<text> 确定</text>
+						<view class="checkbox-text flex justify-around" >
+							<text @tap="showradios"> 确定</text>
+							<text @tap="showradios(1)" > 取消</text>
 						</view>
 					</view>
 				</view>
@@ -184,12 +185,17 @@ export default {
 		this.tabs();
 	},
 	methods: {
-		showradios(){
-			this.modalNamecheckbox=!this.modalNamecheckbox;
-			// if(this.modalNamecheckbox){
-			// 	console.log(this.labeldata)
-			// 	this.labeldata=[];
-			// }
+		showradios(e){
+			if(e==1){
+				for (var i = 0;i<this.pickerlabel.length;  ++i) {			
+					this.pickerlabel[i].checked=false;		
+				}
+				this.labeldata=[];
+				this.modalNamecheckbox=!this.modalNamecheckbox;
+			}else{
+				this.modalNamecheckbox=!this.modalNamecheckbox;
+			}
+			
 			
 		},
 		bindTimeChange(e) {
@@ -197,14 +203,13 @@ export default {
 		        },
 				//选择标签
 		RadioChange(e){
-			console.log(e)
+			
 				var	values = e.detail.value;
 				var labeldatas=[];
 				for (var i = 0;i<this.pickerlabel.length;  ++i) {
 					const item = this.pickerlabel[i]
 					 if(values.toString().includes(item.id)){
 						this.pickerlabel[i].checked=true;
-						console.log(this.pickerlabel)
 						labeldatas.push(this.pickerlabel[i].labelName);
 					}else{
 						this.pickerlabel[i].checked=false;
@@ -471,9 +476,9 @@ export default {
 }
 .checkbox-text{
 	height: 90rpx;
-	display: flex;
+	
 	align-items: center;
-	justify-content: center;
+	
 	text{
 		font-size: 45rpx;
 	}

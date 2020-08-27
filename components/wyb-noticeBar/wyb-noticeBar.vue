@@ -80,7 +80,7 @@
 					<swiper-item 
 					 class="swiper-item" 
 					 v-for="(item,index) in text" :key="index" 
-					 v-if="text.length <= 2" @tap="showMoreTap(index)">
+					 @tap="showMoreTap(index)">
 						<text class="text-black" :style="{
 								  whiteSpace: 'pre',
 								 
@@ -88,7 +88,7 @@
 								  fontSize: fontSize + 'rpx'}" >{{item}}</text>
 					</swiper-item>
 					
-					<swiper-item v-if="text.length > 2" class="swiper-item">
+					<!-- <swiper-item v-if="text.length > 2" class="swiper-item">
 						<text class="text-black" :style="{
 								  whiteSpace: 'pre',
 								 
@@ -101,7 +101,7 @@
 								 
 								  fontWeight: fontWeight,
 								  fontSize: fontSize + 'rpx'}">{{swp[1]}}</text>
-					</swiper-item>
+					</swiper-item> -->
 					
 				</swiper>
 			</view>

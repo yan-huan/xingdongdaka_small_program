@@ -145,6 +145,7 @@
 				scrollTop:0,
 				adOff:true,
 				scrollTopinfo:true,
+				listnoticedata:'',
 					
 			};
 		},
@@ -201,23 +202,26 @@
 				
 			},
 			//获取通知
-			getnotic(){
-				this.xd_request_get(this.xdServerUrls.xd_getVal,{
+		async	getnotic(){
+			await	 this.xd_request_get(this.xdServerUrls.xd_getVal,{
 					key:'inform_list_config'
 				},true
 				   ).then(res => {
 					var data= JSON.parse(res.obj);
 					data.forEach(item=>{
-						this.listnotice.push(item.desc)
+						this.listnotice.push(item.title)
 					})
+					this.listnoticedata=data;
 					   })
 			},
 			//通知跳转
 			showMore(e){
-				if(this.listnotice[e].type==1){
-					
+				if(this.listnoticedata[e].type==1){
+					uni.navigateTo({
+						url:this.listnoticedata.desc
+					});
 				}else{
-					url = encodeURIComponent(this.listnotice[e].url);
+				 var url = encodeURIComponent(this.listnoticedata[e].desc);
 					uni.navigateTo({
 						url: '../web/webShow?url=' + url
 					});
