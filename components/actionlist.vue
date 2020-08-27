@@ -59,6 +59,9 @@
 					<button class="cu-btn bg-green sm round  " v-else  @tap="lookerClick(item,indexs)">围观分钱</button>
 					<text class="text-gray text-df ">{{item.onlookerCount}}</text>
 				</view>
+				<view class="text-xxl" @click="gothank(item)" v-if="item.pushCardStatus!=1&&userId==item.userId" >
+					<button class="cu-btn line-green sm round  "  >设置感谢金</button>
+				</view>
 				<view class="text-xxl" @click="goPage(item)" v-if="userId==item.userId" >
 					<button class="cu-btn line-green sm round  "  >立即打卡</button>
 				</view>
@@ -104,6 +107,11 @@
 						url:'/pages/selfCenter/clockIn?pushId='+item.id
 					});
 				}
+			},
+			gothank(item){
+				uni.navigateTo({
+					url:'/pages/pageA/thankmoney/thankmoney?pushId='+item.id
+				});
 			},
 			goPageCard(e){
 				
