@@ -103,6 +103,16 @@ var render = function() {
   var m3 = Number(_vm.pickedIndex)
   var m4 = Number(_vm.pickedIndex)
   var m5 = Number(_vm.pickedIndex)
+  var m6 = Number(_vm.pickedIndex)
+  var m7 = Number(_vm.pickedIndex)
+  var m8 = Number(_vm.pickedIndex)
+  var m9 = Number(_vm.pickedIndex)
+  var m10 = Number(_vm.pickedIndex)
+  var m11 = Number(_vm.pickedIndex)
+  var m12 = Number(_vm.pickedIndex)
+  var m13 = Number(_vm.pickedIndex)
+  var m14 = Number(_vm.pickedIndex)
+  var m15 = Number(_vm.pickedIndex)
   _vm.$mp.data = Object.assign(
     {},
     {
@@ -112,7 +122,17 @@ var render = function() {
         m2: m2,
         m3: m3,
         m4: m4,
-        m5: m5
+        m5: m5,
+        m6: m6,
+        m7: m7,
+        m8: m8,
+        m9: m9,
+        m10: m10,
+        m11: m11,
+        m12: m12,
+        m13: m13,
+        m14: m14,
+        m15: m15
       }
     }
   )
@@ -255,6 +275,87 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(n);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 
 {
@@ -271,12 +372,25 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
       rmb: {
         challengeRmb: 5 },
 
-      sponsorCondition: '',
+      sponsorCondition: {
+        location: '',
+        daiJinQuan: '',
+        zheKouQuan: '',
+        other: '' },
+
+      pictures: {
+        location: [],
+        daiJinQuan: [],
+        zheKouQuan: [],
+        other: [] },
+
       location: '', //活动场地地址
       userInfo: uni.getStorageSync('userInfo'),
       imgList: [],
       switchA: false,
-      discounts: '', // 抵扣券
+      discounts: '', // openid
+      daiJinQuan: '', // 代金券
+      zheKouQuan: '', // 代金券
       userGroup: '', // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
       other: '', // 其他奖励
       sponsorID: '',
@@ -341,13 +455,14 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
   (0, _vuex.mapState)(['hasLogin'])),
 
   methods: {
+
     SwitchA: function SwitchA(e) {
       this.switchA = e.detail.value;
     },
     PickerChangeItem: function PickerChangeItem(e) {
       this.pickedIndex = e.detail.value;
     },
-    ChooseImage: function ChooseImage() {
+    ChooseImage: function ChooseImage(p) {
       var that = this;
       uni.chooseImage({
         count: 4, //默认9
@@ -368,7 +483,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
                 success: function success(uploadFileRes) {
                   var arrPhotos = JSON.parse(uploadFileRes.data).obj;
                   console.log("uploadFileRes----", JSON.parse(uploadFileRes.data));
-                  that.imgList = [].concat(_toConsumableArray(that.imgList), _toConsumableArray(arrPhotos));
+                  that.pictures[p] = [].concat(_toConsumableArray(that.pictures[p]), _toConsumableArray(arrPhotos));
                 },
                 fail: function fail(err) {
                   console.log("uploadFileRes----", err);
@@ -387,13 +502,13 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
         } });
 
     },
-    ViewImage: function ViewImage(e) {
+    ViewImage: function ViewImage(url, p) {
       uni.previewImage({
-        urls: this.imgList,
-        current: e.currentTarget.dataset.url });
+        urls: this.pictures[p],
+        current: url });
 
     },
-    DelImg: function DelImg(e) {var _this = this;
+    DelImg: function DelImg(index, p) {var _this = this;
       uni.showModal({
         title: '删除图片',
         content: '确定要删除吗？',
@@ -401,47 +516,77 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
         confirmText: '确定',
         success: function success(res) {
           if (res.confirm) {
-            _this.imgList.splice(e.currentTarget.dataset.index, 1);
+            _this.pictures[p].splice(index, 1);
           }
         } });
 
     },
-    saveSponser: function saveSponser() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var parm;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+
+
+    validCondition: function validCondition(p) {
+      var xdToast = function xdToast(msg) {
+        uni.showToast({
+          title: msg,
+          icon: 'none',
+          duration: 3000,
+          success: function success() {
+            return false;
+          } });
+
+        return false;
+      };
+      if (Number(p.rmb) === 0 && !p.location && !p.daiJinQuan && !p.zheKouQuan && !p.other) {
+        return xdToast('请输入大于0元的赞助金或填写赞助项目');
+      }
+
+      if (p.location && !this.sponsorCondition.location) {
+        return xdToast('请输入场地获取条件');
+      } else if (p.daiJinQuan && !this.sponsorCondition.daiJinQuan) {
+        return xdToast('请输入代金券获取条件');
+      } else if (p.zheKouQuan && !this.sponsorCondition.zheKouQuan) {
+        return xdToast('请输入折扣权获取条件');
+      } else if (p.other && !this.sponsorCondition.other) {
+        return xdToast('请输入其他获取条件');
+      }
+      return true;
+    },
+
+    onCommit: function onCommit() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var parm, _yield$_this2$xd_requ, resultCode, obj, msg;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:if (
+                _this2.hasLogin) {_context.next = 3;break;}
+                uni.navigateTo({
+                  url: '../login/login' });return _context.abrupt("return",
+
+                false);case 3:
+
                 parm = {
-                  rmb: _this2.rmb.challengeRmb, //赞助金
-                  sponsorCondition: _this2.sponsorCondition,
-                  location: _this2.imgList.toString(), //活动地址
+                  rmb: _this2.rmb.challengeRmb * 100, //赞助金
+                  sponsorCondition: JSON.stringify(_this2.sponsorCondition),
+                  location: _this2.location, //活动地址
+                  daiJinQuan: _this2.daiJinQuan,
+                  zheKouQuan: _this2.zheKouQuan,
                   discounts: _this2.discounts, //  抵扣券
                   userGroup: '', // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
                   other: _this2.other, // 其他奖励
                   finishCondition: '', // 完成条件
-                  status: 1, //   状态:0有效,1无效
+                  status: 0, //   状态:0有效,1无效
                   pushId: uni.getStorageSync('pushId'), // 行动项id
                   cardId: uni.getStorageSync('cardId'), // 打卡id
                   createTime: new Date(), //	创建时间
-                  updateTime: new Date() //   更新时间
-                };_context.next = 3;return (
-                  _this2.xd_request_post(_this2.xdServerUrls.xd_saveSponsor, parm).then(function (res) {
-                    console.log('this.xdServerUrls.xd_saveSponsor', res);
-                    return res;
-                  }));case 3:return _context.abrupt("return", _context.sent);case 4:case "end":return _context.stop();}}}, _callee);}))();
-    },
-
-    onCommit: function onCommit() {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var _yield$_this3$saveSpo, resultCode, obj, msg;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:if (
-                _this3.hasLogin) {_context2.next = 3;break;}
-                uni.navigateTo({
-                  url: '../login/login' });return _context2.abrupt("return",
-
-                false);case 3:_context2.next = 5;return (
-
-
-                  _this3.saveSponser());case 5:_yield$_this3$saveSpo = _context2.sent;resultCode = _yield$_this3$saveSpo.resultCode;obj = _yield$_this3$saveSpo.obj;msg = _yield$_this3$saveSpo.msg;
-                console.log('saveSponser', obj);
+                  updateTime: new Date(), //   更新时间
+                  pictures: JSON.stringify(_this2.pictures)
+                  // zanzhujinRmb: '1',
+                };if (!
+                _this2.validCondition(parm)) {_context.next = 12;break;}_context.next = 7;return (
+                  _this2.xd_request_post(_this2.xdServerUrls.xd_saveSponsor, parm));case 7:_yield$_this2$xd_requ = _context.sent;resultCode = _yield$_this2$xd_requ.resultCode;obj = _yield$_this2$xd_requ.obj;msg = _yield$_this2$xd_requ.msg;
 
                 if (resultCode === '0') {
-                  _this3.sponsorID = obj.id;
-                  _this3.sponsorObj = obj;
-                  _this3.goPay();
+                  _this2.sponsorID = obj.id;
+                  _this2.sponsorObj = obj;
+                  if (_this2.rmb.challengeRmb > 0) {
+                    _this2.goPay();
+                  } else {
+                    uni.reLaunch({ url: 'action' });
+                  }
                 } else {
                   uni.showToast({
                     title: msg,
@@ -451,7 +596,9 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
                       return false;
                     } });
 
-                }case 11:case "end":return _context2.stop();}}}, _callee2);}))();
+                }case 12:case "end":return _context.stop();}}}, _callee);}))();
+
+
     },
 
 
@@ -463,12 +610,13 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
     },
 
 
-    goPay: function goPay() {var _this4 = this;
-      console.log('goPay');
+    goPay: function goPay() {var _this3 = this;
+      console.log('goPay', this.rmb.challengeRmb);
       var that = this;
       var userInfo = uni.getStorageSync('userInfo');
       var data = {
-        payRmb: that.rmb.challengeRmb, //必传 金额
+        payRmb: that.rmb.challengeRmb * 100, //必传 金额
+        // payRmb:that.rmb.challengeRmb,
         pushId: uni.getStorageSync('pushId'), //必传 活动ID
         openid: userInfo.openId, //必传 用户ID
         type: '1', //必传 1赞助金，2感谢金
@@ -479,6 +627,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
         city: userInfo.city,
         userName: userInfo.nickName,
         province: userInfo.province };
+
 
       console.log('gopay', userInfo, data);
 
@@ -507,7 +656,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
                     duration: 2000,
                     success: function success() {
                       uni.reLaunch({
-                        url: 'index' });
+                        url: 'action' });
 
                     } });
 
@@ -531,7 +680,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
 
             });
           } else {
-            _this4.logOut();
+            _this3.logOut();
             uni.navigateTo({
               url: '../login/login' });
 

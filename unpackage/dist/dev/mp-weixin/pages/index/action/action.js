@@ -103,7 +103,7 @@ var render = function() {
     var m0 =
       _vm.TabCur == 0 ? _vm.compareDate(_vm.pusCardList[index - 1], item) : null
     var g0 =
-      _vm.TabCur == 0 && (index == 0 || item.m0)
+      _vm.TabCur == 0 && (index == 0 || m0)
         ? _vm.xdUniUtils.xd_timestampToTime(
             item.createTime,
             false,

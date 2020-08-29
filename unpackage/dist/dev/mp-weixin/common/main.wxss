@@ -4743,4 +4743,8 @@ scroll-view.cu-steps .cu-item {
 	color: red; font-weight: 400; font-size: 36rpx; position: relative; top:-6rpx;
 }
 .xd-bg-white{background: #fff;}
+.xd-margin-left{
+	margin-left: 10rpx;
+	max-width: 600rpx;
+}
 

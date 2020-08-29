@@ -122,7 +122,7 @@
 				"navigationBarTitleText": "提现"
 			}
 		},
-		//添加赞助
+		
 		{
 		    "path" : "pages/sponsor/form",
 		    "style" : {
@@ -132,7 +132,7 @@
 		{
 		    "path" : "pages/sponsor/action",
 		    "style" : {
-				"navigationBarTitleText": "赞助活动"
+				"navigationBarTitleText": "赞助详情"
 			}
 		},
 		{

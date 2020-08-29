@@ -185,3 +185,7 @@
 	color: red; font-weight: 400; font-size: 36upx; position: relative; top:-6upx;
 }
 .xd-bg-white{background: #fff;}
+.xd-margin-left{
+	margin-left: 10upx;
+	max-width: 600upx;
+}

@@ -245,6 +245,7 @@ var _default =
         url: '../selfCenter/selfView?userId=' + e });
 
     },
+
     goPageImg: function goPageImg(e) {
       this.xdUniUtils.xd_showImg(e);
     },

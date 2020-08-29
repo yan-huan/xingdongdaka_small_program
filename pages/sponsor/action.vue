@@ -36,22 +36,26 @@
 								</view>
 							</view>
 						</view>
-						<view v-if="pushList.challengeRmb>0">
-							<view class="cu-tag light bg-red radius" >
-								保证金￥{{pushList.challengeRmb}}
+						<view class='xd-flex'>
+							<view v-if="pushList.challengeRmb>0">
+								<view class="cu-tag light bg-red radius" >
+									保证金￥{{pushList.challengeRmb}}
+								</view>
 							</view>
-						</view>
-						<view v-if="userId==pushList.userId">
-							<view class="cu-tag light bg-red radius" >
-								赞助金￥{{pushList.challengeRmb}}
+							<view style="padding-left:6px"  v-if="userId==pushList.userId && sponsorRmb>0">
+								<view class="cu-tag radius bg-yellow " >
+									获赞助金￥{{sponsorRmb}} 
+								</view>
+								<text style="position:relative;top:2px;left:4px;" class="text-gray text-df ">{{sponsorCnt}}</text>
 							</view>
-						</view>
-						<view>
-							<view class="cu-tag light bg-red radius" >
-								赞助数量￥{{pushList.challengeRmb}}
+
+							<view style="padding-left:6px"  v-if="userId!=pushList.userId && sponsorCnt>0">
+								<view class="cu-tag radius bg-yellow" >
+									赞助 
+								</view>
+								<text style="position:relative;top:2px;left:4px;" class="text-gray text-df ">{{sponsorCnt}}</text>
 							</view>
-						</view>
-						赞助金：赞助金：
+						</view>	
 					</view>
 				</view>
 				
@@ -71,26 +75,70 @@
 				</view>
 				
 				<view v-if="sponsorList.length>0" class="solids-top margin-top">
-					<view  v-for="(ite,ind) in sponsorList" :key="ind" class="padding">
-						<view> 赞助人：{{ite.zanzhujinRmb}} </view>
-						<view> 赞助人头像：{{ite.zanzhujinRmb}} </view>
-						<view> 赞助金：{{ite.zanzhujinRmb}} </view>
-						<view v-if="!!ite.createTime"> 赞助时间：{{ite.createTime}} </view>
-						<view v-if="!!ite.sponsorCondition"> 赞助条件：{{ite.sponsorCondition}} </view> 
-						<view v-if="!!ite.location"> 赞助场地：{{ite.location}} </view>
+					<view class="cu-list menu-avatar comment solids-top">
 						
-						
-							<view v-if="ite.sponsorPictures.search(',')!==-1" class="grid col-4 grid-square flex-sub">
-								<view class="bg-img" v-for="(item,index) in ite.sponsorPictures.split(',')" :key="index" @tap="ViewImage" :data-url="imgList[index]">
-									<image :src="imgList[index]" mode="aspectFill"></image>
+						<view v-for="(ite,ind) in sponsorList" :key="ind" class="cu-item">
+							
+
+							<view class="cu-avatar round" :style="'background-image:url('+ite.userHead+');'"></view>
+							<view class="content xd-margin-left">
+								<view class="text-grey">{{ite.userName}}</view>
+								<view class="text-gray text-sm flex justify-between">
+										{{xdUniUtils.xd_timestampToTime(ite.createTime,false,true,false)}}
 								</view>
+								<view class="text-gray text-content text-df">
+									<view v-html="ite.zanzhujinRmb>0"> 赞助金：<span style="color:#e54d42;font-weight:600"> ￥{{Math.round(ite.zanzhujinRmb/100)}} </span> </view>
+									<!-- <view v-if="!!ite.createTime"> 赞助时间： <span style="color:#fbbd08"> {{xdUniUtils.xd_timestampToTime(ite.createTime,false,true,false)}} </span></view> -->
+									<view v-if="!!ite.location"> 赞助场地：<span style="color:#fbbd08">{{ite.location}}</span> </view>
+									<view v-if="!!ite.sponsorCondition.location"> 获取条件：<span style="color:#fbbd08">{{ite.sponsorCondition.location}} </span></view> 
+									
+									<view v-if="!!ite.pictures.location" class="grid flex-sub padding-lr" :class="ite.pictures.location.length>1?'col-3 grid-square':'col-1'">
+										<view v-for="(item,index) in ite.pictures.location" :key="index" class="bg-img" :class="ite.pictures.location.length>1?'':'only-img'" 
+										   @tap="goPageImg(ite.pictures.location,index)" :style="{backgroundImage:'url('+item+')'}" >
+										</view>
+									</view>
+									
+									<view v-if="!!ite.daiJinQuan"> 代金券<span style="color:#fbbd08">{{ite.daiJinQuan}} </span></view>
+									<view v-if="!!ite.sponsorCondition.daiJinQuan"> 获取条件：<span style="color:#fbbd08">{{ite.sponsorCondition.daiJinQuan}} </span></view> 
+									<view v-if="!!ite.pictures.daiJinQuan" class="grid flex-sub padding-lr" :class="ite.pictures.daiJinQuan.length>1?'col-3 grid-square':'col-1'">
+										<view v-for="(item,index) in ite.pictures.daiJinQuan" :key="index" class="bg-img" :class="ite.pictures.daiJinQuan.length>1?'':'only-img'" 
+										   @tap="goPageImg(ite.pictures.daiJinQuan,index)" :style="{backgroundImage:'url('+item+')'}" >
+										</view>
+									</view>
+									<view v-if="!!ite.zheKouQuan"> 折扣权：<span style="color:#fbbd08">{{ite.zheKouQuan}} </span></view>
+									<view v-if="!!ite.sponsorCondition.zheKouQuan"> 获取条件：<span style="color:#fbbd08">{{ite.sponsorCondition.zheKouQuan}} </span></view> 
+									<view v-if="!!ite.pictures.zheKouQuan" class="grid flex-sub padding-lr" :class="ite.pictures.zheKouQuan.length>1?'col-3 grid-square':'col-1'">
+										<view v-for="(item,index) in ite.pictures.zheKouQuan" :key="index" class="bg-img" :class="ite.pictures.zheKouQuan.length>1?'':'only-img'" 
+										   @tap="goPageImg(ite.pictures.zheKouQuan,index)" :style="{backgroundImage:'url('+item+')'}" >
+										</view>
+									</view>
+									<view v-if="!!ite.other"> 其他： <span style="color:#fbbd08">{{ite.other}} </span></view> 
+									<view v-if="!!ite.sponsorCondition.other"> 获取条件：<span style="color:#fbbd08">{{ite.sponsorCondition.other}} </span></view> 
+									<view v-if="!!ite.pictures.other" class="grid flex-sub padding-lr" :class="ite.pictures.other.length>1?'col-3 grid-square':'col-1'">
+										<view v-for="(item,index) in ite.pictures.other" :key="index" class="bg-img" :class="ite.pictures.other.length>1?'':'only-img'" 
+										   @tap="goPageImg(ite.pictures.other,index)" :style="{backgroundImage:'url('+item+')'}" >
+										</view>
+									</view>
+								</view>
+								<!-- <view class="bg-grey padding-sm radius margin-top-sm  text-sm">
+									<view class="flex">
+										<view></view>
+										<view class="flex-sub">
+
+										</view>
+									</view>
+								</view> -->
+								<!-- <view class="margin-top-sm flex justify-between">
+									<view class="text-gray text-df">{{ite.createTime}} </view>
+									<view>
+										<text class="cuIcon-appreciatefill text-red"></text>
+										<text class="cuIcon-messagefill text-gray margin-left-sm"></text>
+									</view>
+								</view> -->
 							</view>
-						
-						<view v-if="!!ite.sponsorPictures"> 场地图片：<image :src="ite.sponsorPictures" mode="aspectFill"></image></view>
-						
-						<view v-if="!!ite.discounts"> 抵扣券：{{ite.discounts}} </view>
-						<view v-if="!!ite.other"> 其他{{ite.other}} </view> 
+						</view>
 					</view>
+					
 				</view >	
 
 				<view  class="margin-top" style="padding:30px">
@@ -98,9 +146,9 @@
 				</view >	
 				
 
-				<view class="cu-bar foot flex padding justify-around" >
+				<view  style="background:#fff" class="cu-bar foot flex padding justify-around" >
 					<button class="cu-btn bg-yellow  " @tap="gotoSponsorForm()">我要赞助</button>
-					<button class="cu-btn line-green " @tap="gotoShare()">拉赞助</button>
+					<button class="cu-btn line-green "  open-type="share">拉赞助</button>
 				</view>
 			</view>
 			
@@ -137,6 +185,18 @@
 				sponsorShare:{}, //拉赞助
 				sponsorRmb:0,  //赞助金额
 				sponsorCnt:0,  //赞助笔数
+				sponsorCondition:{
+					location:'',
+					daiJinQuan:'',
+					zheKouQuan:'',
+					other:''
+				},
+				pictures:{
+					location:[],
+					daiJinQuan:[],
+					zheKouQuan:[],
+					other:[]
+				},
 				
 			};
 		},
@@ -194,7 +254,12 @@
 			}		
 		},
 		methods:{
-			
+			ViewImage(e) {
+				uni.previewImage({
+					urls: this.imgList,
+					current: e.currentTarget.dataset.url
+				});
+			},
 			async getActSponsor(){	
 				
 				const that = this
@@ -209,10 +274,18 @@
 				if(resultCode==='0'){
 					
 					if(obj.pageInfo && obj.pageInfo.list &&  Array.isArray(obj.pageInfo.list) && obj.pageInfo.list.length>0 ) {
-						 this.sponsorList = obj.pageInfo.list
+						 this.sponsorList = obj.pageInfo.list.map(item=> {
+							 return {
+								...item,
+								 ...{sponsorCondition: item.sponsorCondition.search('location')!==-1? JSON.parse(item.sponsorCondition):this.sponsorCondition,
+								 	pictures: item.pictures.search('location')!==-1? JSON.parse(item.pictures):this.pictures,
+								 }
+							 }
+						 })
 						 console.log('-----------------',this.sponsorList)
 						 this.sponsorCnt = this.sponsorList.length
-					     this.sponsorRmb = this.sponsorList.reduce((t,v)=> t+=v.zanzhujinRmb,0)
+						 this.sponsorRmb = Math.round(this.sponsorList.reduce((t,v)=> t+=v.zanzhujinRmb,0)/100)
+						
 					}
 					this.sponsorShare = obj.pushTarget
 				} else {
@@ -403,7 +476,7 @@
 			});
 			     
 			  },
-		async	getpushList(){
+		async getpushList(){
 				if(this.isShare==1){
 					if(!uni.getStorageSync('token')){
 						uni.navigateTo({
@@ -463,7 +536,7 @@
 					this.pushComentList=this.timeStamp(res);
 				})
 			},
-		async	getPushCardList(){
+		async getPushCardList(){
 				this.xd_request_post(this.xdServerUrls.xd_pushCardListByPushId,{
 					pushId:this.pushId,		
 					

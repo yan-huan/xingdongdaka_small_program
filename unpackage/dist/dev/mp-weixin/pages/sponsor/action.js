@@ -102,10 +102,17 @@ var render = function() {
       ? _vm.__map(_vm.sponsorList, function(ite, ind) {
           var $orig = _vm.__get_orig(ite)
 
-          var g0 = ite.sponsorPictures.search(",")
+          var g0 = _vm.xdUniUtils.xd_timestampToTime(
+            ite.createTime,
+            false,
+            true,
+            false
+          )
+          var g1 = Math.round(ite.zanzhujinRmb / 100)
           return {
             $orig: $orig,
-            g0: g0
+            g0: g0,
+            g1: g1
           }
         })
       : null
@@ -262,6 +269,54 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var lookerCountInfo = function lookerCountInfo() {__webpack_require__.e(/*! require.ensure | components/lookerCountInfo */ "components/lookerCountInfo").then((function () {return resolve(__webpack_require__(/*! @/components/lookerCountInfo.vue */ 236));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   components: {
@@ -288,8 +343,20 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
       sponsorList: [], //赞助列表
       sponsorShare: {}, //拉赞助
       sponsorRmb: 0, //赞助金额
-      sponsorCnt: 0 //赞助笔数
-    };
+      sponsorCnt: 0, //赞助笔数
+      sponsorCondition: {
+        location: '',
+        daiJinQuan: '',
+        zheKouQuan: '',
+        other: '' },
+
+      pictures: {
+        location: [],
+        daiJinQuan: [],
+        zheKouQuan: [],
+        other: [] } };
+
+
 
   },
   computed: _objectSpread({},
@@ -346,7 +413,12 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
     }
   },
   methods: {
+    ViewImage: function ViewImage(e) {
+      uni.previewImage({
+        urls: this.imgList,
+        current: e.currentTarget.dataset.url });
 
+    },
     getActSponsor: function getActSponsor() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var that, parm, _yield$that$xd_reques, resultCode, obj, msg;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
 
                 that = _this;
@@ -361,10 +433,18 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
                 if (resultCode === '0') {
 
                   if (obj.pageInfo && obj.pageInfo.list && Array.isArray(obj.pageInfo.list) && obj.pageInfo.list.length > 0) {
-                    _this.sponsorList = obj.pageInfo.list;
+                    _this.sponsorList = obj.pageInfo.list.map(function (item) {
+                      return _objectSpread({},
+                      item, {},
+                      { sponsorCondition: item.sponsorCondition.search('location') !== -1 ? JSON.parse(item.sponsorCondition) : _this.sponsorCondition,
+                        pictures: item.pictures.search('location') !== -1 ? JSON.parse(item.pictures) : _this.pictures });
+
+
+                    });
                     console.log('-----------------', _this.sponsorList);
                     _this.sponsorCnt = _this.sponsorList.length;
-                    _this.sponsorRmb = _this.sponsorList.reduce(function (t, v) {return t += v.zanzhujinRmb;}, 0);
+                    _this.sponsorRmb = Math.round(_this.sponsorList.reduce(function (t, v) {return t += v.zanzhujinRmb;}, 0) / 100);
+
                   }
                   _this.sponsorShare = obj.pushTarget;
                 } else {
