@@ -201,6 +201,7 @@
 			  menus: ['shareAppMessage', 'shareTimeline']
 			})
 			//#endif
+			console.log('onLoad',option);
 			if(option.pushList==undefined){
 				
 				this.pushId=option.pushId;

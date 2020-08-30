@@ -19,8 +19,7 @@
     "pages/web/webShow",
     "pages/selfCenter/balanDrawal",
     "pages/sponsor/form",
-    "pages/sponsor/card",
-    "pages/sponsor/index"
+    "pages/sponsor/action"
   ],
   "subPackages": [
     {

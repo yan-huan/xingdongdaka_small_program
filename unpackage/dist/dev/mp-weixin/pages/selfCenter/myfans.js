@@ -201,7 +201,7 @@ var _vuex = __webpack_require__(/*! vuex */ 13); //
 //
 //
 //
-var indexList = function indexList() {__webpack_require__.e(/*! require.ensure | components/indexList */ "components/indexList").then((function () {return resolve(__webpack_require__(/*! @/components/indexList.vue */ 195));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { attentionList: [], pageNum: 1, //当前页数
+var indexList = function indexList() {__webpack_require__.e(/*! require.ensure | components/indexList */ "components/indexList").then((function () {return resolve(__webpack_require__(/*! @/components/indexList.vue */ 189));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { attentionList: [], pageNum: 1, //当前页数
       pageSize: 10, //每页条数
       userId: '', userInfo: '', token: uni.getStorageSync('token') };}, onShow: function onShow() {if (this.userInfo == '' || this.userInfo == undefined || this.userInfo == null) {try {this.userInfo = uni.getStorageSync('userInfo');} catch (e) {console.log(Error);};}}, onLoad: function onLoad(options) {var title = '';if (options.userId == undefined) {this.getInviteList();title = '分享量';uni.setNavigationBarTitle({ title: title });} else {title = '粉丝';this.userId = options.userId;this.getShowFollow();
       this.burieUpdate(); //查看埋点数据后删除

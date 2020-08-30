@@ -120,23 +120,33 @@
 				"navigationBarTitleText": "提现"
 			}
 		},
-		//添加赞助
 		{
-		    "path" : "pages/sponsor/form",
-		    "style" : {
+			"path" : "pages/sponsor/form",
+			"style" : {
 				"navigationBarTitleText": "赞助"
 			}
 		},
+		
+	//#ifdef APP-PLUS
+		
 		{
 		    "path" : "pages/sponsor/card",
 		    "style" : {
 				"navigationBarTitleText": "赞助"
 			}
 		},
+		
 		{
-		    "path" : "pages/sponsor/index",
-		    "style" : {
+			"path" : "pages/sponsor/index",
+			"style" : {
 				"navigationBarTitleText": "赞助"
+			}
+		},
+	//#endif
+		{
+		    "path" : "pages/sponsor/action",
+		    "style" : {
+				"navigationBarTitleText": "赞助详情"
 			}
 		}
 

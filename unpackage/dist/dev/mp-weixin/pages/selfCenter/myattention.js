@@ -195,7 +195,7 @@ var _vuex = __webpack_require__(/*! vuex */ 13); //
 //
 //
 //
-var indexList = function indexList() {__webpack_require__.e(/*! require.ensure | components/indexList */ "components/indexList").then((function () {return resolve(__webpack_require__(/*! @/components/indexList.vue */ 195));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { attentionList: [], pageNum: 1, //当前页数
+var indexList = function indexList() {__webpack_require__.e(/*! require.ensure | components/indexList */ "components/indexList").then((function () {return resolve(__webpack_require__(/*! @/components/indexList.vue */ 189));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { attentionList: [], pageNum: 1, //当前页数
       pageSize: 10, //每页条数
       userId: '', userInfo: '', token: uni.getStorageSync('token') };}, onShow: function onShow() {if (this.userInfo == '' || this.userInfo == undefined || this.userInfo == null) {try {this.userInfo = uni.getStorageSync('userInfo');} catch (e) {console.log(Error);};}}, onLoad: function onLoad(options) {this.userId = options.userId;try {this.userInfo = uni.getStorageSync('userInfo');} catch (e) {console.log(Error);};this.getShowFollow();},
   methods: {

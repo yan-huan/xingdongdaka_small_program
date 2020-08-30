@@ -1,6 +1,6 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["pages/sponsor/index"],{
 
-/***/ 188:
+/***/ 182:
 /*!***********************************************************************************************!*\
   !*** C:/Users/85002/Documents/HBuilderProjects/ui/main.js?{"page":"pages%2Fsponsor%2Findex"} ***!
   \***********************************************************************************************/
@@ -323,5 +323,5 @@ var _vuex = __webpack_require__(/*! vuex */ 13);function _toConsumableArray(arr)
 
 /***/ })
 
-},[[188,"common/runtime","common/vendor"]]]);
+},[[182,"common/runtime","common/vendor"]]]);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/sponsor/index.js.map

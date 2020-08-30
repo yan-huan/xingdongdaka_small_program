@@ -38,8 +38,6 @@ export default {
 			payNum:0,
 			mony:0,
 			gzsm_wxfk: this.xdCommon.gzsm_wxfk
-				
-			
 		};
 	},
 	computed: {
@@ -95,6 +93,7 @@ export default {
 			if(that.saveData.challengeRmb==0 ||that.saveData.challengeRmb=='' ){
 				if(e.detail.value.challengeRmb==''||e.detail.value.challengeRmb<=0){
 					that.saveData.challengeRmb=0;
+					console.log('formSubmit------33333 that.saveData',that.saveData);
 					that.xd_request_post(that.xdServerUrls.xd_savePush,that.saveData,true).then( res=>{
 						if(res.resultCode==0){
 							uni.showToast({
@@ -134,11 +133,12 @@ export default {
 				that.mony=that.saveData.challengeRmb*100;
 				//that.saveData.challengeRmb=0;
 				
-					that.getPushId();		
+				that.getPushId();		
 			
 			}		
 		},
 		updataPushId(){
+			console.log('updataPushId------');
 			//取消支付调用修改金额为0
 			var that=this;
 			that.xd_request_post(that.xdServerUrls.xd_updatePushDataByPushId,{
@@ -150,9 +150,13 @@ export default {
 			})
 		},
 		getPushId(){
+			
 			var that=this;
 			that.saveData.challengeRmb=that.saveData.challengeRmb*100;
+			console.log('getPushId----------',that.saveData);
 			this.xd_request_post(this.xdServerUrls.xd_savePush,this.saveData,true).then( res=>{
+				console.log('xd_request_post----------',res);
+				
 				if(res.resultCode==0){
 					this.pushData=res;
 					if(res.obj.payWay != 1){
@@ -224,6 +228,8 @@ export default {
 			data.pushId=that.pushData.obj.id;
 			wx.getSetting({
 			  success: res => {
+				  console.log('wx.getSetting----',res,data);
+				  
 			    if (res.authSetting['scope.userInfo']) {
 					that.xd_request_post(that.xdServerUrls.xd_pay,data,false).then(res=>{
 						uni.requestPayment({

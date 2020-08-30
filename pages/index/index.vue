@@ -16,9 +16,13 @@
 			<view class="xd-list-info" :hidden="active == 1||active==2|| active ==3">				
 				<block v-for="(list, index) in listsTab" :key="index" >								
 
-				  <indexList  @gotoSponsor='gotoSponsor' :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg'></indexList>
 
-				  <indexList  :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg' :Off="Off"></indexList>
+				  <!-- <indexList  @gotoSponsor='gotoSponsor' :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg'></indexList>
+
+				  <indexList  :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg' :Off="Off"></indexList> -->
+
+
+				  <indexList  @gotoSponsor='gotoSponsor' :list="list" :index="index" v-on:loveclick='loveClick' :hasLogin="hasLogin" :userId='userId' v-on:lookerClick="lookerClick" :inimg='inimg'></indexList>
 
 				</block>
 			</view>
@@ -319,16 +323,12 @@
 			// 赞助
 			gotoSponsor(list,index){
 				console.log('gotoSponsor',index,list)
-				
-				
 				uni.setStorageSync("pushId",list.id);
 				uni.setStorageSync("cardId",list.pushCardList[0].id);
 				uni.navigateTo({
-					url:'../sponsor/index'
+					url:'../sponsor/action'
+
 				})
-				
-					
-				
 			},
 			//围观
 			lookerClick:function(list,index){

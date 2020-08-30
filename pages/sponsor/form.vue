@@ -8,12 +8,11 @@
 		<form>
 			<view class="cu-form-group margin-top">
 				<view class="title"><span class='form-label'>赞助金</span></view>
-				<!-- <input v-model="rmb" placeholder="请输入赞助金" name="input"></input> -->
-				<input :value="rmb.challengeRmb" type="number" class="digit" name="challengeRmb" placeholder="请输入保障金数额" maxlength="5" />
+				<input v-model="rmb.challengeRmb" type="number" class="digit" name="challengeRmb" placeholder="请输入保障金数额" maxlength="5" />
 			</view>
 			<view>
 				<view class="pricelis">
-					<view class="priceli" @click="priceRmb(1)"><text>1元</text></view>
+					<view class="priceli" @click="priceRmb(2)"><text>2元</text></view>
 					<view class="priceli" @click="priceRmb(6)"><text>6元</text></view>
 					<view class="priceli" @click="priceRmb(18)"><text>18元</text></view>
 					<view class="priceli" @click="priceRmb(66)"><text>66元</text></view>
@@ -37,70 +36,149 @@
 			
 			<view v-if="Number(pickedIndex)===1" class="cu-form-group">
 				<view class="title"><span class='form-label'>赞助场地</span></view>
-				<input v-model="location" placeholder="输入场地地址" name="input"></input>
+				<input v-model="location" placeholder="输入场地地址" name="input" /> 
 				<text class='cuIcon-locationfill text-orange'></text>
+			</view>
+			<view  v-if="Number(pickedIndex) ===1" class="cu-form-group  align-start">
+				<view class="title">
+					<text>获取条件:</text>
+				</view>
+				<textarea v-model="sponsorCondition.location"  maxlength="-1"  placeholder="请输入获取条件"></textarea>
 			</view>
 			<view  v-if="Number(pickedIndex)===1" class="cu-bar bg-white">
 				<view class="action">
 					场地图片
 				</view>
 				<view class="action">
-					{{imgList.length}}/4
+					{{pictures.location.length}}/4
 				</view>
 			</view>
 			<view  v-if="Number(pickedIndex)===1" class="cu-form-group">
 				<view class="grid col-4 grid-square flex-sub">
-					<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
-					 <image :src="imgList[index]" mode="aspectFill"></image>
-						<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
+					<view class="bg-img" v-for="(item,index) in pictures.location" :key="index" @tap="ViewImage(item,'location')" :data-url="pictures.location[index]">
+					 <image :src="pictures.location[index]" mode="aspectFill"></image>
+						<view class="cu-tag bg-red" @tap.stop="DelImg(index,'location')" :data-index="index">
 							<text class='cuIcon-close'></text>
 						</view>
 					</view>
-					<view class="solids" @tap="ChooseImage" v-if="imgList.length<4">
+					<view class="solids" @tap="ChooseImage('location')" v-if="pictures.location.length<4">
 						<text class='cuIcon-cameraadd'></text>
 					</view>
 				</view>
 			</view>
 			
 			
-			
-			
-				<view v-if="Number(pickedIndex)===2" class="cu-form-group ">
-					<view class="title"><span class='form-label'>代金券</span></view>
-					<textarea  v-model="discounts" maxlength="-1"  placeholder="请输入代金券"></textarea>
-					
-				</view>
-				<view v-if="Number(pickedIndex)===3" class="cu-form-group ">
-					<view class="title"><span class='form-label'>折扣权</span></view>
-					<textarea  v-model="discounts" maxlength="-1"  placeholder="请输入折扣权"></textarea>
-				</view>
-				<view v-if="Number(pickedIndex) ===4" class="cu-form-group">
-					<view class="title"><span class='form-label'>其他</span></view>
-					<textarea  v-model="other" maxlength="-1"  placeholder=" "></textarea>
+			<view v-if="Number(pickedIndex)===2" class="cu-form-group  align-start">
+				<view class="title">
+					<text>代金券:</text>
 				</view>
 				
-				<view  v-if="pickedIndex !==0" class="cu-form-group">
-					<view class="title"><span class='form-label'>获取条件</span></view>
-					<textarea v-model="sponsorCondition"  maxlength="-1"  placeholder="请输入获取条件"></textarea>
+				<textarea  v-model="daiJinQuan" maxlength="-1"  placeholder="请输入折扣权"></textarea>
+			</view>
+			<view  v-if="Number(pickedIndex) ===2" class="cu-form-group  align-start">
+				<view class="title">
+					<text>获取条件:</text>
 				</view>
+				<textarea v-model="sponsorCondition.daiJinQuan"  maxlength="-1"  placeholder="请输入获取条件"></textarea>
+			</view>
+
+			<view  v-if="Number(pickedIndex)===2" class="cu-bar bg-white">
+				<view class="action">
+					图片
+				</view>
+				<view class="action">
+					{{pictures.daiJinQuan.length}}/4
+				</view>
+			</view>
+			<view  v-if="Number(pickedIndex)===2" class="cu-form-group">
+				<view class="grid col-4 grid-square flex-sub">
+					<view class="bg-img" v-for="(item,index) in pictures.daiJinQuan" :key="index" @tap="ViewImage(item,'daiJinQuan')" :data-url="pictures.daiJinQuan[index]">
+					 <image :src="pictures.daiJinQuan[index]" mode="aspectFill"></image>
+						<view class="cu-tag bg-red" @tap.stop="DelImg(index,'daiJinQuan')" :data-index="index">
+							<text class='cuIcon-close'></text>
+						</view>
+					</view>
+					<view class="solids" @tap="ChooseImage('daiJinQuan')" v-if="pictures.daiJinQuan.length<4">
+						<text class='cuIcon-cameraadd'></text>
+					</view>
+				</view>
+			</view>
 			
+
+
+			<view v-if="Number(pickedIndex)===3" class="cu-form-group align-start">
+				<view class="title">
+					<text>折扣权:</text>
+				</view>
+				
+				<textarea  v-model="zheKouQuan" maxlength="-1"  placeholder="请输入折扣权"></textarea>
+			</view>
+			<view  v-if="Number(pickedIndex) ===3" class="cu-form-group align-start">
+				<view class="title">
+					<text>获取条件:</text>
+				</view>
+				<textarea v-model="sponsorCondition.zheKouQuan"  maxlength="-1"  placeholder="请输入获取条件"></textarea>
+			</view>
+			<view  v-if="Number(pickedIndex)===3" class="cu-bar bg-white">
+				<view class="action">
+					图片
+				</view>
+				<view class="action">
+					{{pictures.zheKouQuan.length}}/4
+				</view>
+			</view>
+			<view  v-if="Number(pickedIndex)===3" class="cu-form-group">
+				<view class="grid col-4 grid-square flex-sub">
+					<view class="bg-img" v-for="(item,index) in pictures.zheKouQuan" :key="index" @tap="ViewImage(item,'zheKouQuan')" :data-url="pictures.zheKouQuan[index]">
+					 <image :src="pictures.zheKouQuan[index]" mode="aspectFill"></image>
+						<view class="cu-tag bg-red" @tap.stop="DelImg(index,'zheKouQuan')" :data-index="index">
+							<text class='cuIcon-close'></text>
+						</view>
+					</view>
+					<view class="solids" @tap="ChooseImage('zheKouQuan')" v-if="pictures.zheKouQuan.length<4">
+						<text class='cuIcon-cameraadd'></text>
+					</view>
+				</view>
+			</view>
+			<view v-if="Number(pickedIndex) ===4" class="cu-form-group  align-start">
+				<view class="title">
+					<text>其 他:</text>
+				</view>
+				<textarea  v-model="other" maxlength="-1"  placeholder=" "></textarea>
+			</view>
+			<view  v-if="Number(pickedIndex) ===4" class="cu-form-group align-start">
+				<view class="title">
+					<text>获取条件:</text>
+				</view>
+				
+				<textarea v-model="sponsorCondition.other"  maxlength="-1"  placeholder="请输入获取条件"></textarea>
+			</view>
+			<view  v-if="Number(pickedIndex)===4" class="cu-bar bg-white">
+				<view class="action">
+					图片
+				</view>
+				<view class="action">
+					{{pictures.other.length}}/4
+				</view>
+			</view>
+			<view  v-if="Number(pickedIndex)===4" class="cu-form-group">
+				<view class="grid col-4 grid-square flex-sub">
+					<view class="bg-img" v-for="(item,index) in pictures.other" :key="index" @tap="ViewImage(item,'other')" :data-url="pictures.other[index]">
+					 <image :src="pictures.other[index]" mode="aspectFill"></image>
+						<view class="cu-tag bg-red" @tap.stop="DelImg(index,'other')" :data-index="index">
+							<text class='cuIcon-close'></text>
+						</view>
+					</view>
+					<view class="solids" @tap="ChooseImage('other')" v-if="pictures.other.length<4">
+						<text class='cuIcon-cameraadd'></text>
+					</view>
+				</view>
+			</view>
 			
 			<view class=" margin-top padding-xl">
 				<button class="cu-btn block bg-orange"  @tap="onCommit">提交</button>	
 			</view>
 			
-			
-			<!-- <view v-for="(item,index) in form" :key="index" :class="index===0?'cu-form-group margin-top' :'cu-form-group'">
-				<view :class="index===0?'cu-form-group margin-top':'cu-form-group'">
-					<view class="title">{{item.label}}</view>
-					<input v-model="item.val" :placeholder="item.placeholder" name="input"></input>
-					<text v-if="item.type==='addr'" class='cuIcon-locationfill text-orange'></text>
-				</view>
-			</view> 
-			<view class="cu-form-group xd-flex-center margin-top xd-pd-tb-10">
-				<button class="cu-btn block line-orange lg"  @tap="onCommit">
-					<text class="cuIcon-check"></text> 提交</button>	
-			</view> -->
 		</form>		
 		
 	</view>
@@ -123,14 +201,29 @@
 				rmb:{
 					challengeRmb:5,
 				},
-				sponsorCondition:'',
+				sponsorCondition:{
+					location:'',
+					daiJinQuan:'',
+					zheKouQuan:'',
+					other:''
+				},
+				pictures:{
+					location:[],
+					daiJinQuan:[],
+					zheKouQuan:[],
+					other:[]
+				},
 				location:'', //活动场地地址
 				userInfo:uni.getStorageSync('userInfo'),
 				imgList: [],
 				switchA: false,
-				discounts:'',     // 抵扣券
+				discounts:'',     // openid
+				daiJinQuan:'',     // 代金券
+				zheKouQuan:'',     // 代金券
 				userGroup:'',     // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
 				other:'',         // 其他奖励
+				sponsorID:'',
+				sponsorObj:null,
 				
 				form:[{
 						label:"赞 助 金",
@@ -191,65 +284,60 @@
 			...mapState(['hasLogin'])
 		},
 		methods:{
+			
 			SwitchA(e) {
 				this.switchA = e.detail.value
 			},
 			PickerChangeItem(e){
 				this.pickedIndex = e.detail.value
-				console.log(e)
-				// this.indexholiday=0;
-				// this.holidayDay=1;
 			},
-			ChooseImage() {
-				const that=this;
+			ChooseImage(p) {
+				const that=this;	
 				uni.chooseImage({
 					count: 4, //默认9
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album'], //从相册选择
 					success: (res) => {
-							let tempFilePaths = res.tempFilePaths;
-							that.xdUniUtils.xd_request_img(res.tempFilePaths[0]).then(res=>{
-								if(res){
-									uni.uploadFile({
-									           url: that.xdServerUrls.xd_uploadFile, 
-									           filePath: tempFilePaths[0],
-									           name: 'files',
-									           formData: {
-									               'userId': uni.getStorageSync('id'),
-									           },
-									           success: (uploadFileRes) => {
-																		
-																		 that.param.pictures=JSON.parse(uploadFileRes.data).obj[0];
-																		console.log(that.param.pictures)
-									           }
-									       });
-								}else{
-									uni.showToast({
-									    title: '内容包含敏感内容',
-										mask:true,
-									    duration: 2000,
-										
-									});
-									return false
-								}
-							});
-							
-						
-						if (this.imgList.length != 0) {
-							this.imgList = this.imgList.concat(res.tempFilePaths)
-						} else {
-							this.imgList = res.tempFilePaths
-						}
+						let tempFilePaths = res.tempFilePaths;
+						console.log("tempFilePaths----" ,tempFilePaths)
+						that.xdUniUtils.xd_request_img(res.tempFilePaths[0]).then(res=>{
+							if(res){
+								uni.uploadFile({
+									url: that.xdServerUrls.xd_uploadFile, 
+									filePath: tempFilePaths[0],
+									name: 'files',
+									formData: {
+										'userId': uni.getStorageSync('id'),
+									},
+									success: function(uploadFileRes){
+										const arrPhotos = JSON.parse(uploadFileRes.data).obj
+										console.log("uploadFileRes----" ,JSON.parse(uploadFileRes.data))
+										that.pictures[p] = [...that.pictures[p],...arrPhotos]
+									},
+									fail: function (err) {
+										console.log("uploadFileRes----",err)
+									}
+								});
+							}else{
+								uni.showToast({
+									title: '内容包含敏感内容',
+									mask:true,
+									duration: 2000,
+									
+								});
+								return false
+							}
+						});
 					}
 				});
 			},
-			ViewImage(e) {
+			ViewImage(url,p) {
 				uni.previewImage({
-					urls: this.imgList,
-					current: e.currentTarget.dataset.url
+					urls: this.pictures[p],
+					current: url
 				});
 			},
-			DelImg(e) {
+			DelImg(index,p) {
 				uni.showModal({
 					title: '删除图片',
 					content: '确定要删除吗？',
@@ -257,56 +345,41 @@
 					confirmText: '确定',
 					success: res => {
 						if (res.confirm) {
-							this.imgList.splice(e.currentTarget.dataset.index, 1)
+							this.pictures[p].splice(index, 1)
 						}
 					}
 				})
 			},
-			async saveData2(){
-				const arr =  this.form
-				const parm ={
-					rmb:this.rmb.challengeRmb,  //赞助金
-					sponsorCondition:this.sponsorCondition,
-					location:this.imgList.toString(), //活动地址
-					discounts:this.discounts,    //  抵扣券
-					userGroup:'',     // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
-					other:this.other,         // 其他奖励
-					finishCondition: '' ,  // 完成条件
-					status: 1 ,           //   状态:0有效,1无效
-					pushId: uni.getStorageSync('pushId') ,       // 行动项id
-					cardId: uni.getStorageSync('cardId'),	     // 打卡id
-					createTime: new Date()    , //	创建时间
-					updateTime : new Date()    //   更新时间
-				} 
-				this.xd_request_post(this.xdServerUrls.xd_saveSponsor,parm).then(res=>{
-					if(res.resultCode==0){
-						if(res.obj.payWay != 1){
-							this.goPay();
-						}else{
-							uni.showToast({
-								title: '赞助成功',
-								icon: 'success',
-								duration: 2000,
-								success:function(){
-									uni.setStorageSync('pushData','' );
-									uni.reLaunch({
-										url: '../index/action/action?pushId='+res.obj.id
-									})
-								}
-							});
+			
+
+			validCondition(p){
+				const xdToast = (msg)=>{
+					uni.showToast({
+						title: msg,
+						icon: 'none',
+						duration: 3000,
+						success:function() {
+							return false;
 						}
-					}else{
-						uni.showToast({
-							title: res.obj,
-							icon: 'none',
-							duration: 3000,
-							success:function() {
-								return false;
-							}
-						});
-					}
-				})
+					})
+					return false
+				}
+				if(Number(p.rmb)===0 && !p.location && !p.daiJinQuan && !p.zheKouQuan  && !p.other){
+					return xdToast('请输入大于0元的赞助金或填写赞助项目')
+				}
+				
+				if(p.location && !this.sponsorCondition.location){
+					return xdToast('请输入场地获取条件')
+				}else if(p.daiJinQuan && !this.sponsorCondition.daiJinQuan){
+					return xdToast('请输入代金券获取条件')
+				}else if(p.zheKouQuan && !this.sponsorCondition.zheKouQuan){
+					return xdToast('请输入折扣权获取条件')
+				}else if(p.other && !this.sponsorCondition.other){
+					return xdToast('请输入其他获取条件')
+				}
+				return true
 			},
+
 			async onCommit(){
 				if(!this.hasLogin){
 					uni.navigateTo({
@@ -314,24 +387,51 @@
 					});
 					return false;
 				}
-				const that = this;
+				const parm ={
+					rmb:this.rmb.challengeRmb*100,  //赞助金
+					sponsorCondition: JSON.stringify(this.sponsorCondition),
+					location:this.location, //活动地址
+					daiJinQuan:this.daiJinQuan,
+					zheKouQuan:this.zheKouQuan,
+					discounts:this.discounts,    //  抵扣券
+					userGroup: '',     // 用户群体，1围观者，2有效围观，多条件逗号分隔 ??从何处获取
+					other:this.other,         // 其他奖励
+					finishCondition: '' ,  // 完成条件
+					status: 0 ,           //   状态:0有效,1无效
+					pushId: uni.getStorageSync('pushId') ,       // 行动项id
+					cardId: uni.getStorageSync('cardId'),	     // 打卡id
+					createTime: new Date()    , //	创建时间
+					updateTime : new Date(),    //   更新时间
+					pictures: JSON.stringify(this.pictures),
+					// zanzhujinRmb: '1',
+				} 
+				if(this.validCondition(parm)){
+					const {resultCode,obj,msg} = await this.xd_request_post(this.xdServerUrls.xd_saveSponsor,parm)
 				
-				let userData={
-					token:'',
-					userId:'',
+					if(resultCode==='0'){
+						this.sponsorID=obj.id
+						this.sponsorObj=obj
+						if(this.rmb.challengeRmb>0){
+							this.goPay()
+						}else{
+							uni.reLaunch({url: 'action'})
+						}
+					} else {
+						uni.showToast({
+							title: msg,
+							icon: 'none',
+							duration: 3000,
+							success:function() {
+								return false;
+							}
+						})
+					}
 				}
-				try{
-					userData.token=uni.getStorageSync('token');
-					userData.userId=uni.getStorageSync('id');
-				}catch(e){
-					//TODO handle the exception
-				}
-				that.saveData = userData
-				that.saveData2()
-				await this.goPay()
 				
 			},
 			
+			
+				
 			priceRmb(e){
 				this.rmb.challengeRmb=e
 				console.log(this.rmb)
@@ -340,40 +440,36 @@
 			
 			//#ifdef MP-WEIXIN
 			goPay(){
-				var that = this;
-				var data={
-					id:'',
-					userName:'',
-					// userMobile:''
-					token:'',
-					unionId:'',
-					openid:'',
-					city:'',
-					province:'',
-					payRmb:'',
-					pushId:'',
-				};
-				let userInfo={};
-				try{
-					userInfo=uni.getStorageSync('userInfo');
+				console.log('goPay',this.rmb.challengeRmb);
+				let that = this;
+				const userInfo=uni.getStorageSync('userInfo');
+				let data={
+					payRmb:that.rmb.challengeRmb*100,   //必传 金额
+					// payRmb:that.rmb.challengeRmb,
+					pushId:uni.getStorageSync('pushId'), //必传 活动ID
+					openid: userInfo.openId, //必传 用户ID
+					type: '1', //必传 1赞助金，2感谢金
+					outTradeNo: this.sponsorObj.payNo, // 必传 订单号从何处获取？？
+					id: userInfo.id,
+					token: uni.getStorageSync('token'),
+					unionId: userInfo.unionId,
+					city: userInfo.city,
+					userName: userInfo.nickName,
+					province: userInfo.province,
 					
-				}catch(e){
-					//TODO handle the exception
 				};
-				data.id=that.saveData.userId;
-				data.token=that.saveData.token;
-				data.city=userInfo.city;
-				data.userName=userInfo.nickName;
-				data.province=userInfo.province;
-				data.unionId=userInfo.unionId;
-				data.openid=userInfo.openId;
-				data.payRmb=that.mony;
-				data.pushId=uni.getStorageSync('pushId');
+				console.log('gopay',userInfo,data);
+				
 				wx.getSetting({
 				  success: res => {
+					console.log('wx.getSetting',res);
+					console.log('wx.getSetting---',res);
 				    if (res.authSetting['scope.userInfo']) {
-						// that.xd_request_post(that.xdServerUrls.xd_generalPay,data,false).then(res=>{
-						that.xd_request_post(that.xdServerUrls.xd_Pay,data,false).then(res=>{
+						console.log('xd_request_--',data);
+						
+						// that.xd_request_post(that.xdServerUrls.xd_pay,lgdata,false).then(res=>{
+						that.xd_request_post(that.xdServerUrls.xd_generalPay,data,false).then(res=>{
+							console.log('xd_request_post-----wx.getSetting---',res);
 							uni.requestPayment({
 								'appId': res.obj.appId,
 								'timeStamp': res.obj.timeStamp,
@@ -382,13 +478,15 @@
 								'signType': 'MD5',
 								'paySign': res.obj.paySign,
 								success: function (re) {
+									console.log('uni.requestPayment----xd_request_post-----wx.getSetting---',re);
 									uni.showToast({
-										title: '支付成功',
+										title: '发布成功',
 										icon: 'success',
 										duration: 2000,
 										success:function(){
-											that.saveData()
-											// uni.reLaunch({url: '../index/index'})
+											uni.reLaunch({
+												url: 'action'
+											})
 										}
 									});
 								},
@@ -400,30 +498,27 @@
 										cancelText:'回到首页',
 										image:'/static/images/icon/clock.png',
 										success:function(ress) {
-											 if (ress.confirm) {
-												 uni.setStorageSync('pushData',that.pushData.obj );
-												 uni.reLaunch({url: 'form'})
+											if (ress.confirm) {
+												uni.reLaunch({url: 'form'})
 											}else if (ress.cancel) {
-												uni.setStorageSync('pushData',that.pushData.obj );
 												uni.reLaunch({url: '../index/index'})
 											}
-										}
+										},
 									});
 								}
 							});
 						})
-				}else{
-					  this.logOut();
-					  uni.navigateTo({
-						url: '../login/login'
-					  });
+					}else{
+						this.logOut();
+						uni.navigateTo({
+							url: '../login/login'
+						});
+					}
+					
 				  }
-									
+				})
 			}
-			
-			})
 			//#endif
-		}
 	},
 }
 </script>

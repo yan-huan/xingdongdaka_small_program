@@ -16,6 +16,13 @@
 .xd-flex-v-bottom{align-items:flex-end;}
 .xd-flex1{flex:1;}
 .xd-pd-tb-10{padding:10upx 0 ;}
+.xd-btm-flex{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	position: fixed;
+	border-top: 40px;
+}
 
 /* 宫格布局 */
 .xd-grids{padding:0; display:flex; flex-wrap:wrap;}
@@ -178,3 +185,7 @@
 	color: red; font-weight: 400; font-size: 36upx; position: relative; top:-6upx;
 }
 .xd-bg-white{background: #fff;}
+.xd-margin-left{
+	margin-left: 10upx;
+	max-width: 600upx;
+}

@@ -124,6 +124,7 @@
 					url:'../selfCenter/selfView?userId='+e
 				})
 			},
+			
 			goPageImg(e){
 				this.xdUniUtils.xd_showImg(e)
 			},

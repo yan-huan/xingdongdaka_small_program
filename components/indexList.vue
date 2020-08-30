@@ -12,8 +12,11 @@
 							</view>
 						</view>
 						<view v-if="list.challengeRmb>0">
-							<view class="cu-tag light bg-red radius" >
+							<view v-if="list.belongOwn" class="cu-tag light bg-red radius" >
 								保证金￥{{list.challengeRmb}}
+							</view>
+							<view v-else class="cu-tag light bg-red radius" >
+								保证金￥{{list.challengeRmb+Math.round(list.sponsorRmb/100)}}
 							</view>
 						</view>
 					</view>
@@ -54,8 +57,9 @@
 							<text class="text-gray cuIcon-comment "></text>
 							<text class="text-gray text-df"></text>
 						</view>
-						<view>
+						<view style="padding-left:6px">
 							<button class="cu-btn bg-yellow sm round" @tap="gotoSponsor(list,index)">赞助</button>
+							<text v-if="list.sponsorCount>0" class="text-gray text-df ">{{list.sponsorCount}}</text>
 						</view>
 					</view>
 					

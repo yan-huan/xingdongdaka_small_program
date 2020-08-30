@@ -65,8 +65,6 @@ var _vuex = __webpack_require__(/*! vuex */ 13);function ownKeys(object, enumera
       mony: 0,
       gzsm_wxfk: this.xdCommon.gzsm_wxfk };
 
-
-
   },
   computed: _objectSpread({},
   (0, _vuex.mapState)(['hasLogin'])),
@@ -121,6 +119,7 @@ var _vuex = __webpack_require__(/*! vuex */ 13);function ownKeys(object, enumera
       if (that.saveData.challengeRmb == 0 || that.saveData.challengeRmb == '') {
         if (e.detail.value.challengeRmb == '' || e.detail.value.challengeRmb <= 0) {
           that.saveData.challengeRmb = 0;
+          console.log('formSubmit------33333 that.saveData', that.saveData);
           that.xd_request_post(that.xdServerUrls.xd_savePush, that.saveData, true).then(function (res) {
             if (res.resultCode == 0) {
               uni.showToast({
@@ -165,6 +164,7 @@ var _vuex = __webpack_require__(/*! vuex */ 13);function ownKeys(object, enumera
       }
     },
     updataPushId: function updataPushId() {
+      console.log('updataPushId------');
       //取消支付调用修改金额为0
       var that = this;
       that.xd_request_post(that.xdServerUrls.xd_updatePushDataByPushId, {
@@ -176,9 +176,13 @@ var _vuex = __webpack_require__(/*! vuex */ 13);function ownKeys(object, enumera
       });
     },
     getPushId: function getPushId() {var _this = this;
+
       var that = this;
       that.saveData.challengeRmb = that.saveData.challengeRmb * 100;
+      console.log('getPushId----------', that.saveData);
       this.xd_request_post(this.xdServerUrls.xd_savePush, this.saveData, true).then(function (res) {
+        console.log('xd_request_post----------', res);
+
         if (res.resultCode == 0) {
           _this.pushData = res;
           if (res.obj.payWay != 1) {
@@ -250,6 +254,8 @@ var _vuex = __webpack_require__(/*! vuex */ 13);function ownKeys(object, enumera
       data.pushId = that.pushData.obj.id;
       wx.getSetting({
         success: function success(res) {
+          console.log('wx.getSetting----', res, data);
+
           if (res.authSetting['scope.userInfo']) {
             that.xd_request_post(that.xdServerUrls.xd_pay, data, false).then(function (res) {
               uni.requestPayment({

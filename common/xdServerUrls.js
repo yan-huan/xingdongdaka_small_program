@@ -85,15 +85,20 @@ const serverUrls = { //根据接口具体配置
 	xd_updateBurieStatistics: serverBaseUrl + '/burie/updateBurieStatistics' ,//查看埋点数据后删除
 	
 
+
 	xd_saveSponsor: serverBaseUrl + '/sponsor/save' ,//保存打卡记录
+
+
+	xd_saveSponsor: serverBaseUrl + '/sponsor/save' ,//保存赞助金
+	xd_getActSponsor: serverBaseUrl + '/sponsor/getList' ,//保存赞助金
 
 	xd_getInviteList: serverBaseUrl + '/invite/getInviteList' ,//查看埋点数据后删除
 	xd_saveRedisByFree: serverBaseUrl + '/uploadFile/saveRedisByFree' ,//看激励视频免一次上传超100M
 	
+
 	xd_getVal: serverBaseUrl + '/sys/getVal' ,//获取通知
 	
 	
-
 	
 }
 export default {
