@@ -23,7 +23,16 @@
 					<text class="contentext" >{{showCardCommentlist.pushCard.content}}</text>			
 				</view>	
 				<view class="padding-lr" v-if="showCardCommentlist.pushCard.videos!=''&&showCardCommentlist.pushCard.videos!=undefined&&showCardCommentlist.pushCard.videos!=null">
-					<video class="videoheit" :src="showCardCommentlist.pushCard.videos" controls></video>
+					<video class="videoheit" 
+					:src="showCardCommentlist.pushCard.videos" 
+					controls
+					autoplay="true"
+					 ad-unit-id="adunit-8cadd04dc721ad13"
+					 bindadplay="onAdplay"
+					 bindadload="onAdload"
+					 bindadclose="onAdclose"
+					 bindaderror="onAdError"
+					 ></video>
 				</view>
 				<view class="grid flex-sub padding-lr" :class="showCardCommentlist.pushCard.pictures.length>1?'col-3 grid-square':'col-1'" >
 					<view class="bg-img" :class="showCardCommentlist.pushCard.pictures.length>1?'':'only-img'" :style="{backgroundImage:'url('+item+')'}"

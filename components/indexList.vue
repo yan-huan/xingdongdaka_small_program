@@ -70,7 +70,7 @@
 				</view>
 			</view>
 			<view class="padding-top-xs padding-bottom-xs" v-if="index==4||index==7">
-				<ad-custom unit-id="adunit-8354389cd1f86a3f" ad-intervals="31" ></ad-custom>
+				<ad unit-id="adunit-e54424897d34c95f" ad-type="video" ad-intervals="31"></ad>
 			</view>
 		</view>
 	</view>

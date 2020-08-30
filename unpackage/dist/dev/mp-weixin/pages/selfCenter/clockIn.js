@@ -525,7 +525,7 @@ var innerAudioContext = uni.createInnerAudioContext();var _default =
                         icon: 'none' });
 
 
-                      // return false
+                      return false;
                       // uni.showModal({
                       // 	title:'观看视频广告免费上传大于100M视频',
                       // 	confirmText:'观看',

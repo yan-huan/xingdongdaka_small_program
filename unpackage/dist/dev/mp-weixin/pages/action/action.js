@@ -227,7 +227,9 @@ var _vuex = __webpack_require__(/*! vuex */ 13);function ownKeys(object, enumera
 
 
   onShow: function onShow() {
-    // this.inDada();
+    if (!this.hasLogin) {
+      return this.xdUniUtils.xd_login(this.hasLogin);
+    }
   },
   onLoad: function onLoad() {
     if (!this.hasLogin) {

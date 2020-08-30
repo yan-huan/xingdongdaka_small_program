@@ -37,16 +37,16 @@
 					<wyb-noticeBar type="vert" :text="listnotice" v-on:showMore="showMore"  font-weight="bold"  />
 				</view>
 				<view class="swiper-banner" v-if="active == 1 || active ==3">
-				  <swiper class="swiper"  autoplay="true" circular="true" v-if="adOff" interval="10000">
+				  <swiper class="swiper"  autoplay="true" circular="true" v-if="adOff">
 					<swiper-item v-for="item  in adid" :key="item">	
 
 					<!-- #ifdef MP-WEIXIN -->
 					   <ad-custom :unit-id="item" :ad-intervals="adtime" @load="bindload" @error="binderror" ></ad-custom>	
 					<!-- #endif -->
-							<ad-custom :unit-id="item" :ad-intervals="adtime"  @load="bindload" @error="binderror"></ad-custom>
+							
 					</swiper-item>
 				  </swiper>
-				  <swiper class="swiper"  autoplay="true" circular="true" v-else interval="10000">
+				  <swiper class="swiper"  autoplay="true" circular="true" v-else>
 				  		<swiper-item v-for="item  in bannerList" :key="item">	
 				  				<image class="swiper-item" :src="item.bannerImage"  v-model="aspectFit"></image>
 				  		</swiper-item>
@@ -324,7 +324,7 @@
 				uni.setStorageSync("pushId",list.id);
 				uni.setStorageSync("cardId",list.pushCardList[0].id);
 				uni.navigateTo({
-					url:'../sponsor/form'
+					url:'../sponsor/index'
 				})
 				
 					

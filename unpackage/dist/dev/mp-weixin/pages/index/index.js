@@ -460,7 +460,7 @@ var _vuex = __webpack_require__(/*! vuex */ 13);function _interopRequireDefault(
       uni.setStorageSync("pushId", list.id);
       uni.setStorageSync("cardId", list.pushCardList[0].id);
       uni.navigateTo({
-        url: '../sponsor/form' });
+        url: '../sponsor/index' });
 
 
 

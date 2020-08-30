@@ -197,6 +197,10 @@ var _vuex = __webpack_require__(/*! vuex */ 13);function _interopRequireDefault(
   (0, _vuex.mapState)(['hasLogin', 'userInfo'])),
 
   onShow: function onShow() {
+
+    if (!this.hasLogin) {
+      return this.xdUniUtils.xd_login(this.hasLogin);
+    }
     if (this.userInfos == '' || this.userInfos == undefined || this.userInfos == null) {
       try {
         this.userInfos = uni.getStorageSync('userInfo');
