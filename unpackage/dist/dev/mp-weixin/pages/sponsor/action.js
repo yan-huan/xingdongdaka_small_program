@@ -317,6 +317,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
 var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var lookerCountInfo = function lookerCountInfo() {__webpack_require__.e(/*! require.ensure | components/lookerCountInfo */ "components/lookerCountInfo").then((function () {return resolve(__webpack_require__(/*! @/components/lookerCountInfo.vue */ 236));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   components: {
@@ -390,27 +395,19 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
 
   onShareAppMessage: function onShareAppMessage(res) {
     var that = this;
-    if (res.from == "menu") {
-      return that.xdUniUtils.xd_onShare();
-    } else {
-      if (that.pusCardList.length > 0) {
-        that.setSaveShareInfo();
-        return {
-          title: that.pushList.userId == that.userId ? '第' + that.pushList.pushCardCishuCount + '次打卡:' + that.pusCardList[0].content : '我为@' + that.pushList.userName + '打Call：' + that.pusCardList[0].content,
-          path: '/pages/index/action/action?pushId=' + that.pushList.id + '&share=' + that.pushList.userId + '&isopen=' + that.pushList.isopen,
-          imageUrl: that.pusCardList[0].pictures[0] ? that.pusCardList[0].pictures[0] : 'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png' };
 
+    that.setSaveShareInfo();
+    return {
+      title: '我为@' + that.lookerList[res.target.id].userName + '拉赞助：' + that.lookerList[res.target.id].content,
+      path: '/pages/sponsor/action/action?pushId=' + that.lookerList[res.target.id].id + '&share=' + uni.getStorageSync('id') + '&isopen=' + that.lookerList[res.target.id].isopen,
+      imageUrl: that.lookerList[res.target.id].pictures ? that.lookerList[res.target.id].pictures : 'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png' };
 
-      } else {
-        that.setSaveShareInfo();
-        return {
-          title: that.pushList.userId == that.userId ? '第' + that.pushList.pushCardCishuCount + '次打卡:' + that.pushList.content : '我为@' + that.pushList.userName + '打Call：' + that.pushList.content,
-          path: '/pages/index/action/action?pushId=' + that.pushList.id + '&share=' + that.pushList.userId + '&isopen=' + that.pushList.isopen,
-          imageUrl: that.pushList.pictures ? that.pushList.pictures : 'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png' };
+    // return {
+    // 	title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'拉赞助：'+that.pusCardList[0].content,
+    // 	path: '/pages/sponsor/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
+    // 	imageUrl:that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+    // }
 
-
-      }
-    }
   },
   methods: {
     ViewImage: function ViewImage(e) {
@@ -497,9 +494,7 @@ var _vuex = __webpack_require__(/*! vuex */ 14);function _interopRequireDefault(
         pushId: this.pushId,
         shareUserId: this.userId },
       true).
-      then(function (res) {
-
-      });
+      then(function (res) {});
     },
     clickSaveShareInfo: function clickSaveShareInfo() {var _this2 = this;
       if (uni.getStorageSync('share') != '' && this.userId != undefined) {

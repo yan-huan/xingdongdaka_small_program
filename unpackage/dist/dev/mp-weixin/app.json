@@ -49,12 +49,6 @@
         "text": "行动"
       },
       {
-        "pagePath": "pages/sponsor/index",
-        "iconPath": "static/images/icon/tabbar/tabbarMsg.png",
-        "selectedIconPath": "static/images/icon/tabbar/tabbarMsg-on.png",
-        "text": "赞助"
-      },
-      {
         "pagePath": "pages/selfCenter/selfCenter",
         "iconPath": "static/images/icon/tabbar/tabbar3.png",
         "selectedIconPath": "static/images/icon/tabbar/tabbar3-on.png",
@@ -72,6 +66,5 @@
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom",
     "sponsor": "/pages/sponsor/index"
-  },
-  "sitemapLocation": "sitemap64.json"
+  }
 }

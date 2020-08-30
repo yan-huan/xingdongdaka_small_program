@@ -37,9 +37,14 @@
 							</view>
 						</view>
 						<view class='xd-flex'>
-							<view v-if="pushList.challengeRmb>0">
+							<view v-if="userId==pushList.userId && pushList.challengeRmb>0">
 								<view class="cu-tag light bg-red radius" >
 									保证金￥{{pushList.challengeRmb}}
+								</view>
+							</view>
+							<view v-if="userId!==pushList.userId && pushList.challengeRmb>0">
+								<view class="cu-tag light bg-red radius" >
+									保证金￥{{pushList.challengeRmb+sponsorRmb}}
 								</view>
 							</view>
 							<view style="padding-left:6px"  v-if="userId==pushList.userId && sponsorRmb>0">
@@ -82,7 +87,7 @@
 
 							<view class="cu-avatar round" :style="'background-image:url('+ite.userHead+');'"></view>
 							<view class="content xd-margin-left">
-								<view class="text-grey">{{ite.userName}}</view>
+								<view>{{ite.userName}}</view>
 								<view class="text-gray text-sm flex justify-between">
 										{{xdUniUtils.xd_timestampToTime(ite.createTime,false,true,false)}}
 								</view>
@@ -98,7 +103,7 @@
 										</view>
 									</view>
 									
-									<view v-if="!!ite.daiJinQuan"> 代金券<span style="color:#fbbd08">{{ite.daiJinQuan}} </span></view>
+									<view v-if="!!ite.daiJinQuan"> 代金券：<span style="color:#fbbd08">{{ite.daiJinQuan}} </span></view>
 									<view v-if="!!ite.sponsorCondition.daiJinQuan"> 获取条件：<span style="color:#fbbd08">{{ite.sponsorCondition.daiJinQuan}} </span></view> 
 									<view v-if="!!ite.pictures.daiJinQuan" class="grid flex-sub padding-lr" :class="ite.pictures.daiJinQuan.length>1?'col-3 grid-square':'col-1'">
 										<view v-for="(item,index) in ite.pictures.daiJinQuan" :key="index" class="bg-img" :class="ite.pictures.daiJinQuan.length>1?'':'only-img'" 
@@ -231,27 +236,19 @@
 	
 		onShareAppMessage(res) {
 			let that = this;
-			if(res.from=="menu"){
-			return	that.xdUniUtils.xd_onShare();
-			}else{
-				if(that.pusCardList.length>0){
-					that.setSaveShareInfo();
-					return {
-						title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'打Call：'+that.pusCardList[0].content,
-						path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
-						imageUrl:that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
-					}
-					
-				}else{
-					that.setSaveShareInfo();
-					return {
-						title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pushList.content:'我为@'+that.pushList.userName+'打Call：'+that.pushList.content,
-						path: '/pages/index/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
-						imageUrl:that.pushList.pictures?that.pushList.pictures:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
-					}
-					
-				}
-			}		
+			
+			that.setSaveShareInfo();
+			return {
+					title: '我为@'+that.lookerList[res.target.id].userName+'拉赞助：'+that.lookerList[res.target.id].content,
+					path: '/pages/sponsor/action/action?pushId='+ that.lookerList[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.lookerList[res.target.id].isopen,
+					imageUrl:that.lookerList[res.target.id].pictures?that.lookerList[res.target.id].pictures:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+			}
+			// return {
+			// 	title: that.pushList.userId==that.userId? '第'+that.pushList.pushCardCishuCount+'次打卡:'+that.pusCardList[0].content:'我为@'+that.pushList.userName+'拉赞助：'+that.pusCardList[0].content,
+			// 	path: '/pages/sponsor/action/action?pushId='+ that.pushList.id+'&share='+that.pushList.userId+'&isopen='+that.pushList.isopen,
+			// 	imageUrl:that.pusCardList[0].pictures[0]?that.pusCardList[0].pictures[0]:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+			// }
+				
 		},
 		methods:{
 			ViewImage(e) {
@@ -338,9 +335,7 @@
 					pushId:this.pushId,
 					shareUserId:this.userId,
 				},true
-				   ).then(res => {
-					  
-					   })
+				).then(res => {})
 			},
 			clickSaveShareInfo(){
 				if(uni.getStorageSync('share') != '' && this.userId != undefined){

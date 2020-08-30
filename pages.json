@@ -172,12 +172,12 @@
 		// 	"selectedIconPath": "static/images/icon/tabbar/tabbarMsg-on.png",
 		// 	"text": "消息"
 		// }, 
-		{
-			"pagePath": "pages/sponsor/index",
-			"iconPath": "static/images/icon/tabbar/tabbarMsg.png",
-			"selectedIconPath": "static/images/icon/tabbar/tabbarMsg-on.png",
-			"text": "赞助"
-		},
+		// {
+		// 	"pagePath": "pages/sponsor/index",
+		// 	"iconPath": "static/images/icon/tabbar/tabbarMsg.png",
+		// 	"selectedIconPath": "static/images/icon/tabbar/tabbarMsg-on.png",
+		// 	"text": "赞助"
+		// },
 		{
 			"pagePath": "pages/selfCenter/selfCenter",
 			"iconPath": "static/images/icon/tabbar/tabbar3.png",
