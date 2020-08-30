@@ -2,6 +2,9 @@
 	<view class="myonlookers">
 		<!-- 关注 -->
 		<view class="xd-list-info">
+			<view class="padding-sm " v-if="!userId">
+				<text class="text-sm">这是点击过你分享页面的新用户，你将有机会获得他们后续的保证金、增值服务等消费的20%，作为分享奖励</text>
+			</view>
 			<block v-for="(attention, index) in attentionList" :key="index">
 				<view class="actionLi" >
 					<view class="ali-main">
@@ -15,9 +18,9 @@
 								<text v-else-if="attention.sex==0" class="boy">♀</text>
 								<text v-else class="boy">密</text>
 							</view>
-							<view class="moreInfoIn"  v-if="attention.province">
+							<view class="moreInfoIn"  >
 								<image class='address' src="/static/images/icon/address.png"></image>
-								<text class="province">{{attention.province}}.{{attention.city}}</text>
+								<text class="province" v-if="attention.province">{{attention.province}}.{{attention.city}}</text>
 							</view>
 						</view>
 						<view class="lli-main-content" v-if="userId">
@@ -150,12 +153,6 @@
 					title: '加载中..',
 				})
 				
-				if(!that.hasLogin){
-					uni.navigateTo({
-						url: '../login/login' 
-					});
-					return false;
-				}
 				if(this.userId=''){
 					that.xd_request_post(that.xdServerUrls.xd_getInviteList,
 					{

@@ -182,4 +182,7 @@
 .coletext.data-v-57280228 {
   background: #ffe66f;
 }
+.notice-area.data-v-57280228 {
+  padding-top: 20rpx;
+}
 

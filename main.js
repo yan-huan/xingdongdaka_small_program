@@ -4,10 +4,11 @@ import store from './store';
 import xdServerUrls from '@/common/xdServerUrls.js'; // 服务 url
 import xdUniUtils from '@/common/xdUniUtils.js'; // 工具包
 import xdCommon from '@/common/xdCommon.js'; //公共规则说明
-import cuCustom from './colorui/components/cu-custom.vue'
-Vue.component('cu-custom',cuCustom)
-import sponsor from './pages/sponsor/index'
-Vue.component('sponsor',sponsor)
+import cuCustom from './colorui/components/cu-custom.vue';
+Vue.component('cu-custom',cuCustom);
+import sponsor from './pages/sponsor/index';
+Vue.component('sponsor',sponsor);
+import AD from "@/common/adVideoUtils.js";
 
 const prePage = () => {
 	let pages = getCurrentPages();
@@ -28,6 +29,7 @@ Vue.prototype.xdCommon = xdCommon; //
 
 Vue.prototype.$store=store;
 Vue.prototype.$api=prePage;
+Vue.prototype.$AD=AD;
 
 App.mpType = 'app'
 

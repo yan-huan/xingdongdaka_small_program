@@ -60,9 +60,11 @@ export default {
 				return data;
 		},
 		formSubmit(e) {
-			this.xdUniUtils.xd_login(this.hasLogin);
-			var that = this;
 			
+			var that = this;
+			if(!that.hasLogin){
+				return that.xdUniUtils.xd_login(that.hasLogin);
+			}
 			let userData={
 				token:'',
 				userId:'',

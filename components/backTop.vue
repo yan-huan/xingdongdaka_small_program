@@ -1,6 +1,6 @@
 <template>
 	<view
-		v-if="scrollTop > 3000"
+		v-if="scrollTop > 2000"
 		class="backTop"
 		:class="{ 'mescroll-fade-in': isShowToTop }"
 		@click="toTopClick"
@@ -54,15 +54,16 @@ export default {
 }
 
 .backTop {
-	z-index: 10;
+	z-index: 90;
 	position: fixed;
-	right: 40upx;
-	bottom: 130upx;
-	/* #ifdef H5 */
-	bottom: 140upx;
-	/* #endif */
+	// right: 40upx;
+	// bottom: 130upx;
+	
+	// bottom: 140upx;
+	
 	// width: 72upx;
 	// height: 72upx;
+	bottom: 100upx; right:30upx;
 	width: 100upx; height:100upx;
 	border-radius: 50%;
 	transform: translateZ(0);

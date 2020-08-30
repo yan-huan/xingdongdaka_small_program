@@ -22,7 +22,8 @@
 		<!-- <view class="btn_bar">
 			<view class="btns"><button class="btn" @click="goStep">制定新的行动项</button></view>
 		</view> -->
-		<view class="start-add" @click="goStep" >
+		<backTop :scrollTop="scrollTop"></backTop>
+		<view class="start-add" @click="goStep"  v-if="scrollTop<2000">
 			<image src="../../static/images/icon/add.png" mode="widthFix"></image>
 		</view>
 		<view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">
@@ -44,7 +45,13 @@
 <script>
 	import{ mapState,mapMutations} from 'vuex'
 import actionlist from "@/components/actionlist.vue";
+import backTop from "@/components/backTop.vue"
+
 export default {
+	components:{
+		actionlist,
+		backTop
+	},
 	data() {
 		return {
 			vi:1,
@@ -60,19 +67,49 @@ export default {
 			looktotal:'',
 			pushId:'',
 			index:'',
+			scrollTop:0,
+			scrollTopinfo:true,
+			_isLoaded:'',
 		};
+	},
+	onPageScroll(e) {
+		this.scrollTop = e.scrollTop;
+		if(this.scrollTopinfo){
+			this.scrollTopinfo=false;
+			setTimeout(()=>{
+				this.scrollTop=0
+				this.scrollTopinfo=true;
+			},3000)
+		}
+		
+	},
+	watch:{
+		hasLogin(){
+			setTimeout(() => {
+				this.inDada(this.tab);
+				this.userId=uni.getStorageSync('id');
+			
+			}, 100);
+			
+		}
+		
 	},
 	onShow() {	
 		// this.inDada();
 	},
 	onLoad() {
+		if(!this.hasLogin){
+			return this.xdUniUtils.xd_login(this.hasLogin);
+		}
 		this.inDada(this.tab);
 		//#ifdef MP-WEIXIN
 		wx.showShareMenu({
 		  menus: ['shareAppMessage', 'shareTimeline']
 		})
 		//#endif
+		// this.$AD.videoAdInit(adunit-d579021705423692);
 	},
+	
 	computed: {
 	           ...mapState(['hasLogin'])  
 	       },  
@@ -110,7 +147,13 @@ export default {
 		},
 		//#endif
 	methods: {
+		showAd(){
+			if (this._isLoaded) {
+			  this._rewardedVideoAd.show()
+			}
+		},
 		tabs(e){
+			
 			this.tab=e
 			if(e==0){
 				this.inDada(0);
@@ -128,6 +171,7 @@ export default {
 				   })
 		},
 		creatXd(e){
+			this.showAd();
 			var that=this;
 			var id=that.pushId;
 			var i=that.index;
@@ -177,7 +221,14 @@ export default {
 				            		    duration: 1500
 				            		});
 									that.cardList.splice(i,1);
-				            	}
+				            	}else{
+									uni.showModal({
+									    title: '该行动项发布已超过3天，不能删除，请继续',
+										icon:'none',
+				
+									});
+								}
+								
 				            })
 				        } else if (res.cancel) {
 				            that.maskState=0;
@@ -211,7 +262,6 @@ export default {
 			let token='';
 			let id='';
 			let that=this;
-			that.xdUniUtils.xd_login(that.hasLogin);
 			try{
 				token=uni.getStorageSync('token');
 				id=uni.getStorageSync('id');

@@ -2,6 +2,7 @@
   "navigationBarTitleText": "行动",
   "enablePullDownRefresh": true,
   "usingComponents": {
-    "actionlist": "/components/actionlist"
+    "actionlist": "/components/actionlist",
+    "back-top": "/components/backTop"
   }
 }

@@ -1,8 +1,6 @@
 {
 	"pages": [
 		
-
-		
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -143,6 +141,15 @@
 		}
 
 	],
+	"subPackages":[{
+		"root":"pages/pageA",
+		"pages":[{
+			"path":"thankmoney/thankmoney",
+			"style": {
+				"navigationBarTitleText": "感谢金"
+			}
+		}]
+	}],
 
 	"tabBar": {
 		"color": "#b8b9bb",

@@ -55,7 +55,9 @@
 		},
 
 		onLoad() {
-			this.xdUniUtils.xd_login(this.hasLogin);
+			 if(!this.hasLogin){
+			 	return this.xdUniUtils.xd_login(this.hasLogin);
+			 }
 			try {
 
 				this.userInfo = uni.getStorageSync('userInfo')
@@ -89,7 +91,9 @@
 			},
 			submitFeedback: function(e) {
 			  var that = this;
-			  that.xdUniUtils.xd_login(that.hasLogin);
+			 if(!that.hasLogin){
+			 	return that.xdUniUtils.xd_login(that.hasLogin);
+			 }
 			  that.userId = uni.getStorageSync('id');
 			   if (that.index == 0) {
 					uni.showToast({

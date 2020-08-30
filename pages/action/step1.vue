@@ -6,14 +6,29 @@
 					<text class="lg text-gray cuIcon-list "></text>
 				</view>
 				<text class="margin-left-xs">分类</text>
-				<view class=" flex  align-center bg-gray label-left  radius " >		
-					<picker class="label-left" @change="PickerChangelabel" :value="labeldata" :range="pickerlabel" name="label"  >
-						<view class="picker">
-							{{indexlabel>-1?pickerlabel[indexlabel]:'请选择(默认自动选择)'}}
-						</view>
-					</picker>
+				<view class=" flex  align-center bg-gray label-left  radius " @tap="showradios" >					
+					<text v-if="labeldata.length">{{labeldata}}</text>
+					<text v-else>请选择(默认自动选择)</text>
 					<text class="lg text-gray cuIcon-triangledownfill"></text>
-					
+				</view>
+				<view class="cu-modal  cu-modal-z" :class="modalNamecheckbox?'show':''" @tap="showradios">
+					<view class="cu-dialog" @tap.stop="">
+						<checkbox-group class="block" @change="RadioChange" name="label">
+							<view class="cu-list menu text-left">
+								<view class="cu-item" v-for="(item,index) in pickerlabel" :key="item.id" :id="index">
+									<label class="flex justify-between align-center flex-sub">
+										<view class="flex-sub">{{item.labelName}}</view>
+										<checkbox  class="round" :class="item.checked?'checked':''" :checked="item.checked"
+										 :value="item.id"></checkbox >
+									</label>
+								</view>
+							</view>
+						</checkbox-group>
+						<view class="checkbox-text flex justify-around" >
+							<text @tap="showradios"> 确定</text>
+							<text @tap="showradios(1)" > 取消</text>
+						</view>
+					</view>
 				</view>
 			</view>
 			<view class=" flex flex-wrap padding solid-top align-center justify-between">
@@ -28,7 +43,7 @@
 					<switch  :class="switchA==0?'checked':''" :checked="switchA==0?true:false" @change="isOpenswitch"></switch>
 				</view>
 			</view>
-			<view class="">
+			<view class="" v-if="!modalNamecheckbox">
 				<view class="cu-form-group align-start textare-heght">
 					<textarea :value="content" name="content" maxlength="500" :disabled="modalName!=null" placeholder="减肥,锻炼意志力,提高耐性,提升魅力..."></textarea>
 				</view>
@@ -128,10 +143,10 @@ export default {
 			targetDayf:false,
 			extendContent:'',
 			punchCardWay:'',
-			indexlabel:-1,
 			indextime:0,
 			time:'12:00',
 			indexholiday:0,
+			modalNamecheckbox:false,
 			param:{
 				pictures:""
 			},
@@ -157,7 +172,7 @@ export default {
 			],
 			targetDay:7,
 			holidayDay:1,
-			labeldata:'',
+			labeldata:[],
 		};
 	},
 	onLoad() {
@@ -170,12 +185,41 @@ export default {
 		this.tabs();
 	},
 	methods: {
+		showradios(e){
+			if(e==1){
+				for (var i = 0;i<this.pickerlabel.length;  ++i) {			
+					this.pickerlabel[i].checked=false;		
+				}
+				this.labeldata=[];
+				this.modalNamecheckbox=!this.modalNamecheckbox;
+			}else{
+				this.modalNamecheckbox=!this.modalNamecheckbox;
+			}
+			
+			
+		},
 		bindTimeChange(e) {
 		            this.time = e.target.value
 		        },
-		PickerChangelabel(e){
-			this.labeldata=Number(e.detail.value)+1;
-			this.indexlabel=e.detail.value;
+				//选择标签
+		RadioChange(e){
+			
+				var	values = e.detail.value;
+				var labeldatas=[];
+				for (var i = 0;i<this.pickerlabel.length;  ++i) {
+					const item = this.pickerlabel[i]
+					 if(values.toString().includes(item.id)){
+						this.pickerlabel[i].checked=true;
+						labeldatas.push(this.pickerlabel[i].labelName);
+					}else{
+						this.pickerlabel[i].checked=false;
+						labeldatas.splice(i)
+					}
+					
+				}
+				this.labeldata=labeldatas
+				
+			
 		},
 		holidayDayinput(e){
 			this.holidayDay=e.detail.value;
@@ -227,7 +271,7 @@ export default {
 			this.targetDay=e.detail.value;
 		},
 		PickerChange(e){
-			console.log(e)
+			
 			var that=this;
 			switch(e.detail.value){
 				case '0':
@@ -279,7 +323,7 @@ export default {
 			}
 		},
 		formSubmit(e){
-		 console.log(e)
+		
 			if(e.detail.value.content==''){
 				uni.showToast({
 				    title: '请输入行动内容',
@@ -381,11 +425,12 @@ export default {
 		tabs(){
 			this.xd_request_post(this.xdServerUrls.xd_label,{},false
 				   ).then((res) => {
-					  var data=[];
-				       res.obj.forEach(function(item){
-						   data.push(item.labelName)
-					   })
-					   this.pickerlabel=data;
+					  // var data=[];
+				   //     res.obj.forEach(function(item){
+						 //   data.push(item.labelName)
+					  //  })
+					  // res.obj[0].checked=true;
+					   this.pickerlabel=res.obj;
 				   }).catch(err => {
 				
 			});
@@ -428,5 +473,15 @@ export default {
 }
 .pading-time{
 	margin-bottom: 20%;
+}
+.checkbox-text{
+	height: 90rpx;
+	
+	align-items: center;
+	
+	text{
+		font-size: 45rpx;
+	}
+	
 }
 </style>

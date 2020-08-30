@@ -2,6 +2,7 @@
   "navigationBarTitleText": "圈子",
   "enablePullDownRefresh": true,
   "usingComponents": {
+    "wyb-notice-bar": "/components/wyb-noticeBar/wyb-noticeBar",
     "index-list": "/components/indexList",
     "back-top": "/components/backTop"
   }

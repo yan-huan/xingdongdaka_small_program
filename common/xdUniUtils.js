@@ -112,6 +112,7 @@ function xd_request(url, method, params, headers) {
 			data: params || {},
 			header: headers || {},
 			dataType: "json",
+			
 			success: function(res) {
 				var d = res;
 				if (d.data.resultCode == 10002) {					
@@ -372,14 +373,17 @@ const updateNumber = function(gnumber) {
 //登录检测
 function xd_login(e,nav){
 	if(!e){
+		
 		if(nav){
 			uni.reLaunch({
 			  url: '/pages/login/login'
 			});
+			
 		}else{
 			uni.navigateTo({
 				url:'/pages/login/login'
 			})
+			
 		}			
 		return false;
 	}

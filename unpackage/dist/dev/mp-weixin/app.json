@@ -22,7 +22,14 @@
     "pages/sponsor/card",
     "pages/sponsor/index"
   ],
-  "subPackages": [],
+  "subPackages": [
+    {
+      "root": "pages/pageA",
+      "pages": [
+        "thankmoney/thankmoney"
+      ]
+    }
+  ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "行动打卡",
@@ -72,5 +79,5 @@
     "cu-custom": "/colorui/components/cu-custom",
     "sponsor": "/pages/sponsor/index"
   },
-  "sitemapLocation": "sitemap9.json"
+  "sitemapLocation": "sitemap15.json"
 }

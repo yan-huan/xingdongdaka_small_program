@@ -58,4 +58,13 @@
 .pading-time {
   margin-bottom: 20%;
 }
+.checkbox-text {
+  height: 90rpx;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.checkbox-text text {
+  font-size: 45rpx;
+}
 

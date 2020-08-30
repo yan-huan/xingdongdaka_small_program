@@ -33,12 +33,17 @@
 						<button class="cu-btn shadow-blur round coletext">搜索</button>
 					</view>
 				</view>
+				<view class="">
+					<wyb-noticeBar type="vert" :text="listnotice" v-on:showMore="showMore"  font-weight="bold"  />
+				</view>
 				<view class="swiper-banner" v-if="active == 1 || active ==3">
 				  <swiper class="swiper"  autoplay="true" circular="true" v-if="adOff">
 					<swiper-item v-for="item  in adid" :key="item">	
+
 					<!-- #ifdef MP-WEIXIN -->
 					   <ad-custom :unit-id="item" :ad-intervals="adtime" @load="bindload" @error="binderror" ></ad-custom>	
 					<!-- #endif -->
+							<ad-custom :unit-id="item" :ad-intervals="adtime"  @load="bindload" @error="binderror"></ad-custom>
 					</swiper-item>
 				  </swiper>
 				  <swiper class="swiper"  autoplay="true" circular="true" v-else>
@@ -101,7 +106,7 @@
 		</view>
 		<backTop :scrollTop="scrollTop"></backTop>
 		<!-- 开始行动-加号 -->
-		<view class="start-add" @tap="goPage('/pages/action/step1')" v-if="scrollTop<3000">
+		<view class="start-add" @tap="goPage('/pages/action/step1')" v-if="scrollTop<2000">
 			<image src="../../static/images/icon/add.png" mode="widthFix"></image>
 		</view>
 	</view>
@@ -110,15 +115,19 @@
 <script>
 	import{ mapState,mapMutations} from 'vuex'
 	import indexList from "@/components/indexList.vue";
-	import backTop from "@/components/backTop.vue"
+	import backTop from "@/components/backTop.vue";
+	import wybNoticeBar from '@/components/wyb-noticeBar/wyb-noticeBar.vue'
 	
 	export default {
 		components:{
 			indexList,
-			backTop
+			backTop,
+			wybNoticeBar,
+			
 		},
 		data() {
 			return {
+				
 				// audioPlaySrc:'../static/images/icon/img/title1.png',
 				inimg:'',
 				adtime:31,
@@ -128,6 +137,9 @@
 				labelId:1,
 				bannerList:[],
 				tabs: [],
+				listnotice: [
+					
+				],
 				listsTab:[],
 				attentionList:[],
 				token:uni.getStorageSync('token'),
@@ -140,16 +152,27 @@
 				Off:'',
 				scrollTop:0,
 				adOff:true,
+				scrollTopinfo:true,
+				listnoticedata:'',
 					
 			};
 		},
 		onPageScroll(e) {
-			
 			this.scrollTop = e.scrollTop;
+			if(this.scrollTopinfo){
+				this.scrollTopinfo=false;
+				setTimeout(()=>{
+					this.scrollTop=0
+					this.scrollTopinfo=true;
+				},3000)
+			}
+			
 		},
 		onShareAppMessage(res) {
 			let that = this;
-			that.xdUniUtils.xd_login(that.hasLogin);
+			if(!that.hasLogin){
+				return that.xdUniUtils.xd_login(that.hasLogin);
+			}
 			if(res.from=="menu"){
 			return	that.xdUniUtils.xd_onShare();
 			}else{
@@ -176,6 +199,7 @@
 			//#endif
 		    this.indexData();
 			this.burieInit();
+			this.getnotic();
 			
 		},
 		 computed: {  
@@ -186,12 +210,41 @@
 			bindload(){
 				
 			},
+			//获取通知
+		async	getnotic(){
+			await	 this.xd_request_get(this.xdServerUrls.xd_getVal,{
+					key:'inform_list_config'
+				},true
+				   ).then(res => {
+					var data= JSON.parse(res.obj);
+					data.forEach(item=>{
+						this.listnotice.push(item.title)
+					})
+					this.listnoticedata=data;
+					   })
+			},
+			//通知跳转
+			showMore(e){
+				if(this.listnoticedata[e].type==1){
+					uni.navigateTo({
+						url:this.listnoticedata.desc
+					});
+				}else{
+				 var url = encodeURIComponent(this.listnoticedata[e].desc);
+					uni.navigateTo({
+						url: '../web/webShow?url=' + url
+					});
+				}
+				
+			},
 			binderror(e){
 				console.log('2')
 				this.adOff=false;
 			},
 			goUser(e){
-				this.xdUniUtils.xd_login(this.hasLogin);
+				if(!this.hasLogin){
+					return this.xdUniUtils.xd_login(this.hasLogin);
+				}
 				uni.navigateTo({
 					url:'../selfCenter/selfView?userId='+e
 				})
@@ -234,7 +287,9 @@
 				
 			},
 			goPage(url){
-				this.xdUniUtils.xd_login(this.hasLogin);
+				if(!this.hasLogin){
+					return this.xdUniUtils.xd_login(this.hasLogin);
+				}
 				uni.navigateTo({
 					url
 				});
@@ -278,7 +333,9 @@
 			//围观
 			lookerClick:function(list,index){
 				var that=this ;
-				that.xdUniUtils.xd_login(that.hasLogin);
+				if(!that.hasLogin){
+					return that.xdUniUtils.xd_login(that.hasLogin);
+				}
 				that.userId=uni.getStorageSync('id');
 				that.xd_request_post(that.xdServerUrls.xd_saveLooker,{
 					
@@ -439,7 +496,9 @@
 				this.getShowFollow();
 			},
 			getShowFollow(){
-				this.xdUniUtils.xd_login(this.hasLogin);
+				if(!this.hasLogin){
+					return this.xdUniUtils.xd_login(this.hasLogin);
+				}
 				this.xd_request_post(this.xdServerUrls.xd_getAttentionList,
 				{
 					userId:uni.getStorageSync('id'),
@@ -548,10 +607,7 @@
 					break;
 					case 2:
 					if(!that.hasLogin){
-						uni.navigateTo({
-							url: '../login/login' 
-						});
-						return false;
+						return that.xdUniUtils.xd_login(that.hasLogin);
 					}
 					that.xd_request_post(that.xdServerUrls.xd_getAttentionList,
 					{
@@ -796,5 +852,8 @@
 	}
 	.coletext{
 		background: #ffe66f;
+	}
+	.notice-area{
+		padding-top: 20upx;
 	}
 </style>

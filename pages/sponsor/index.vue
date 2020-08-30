@@ -40,6 +40,7 @@
 </template>
 
 <script>
+	import{ mapState,mapMutations} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -65,6 +66,9 @@
 				}]
 			};
 		},
+		computed: {
+		           ...mapState(['hasLogin'])  
+		       },  
 		onShareAppMessage(res) {
 			let that = this;
 			if(res.from=="menu"){
@@ -78,7 +82,21 @@
 				}
 			}		
 		},
+		watch:{
+			hasLogin(){
+				setTimeout(() => {
+					this.getActList()
+					
+				
+				}, 100);
+				
+			}
+			
+		},
 		mounted(){
+			if(!this.hasLogin){
+				return this.xdUniUtils.xd_login(this.hasLogin);
+			}
 			//#ifdef MP-WEIXIN
 			wx.showShareMenu({
 			  menus: ['shareAppMessage', 'shareTimeline']

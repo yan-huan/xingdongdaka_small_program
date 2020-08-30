@@ -69,6 +69,9 @@
 				
 				</view>
 			</view>
+			<view class="padding-top-xs padding-bottom-xs" v-if="index==4||index==7">
+				<ad-custom unit-id="adunit-8354389cd1f86a3f" ad-intervals="31" ></ad-custom>
+			</view>
 		</view>
 	</view>
 </template>

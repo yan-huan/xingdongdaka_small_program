@@ -104,11 +104,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/backTop":1,"components/indexList":1,"components/imt-audio/imt-audio":1,"components/usershow":1,"components/actionlist":1,"components/lookerCountInfo":1};
+/******/ 		var cssChunks = {"components/backTop":1,"components/indexList":1,"components/wyb-noticeBar/wyb-noticeBar":1,"components/imt-audio/imt-audio":1,"components/usershow":1,"components/actionlist":1,"components/lookerCountInfo":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"colorui/components/cu-custom":"colorui/components/cu-custom","components/backTop":"components/backTop","components/indexList":"components/indexList","components/imt-audio/imt-audio":"components/imt-audio/imt-audio","components/usershow":"components/usershow","components/actionlist":"components/actionlist","components/lookerCountInfo":"components/lookerCountInfo"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"colorui/components/cu-custom":"colorui/components/cu-custom","components/backTop":"components/backTop","components/indexList":"components/indexList","components/wyb-noticeBar/wyb-noticeBar":"components/wyb-noticeBar/wyb-noticeBar","components/imt-audio/imt-audio":"components/imt-audio/imt-audio","components/usershow":"components/usershow","components/actionlist":"components/actionlist","components/lookerCountInfo":"components/lookerCountInfo"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

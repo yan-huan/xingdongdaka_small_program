@@ -108,10 +108,7 @@
 				})
 				
 				if(!that.hasLogin){
-					uni.navigateTo({
-						url: '../login/login' 
-					});
-					return false;
+					return that.xdUniUtils.xd_login(that.hasLogin);
 				}
 				that.xd_request_post(that.xdServerUrls.xd_getAttentionList,
 				{
