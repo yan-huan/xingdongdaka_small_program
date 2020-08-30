@@ -25,7 +25,8 @@
 			<view class="cu-list grid" style="display: flex;" >
 				<view class="cu-item xd-btn-tips-three"  v-for="(it,ind) in item.cuIconList" :key="ind" style=" display: flex; flex-direction: row; padding:0 30upx; border: 0;">
 					<view style="margin: 0; width: auto;" >
-						<button @tap="goTOSponsor(ind,it.pushId,it.cardId)" :style="'background-color: '+it.color" class="cu-btn">{{it.name}} <text v-if="it.money" class="xd-btn-money">￥{{it.money}}</text> </button>
+						<button v-if="ind==2" :id="index"  open-type="share" :style="'background-color: '+it.color" class="cu-btn">{{it.name}} <text v-if="it.money" class="xd-btn-money">￥{{it.money}}</text> </button>
+						<button v-else @tap="goTOSponsor(ind,it.pushId,it.cardId)"  :style="'background-color: '+it.color" class="cu-btn">{{it.name}} <text v-if="it.money" class="xd-btn-money">￥{{it.money}}</text> </button>
 						<view class="cu-tag badge" v-if="it.badge">
 							<block>{{it.badge>99?'99+':it.badge}}</block>
 						</view>
@@ -64,10 +65,37 @@
 				}]
 			};
 		},
+		onShareAppMessage(res) {
+			let that = this;
+			if(res.from=="menu"){
+			return	that.xdUniUtils.xd_onShare();
+			}else{
+				that.setSaveShareInfo(res);
+				return {
+					title:'我为'+that.listsTab[res.target.id].userName+'拉赞助：'+ that.listsTab[res.target.id].pushCardList[0].content,
+					path: '/pages/index/action/action?pushId='+that.listsTab[res.target.id].id+'&share='+uni.getStorageSync('id')+'&isopen='+that.listsTab[res.target.id].isopen,
+					imageUrl:that.listsTab[res.target.id].pictures?that.listsTab[res.target.id].pictures:'https://chucun2019.oss-cn-beijing.aliyuncs.com/dynamic/1595733463227.png',
+				}
+			}		
+		},
 		mounted(){
+			//#ifdef MP-WEIXIN
+			wx.showShareMenu({
+			  menus: ['shareAppMessage', 'shareTimeline']
+			})
+			//#endif
 			this.getActList()
 		},
 		methods: {
+			setSaveShareInfo(res){
+				this.xd_request_post(this.xdServerUrls.xd_saveShareInfo,{
+					pushId:this.listsTab[res.target.id].id,
+					shareUserId:uni.getStorageSync('id'),
+				},true
+				   ).then(res => {
+					 
+					   })
+			},
 			getFirstPic(str){
 				return str.indexOf(',')===-1?str:str.slice(0,str.indexOf(','))
 			},

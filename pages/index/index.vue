@@ -36,7 +36,9 @@
 				<view class="swiper-banner" v-if="active == 1 || active ==3">
 				  <swiper class="swiper"  autoplay="true" circular="true" v-if="adOff">
 					<swiper-item v-for="item  in adid" :key="item">	
-							<ad-custom :unit-id="item" :ad-intervals="adtime" @load="bindload" @error="binderror"></ad-custom>
+					<!-- #ifdef MP-WEIXIN -->
+					   <ad-custom :unit-id="item" :ad-intervals="adtime" @load="bindload" @error="binderror" ></ad-custom>	
+					<!-- #endif -->
 					</swiper-item>
 				  </swiper>
 				  <swiper class="swiper"  autoplay="true" circular="true" v-else>
