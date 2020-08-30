@@ -10,7 +10,9 @@
 				<view>申请获取以下权限</view>
 				<text>获得你的公开信息(昵称，头像、地区等)</text>
 			</view>
-
+			<button class='bottom bg-gray'  @tap="noLogin">
+				取消
+			</button>
 			<button class='bottom' type='primary' open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="wxGetUserInfo">
 				授权登录
 			</button>
@@ -40,6 +42,12 @@ export default {
 		       },  
         methods: {
 			...mapMutations(['logIn'])  ,
+			noLogin(){
+				
+				uni.switchTab({
+					url:'../index/index'
+				})
+			},
 			
             //第一授权获取用户信息===》按钮触发
             wxGetUserInfo() {
