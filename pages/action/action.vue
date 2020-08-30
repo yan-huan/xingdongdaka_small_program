@@ -95,7 +95,9 @@ export default {
 		
 	},
 	onShow() {	
-		// this.inDada();
+		if(!this.hasLogin){
+			return this.xdUniUtils.xd_login(this.hasLogin);
+		}
 	},
 	onLoad() {
 		if(!this.hasLogin){

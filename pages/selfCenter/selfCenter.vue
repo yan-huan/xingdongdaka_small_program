@@ -65,6 +65,10 @@
 			...mapState(['hasLogin','userInfo'])
 		},
 		onShow() {
+			
+			if(!this.hasLogin){
+				return this.xdUniUtils.xd_login(this.hasLogin);
+			}
 			if (this.userInfos == '' || this.userInfos == undefined || this.userInfos == null) {
 				try {
 					this.userInfos = uni.getStorageSync('userInfo')
